@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="@color/fpu_color_transparent99"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="视频加载失败"
+        android:textColor="@color/fpu_color_light_white"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btn_retry"
+        android:layout_width="72dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/fpu_selector_video_replay_frame"
+        android:text="点击重试"
+        android:textColor="@color/fpu_selector_video_replay_text"
+        android:textSize="12sp" />
+</LinearLayout>
+
