@@ -6,9 +6,10 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
+import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.dj.R;
 import com.chengfu.android.fuplayer.dj.video.util.NetworkUtil;
-import com.chengfu.android.fuplayer.video.BaseStateView;
+import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.google.android.exoplayer2.ExoPlayer;
 
 public class DJVideoPlayWithoutWifiView extends BaseStateView {
@@ -99,13 +100,13 @@ public class DJVideoPlayWithoutWifiView extends BaseStateView {
     }
 
     @Override
-    protected void onAttachedToPlayer(@NonNull ExoPlayer player) {
+    protected void onAttachedToPlayer(@NonNull FuPlayer player) {
         player.addListener(componentListener);
         maybeShow();
     }
 
     @Override
-    protected void onDetachedFromPlayer(@NonNull ExoPlayer player) {
+    protected void onDetachedFromPlayer(@NonNull FuPlayer player) {
         player.removeListener(componentListener);
         hide();
     }

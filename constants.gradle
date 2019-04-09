@@ -1,0 +1,12 @@
+project.ext {
+    releaseVersion = '0.4.0'
+    releaseVersionCode = 6
+
+    minSdkVersion = 16
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    supportLibraryVersion = '28.0.0'
+
+    exolayerVersion = '2.9.6'
+}
+

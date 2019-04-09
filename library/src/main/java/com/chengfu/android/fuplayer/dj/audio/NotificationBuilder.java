@@ -16,7 +16,8 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
-import com.chengfu.android.fuplayer.audio.extensions.PlaybackStateCompatExt;
+import com.chengfu.android.fuplayer.dj.R;
+import com.chengfu.android.fuplayer.dj.audio.extensions.PlaybackStateCompatExt;
 
 
 public class NotificationBuilder {
@@ -38,20 +39,20 @@ public class NotificationBuilder {
         this.context = context;
 
         skipToPreviousAction = new NotificationCompat.Action(
-                com.chengfu.android.fuplayer.audio.R.drawable.default_icon_previous,
-                context.getString(com.chengfu.android.fuplayer.audio.R.string.notification_skip_to_previous),
+                R.drawable.default_icon_previous,
+                context.getString(R.string.notification_skip_to_previous),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS));
         playAction = new NotificationCompat.Action(
-                com.chengfu.android.fuplayer.audio.R.drawable.default_icon_play,
-                context.getString(com.chengfu.android.fuplayer.audio.R.string.notification_play),
+                R.drawable.default_icon_play,
+                context.getString(R.string.notification_play),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PLAY));
         pauseAction = new NotificationCompat.Action(
-                com.chengfu.android.fuplayer.audio.R.drawable.default_icon_pause,
-                context.getString(com.chengfu.android.fuplayer.audio.R.string.notification_pause),
+                R.drawable.default_icon_pause,
+                context.getString(R.string.notification_pause),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PAUSE));
         skipToNextAction = new NotificationCompat.Action(
-                com.chengfu.android.fuplayer.audio.R.drawable.default_icon_next,
-                context.getString(com.chengfu.android.fuplayer.audio.R.string.notification_skip_to_next),
+               R.drawable.default_icon_next,
+                context.getString(R.string.notification_skip_to_next),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_NEXT));
 
         stopPendingIntent = new MediaButtonReceiver().buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP);
@@ -123,9 +124,9 @@ public class NotificationBuilder {
     private void createNowPlayingChannel() {
 
         NotificationChannel notificationChannel = new NotificationChannel(NOW_PLAYING_CHANNEL,
-                context.getString(com.chengfu.android.fuplayer.audio.R.string.notification_channel),
+                context.getString(R.string.notification_channel),
                 NotificationManager.IMPORTANCE_LOW);
-        notificationChannel.setDescription(context.getString(com.chengfu.android.fuplayer.audio.R.string.notification_channel_description));
+        notificationChannel.setDescription(context.getString(R.string.notification_channel_description));
 
         platformNotificationManager.createNotificationChannel(notificationChannel);
     }

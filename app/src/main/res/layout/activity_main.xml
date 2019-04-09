@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.chengfu.android.fuplayer.video.FuPlayerView
+    <Button
+        android:id="@+id/play"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="wrap_content"
+        android:text="播放" />
 
-    <com.chengfu.android.fuplayer.dj.video.DJAudioPlayView
-        android:layout_alignParentBottom="true"
+    <Button
+        android:layout_below="@id/play"
+        android:id="@+id/close"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="关闭" />
+
+    <com.chengfu.android.fuplayer.dj.audio.widget.AudioControlView
+        android:id="@+id/audioControlView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

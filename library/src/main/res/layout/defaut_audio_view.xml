@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/music_controller_icon"
+            android:id="@id/audio_controller_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="15dp" />
@@ -30,7 +30,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/music_controller_title"
+                android:id="@id/audio_controller_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
@@ -39,7 +39,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/music_controller_subtitle"
+                android:id="@id/audio_controller_subtitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -49,7 +49,6 @@
         </LinearLayout>
 
         <FrameLayout
-            android:id="@+id/playPauseView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -58,7 +57,7 @@
             android:layout_marginRight="8dp">
 
             <ImageButton
-                android:id="@+id/music_controller_play"
+                android:id="@id/audio_controller_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -66,7 +65,7 @@
                 android:src="@drawable/ic_play_arrow_black_24dp" />
 
             <ImageButton
-                android:id="@+id/music_controller_pause"
+                android:id="@id/audio_controller_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -88,7 +87,7 @@
         android:orientation="vertical">
 
         <SeekBar
-            android:id="@+id/music_controller_seek"
+            android:id="@id/audio_controller_seek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
@@ -98,21 +97,21 @@
             android:focusable="true" />
 
         <TextView
-            android:id="@+id/music_controller_position"
+            android:id="@id/audio_controller_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/music_controller_seek"
-            android:layout_alignStart="@id/music_controller_seek"
-            android:layout_alignLeft="@id/music_controller_seek"
+            android:layout_below="@id/audio_controller_seek"
+            android:layout_alignStart="@id/audio_controller_seek"
+            android:layout_alignLeft="@id/audio_controller_seek"
             tools:text="0:00" />
 
         <TextView
-            android:id="@+id/music_controller_duration"
+            android:id="@id/audio_controller_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/music_controller_seek"
-            android:layout_alignEnd="@id/music_controller_seek"
-            android:layout_alignRight="@id/music_controller_seek"
+            android:layout_below="@id/audio_controller_seek"
+            android:layout_alignEnd="@id/audio_controller_seek"
+            android:layout_alignRight="@id/audio_controller_seek"
             tools:text="0:00" />
     </RelativeLayout>
 
@@ -125,7 +124,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/music_controller_previous"
+            android:id="@id/audio_controller_previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -135,7 +134,7 @@
 
 
         <ImageButton
-            android:id="@+id/music_controller_play2"
+            android:id="@id/audio_controller_play2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -144,7 +143,7 @@
             android:src="@drawable/ic_play_arrow_black_24dp" />
 
         <ImageButton
-            android:id="@+id/music_controller_pause2"
+            android:id="@id/audio_controller_pause2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -153,7 +152,7 @@
             android:src="@drawable/ic_pause_black_24dp" />
 
         <ImageButton
-            android:id="@+id/music_controller_next"
+            android:id="@id/audio_controller_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -172,7 +171,7 @@
 
 
         <ImageButton
-            android:id="@+id/music_controller_shuffle_switch"
+            android:id="@id/audio_controller_shuffle_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -181,7 +180,7 @@
             android:src="@drawable/ic_shuffle_black_24dp" />
 
         <ImageButton
-            android:id="@+id/music_controller_repeat_switch"
+            android:id="@id/audio_controller_repeat_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

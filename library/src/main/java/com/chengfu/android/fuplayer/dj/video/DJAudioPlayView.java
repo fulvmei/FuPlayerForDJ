@@ -5,9 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
-import com.chengfu.android.fuplayer.audio.widget.AudioPlayView;
+import com.chengfu.android.fuplayer.dj.audio.widget.AudioControlView;
 
-public class DJAudioPlayView extends AudioPlayView {
+
+public class DJAudioPlayView extends AudioControlView {
 
     public DJAudioPlayView(@NonNull Context context) {
         this(context, null);

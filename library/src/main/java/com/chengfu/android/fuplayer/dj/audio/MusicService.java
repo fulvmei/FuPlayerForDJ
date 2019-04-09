@@ -21,6 +21,9 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
+import com.chengfu.android.fuplayer.dj.R;
+import com.chengfu.android.fuplayer.dj.audio.library.MusicSource;
+import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.Player;
@@ -31,6 +34,7 @@ import com.google.android.exoplayer2.ext.mediasession.DefaultPlaybackController;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
@@ -65,8 +69,6 @@ public class MusicService extends MediaBrowserServiceCompat {
     public void onCreate() {
         super.onCreate();
 
-        FuLog.d(TAG, "onCreate");
-
         // Build a PendingIntent that can be used to launch the UI.
         Intent sessionIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
         PendingIntent sessionActivityPendingIntent = PendingIntent.getActivity(this, 0, sessionIntent, 0);
@@ -78,6 +80,7 @@ public class MusicService extends MediaBrowserServiceCompat {
                 MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
                 | MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS);
         mediaSession.setActive(true);
+
         /**
          * In order for [MediaBrowserCompat.ConnectionCallback.onConnected] to be called,
          * a [MediaSessionCompat.Token] needs to be set on the [MediaBrowserServiceCompat].
@@ -126,7 +129,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         mediaSessionConnector.setQueueNavigator(new UampQueueNavigator(mediaSession));
         mediaSessionConnector.setQueueEditor(new UampQueueEditor());
 
-        packageValidator = new PackageValidator(this, com.chengfu.android.fuplayer.audio.R.xml.allowed_media_browser_callers);
+        packageValidator = new PackageValidator(this, R.xml.allowed_media_browser_callers);
     }
 
 
@@ -226,6 +229,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
+            Log.d(TAG,"onMetadataChanged  state="+metadata);
             try {
                 updateNotification(mediaController.getPlaybackState());
             } catch (RemoteException e) {
@@ -235,6 +239,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
+            Log.d(TAG,"onPlaybackStateChanged  state="+state);
             try {
                 updateNotification(state);
             } catch (RemoteException e) {
@@ -245,14 +250,30 @@ public class MusicService extends MediaBrowserServiceCompat {
         private void updateNotification(PlaybackStateCompat state) throws RemoteException {
 
             int updatedState = state.getState();
-
+            Notification notification = null;
             if (mediaController.getMetadata() == null) {
                 FuLog.d(TAG, "updateNotification : metadata=null");
+                becomingNoisyReceiver.unregister();
+                if (isForegroundService) {
+                    stopForeground(false);
+                    isForegroundService = false;
+
+                    // If playback has ended, also stop the service.
+                    if (updatedState == PlaybackStateCompat.STATE_NONE) {
+                        stopSelf();
+                    }
+
+                    if (notification != null) {
+                        notificationManager.notify(NotificationBuilder.NOW_PLAYING_NOTIFICATION, notification);
+                    } else {
+                        removeNowPlayingNotification();
+                    }
+                }
                 return;
             }
 
             // Skip building a notification when state is "none".
-            Notification notification = null;
+
             if (updatedState != PlaybackStateCompat.STATE_NONE) {
                 notification = notificationBuilder.buildNotification(mediaSession.getSessionToken());
             }
@@ -264,7 +285,7 @@ public class MusicService extends MediaBrowserServiceCompat {
                  * state itself, even though the name sounds like it."
                  */
                 if (!isForegroundService) {
-                    startService(new Intent(getApplicationContext(), com.chengfu.android.fuplayer.audio.MusicService.class));
+                    startService(new Intent(getApplicationContext(), MusicService.class));
                     startForeground(NotificationBuilder.NOW_PLAYING_NOTIFICATION, notification);
                     isForegroundService = true;
                 } else if (notification != null) {
@@ -305,6 +326,12 @@ public class MusicService extends MediaBrowserServiceCompat {
                 exoPlayer.retry();
             }
             super.onPlay(player);
+        }
+
+        @Override
+        public void onStop(Player player) {
+            super.onStop(player);
+
         }
     }
 

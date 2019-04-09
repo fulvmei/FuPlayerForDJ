@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.chengfu.android.fuplayer.dj.R;
-import com.chengfu.android.fuplayer.video.SampleBufferingView;
+import com.chengfu.android.fuplayer.ui.SampleBufferingView;
 
 public class DJVideoBufferingView extends SampleBufferingView {
 

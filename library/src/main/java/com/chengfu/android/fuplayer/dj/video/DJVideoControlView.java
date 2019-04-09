@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.chengfu.android.fuplayer.dj.R;
 import com.chengfu.android.fuplayer.dj.video.gesture.GestureImpl;
 import com.chengfu.android.fuplayer.dj.video.screen.ScreenRotationHelper;
-import com.chengfu.android.fuplayer.video.DefaultControlView;
+import com.chengfu.android.fuplayer.ui.DefaultControlView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chengfu.android.fuplayer.dj.R;
-import com.chengfu.android.fuplayer.video.SampleEndedView;
+import com.chengfu.android.fuplayer.ui.SampleEndedView;
 
 public class DJVideoEndedView extends SampleEndedView {
 

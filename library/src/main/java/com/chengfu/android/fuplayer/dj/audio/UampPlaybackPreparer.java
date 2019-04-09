@@ -7,8 +7,8 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
-import com.chengfu.android.fuplayer.audio.FuLog;
-import com.chengfu.android.fuplayer.audio.library.MusicSource;
+import com.chengfu.android.fuplayer.dj.audio.library.MusicSource;
+import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;

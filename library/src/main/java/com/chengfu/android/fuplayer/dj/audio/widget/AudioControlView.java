@@ -22,14 +22,15 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.chengfu.android.fuplayer.audio.FuLog;
-import com.chengfu.android.fuplayer.audio.extensions.PlaybackStateCompatExt;
+import com.chengfu.android.fuplayer.dj.R;
+import com.chengfu.android.fuplayer.dj.audio.extensions.PlaybackStateCompatExt;
+import com.chengfu.android.fuplayer.util.FuLog;
 
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
-public class AudioPlayView extends FrameLayout {
+public class AudioControlView extends FrameLayout {
 
     private static final int TIME_UNIT = 1000;
 
@@ -62,15 +63,15 @@ public class AudioPlayView extends FrameLayout {
 
     long duration_ms;
 
-    public AudioPlayView(@NonNull Context context) {
+    public AudioControlView(@NonNull Context context) {
         this(context, null);
     }
 
-    public AudioPlayView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public AudioControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AudioPlayView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AudioControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
 
@@ -85,57 +86,57 @@ public class AudioPlayView extends FrameLayout {
             addView(view);
         }
 
-        icon = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_icon);
+        icon = findViewById(R.id.audio_controller_icon);
 
-        title = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_title);
+        title = findViewById(R.id.audio_controller_title);
 
-        subtitle = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_subtitle);
+        subtitle = findViewById(R.id.audio_controller_subtitle);
 
-        previous = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_previous);
+        previous = findViewById(R.id.audio_controller_previous);
         if (previous != null) {
             previous.setOnClickListener(componentListener);
         }
 
-        play = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_play);
+        play = findViewById(R.id.audio_controller_play);
         if (play != null) {
             play.setOnClickListener(componentListener);
         }
 
-        pause = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_pause);
+        pause = findViewById(R.id.audio_controller_pause);
         if (pause != null) {
             pause.setOnClickListener(componentListener);
         }
 
-        play2 = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_play2);
+        play2 = findViewById(R.id.audio_controller_play2);
         if (play2 != null) {
             play2.setOnClickListener(componentListener);
         }
 
-        pause2 = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_pause2);
+        pause2 = findViewById(R.id.audio_controller_pause2);
         if (pause2 != null) {
             pause2.setOnClickListener(componentListener);
         }
 
-        next = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_next);
+        next = findViewById(R.id.audio_controller_next);
         if (next != null) {
             next.setOnClickListener(componentListener);
         }
 
-        seek = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_seek);
+        seek = findViewById(R.id.audio_controller_seek);
         if (seek != null) {
             seek.setOnSeekBarChangeListener(componentListener);
         }
 
-        position = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_position);
+        position = findViewById(R.id.audio_controller_position);
 
-        duration = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_duration);
+        duration = findViewById(R.id.audio_controller_duration);
 
-        shuffle = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_shuffle_switch);
+        shuffle = findViewById(R.id.audio_controller_shuffle_switch);
         if (shuffle != null) {
             shuffle.setOnClickListener(componentListener);
         }
 
-        repeat = findViewById(com.chengfu.android.fuplayer.audio.R.id.music_controller_repeat_switch);
+        repeat = findViewById(R.id.audio_controller_repeat_switch);
         if (repeat != null) {
             repeat.setOnClickListener(componentListener);
         }
@@ -145,7 +146,7 @@ public class AudioPlayView extends FrameLayout {
 
 
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(com.chengfu.android.fuplayer.audio.R.layout.defaut_audio_view, parent, false);
+        return inflater.inflate(R.layout.defaut_audio_view, parent, false);
     }
 
     public void setSessionToken(MediaSessionCompat.Token sessionToken) {
@@ -168,10 +169,11 @@ public class AudioPlayView extends FrameLayout {
         updateAll();
     }
 
+    public MediaControllerCompat getController() {
+        return controller;
+    }
+
     protected void updateAll() {
-        if (!isInShowState()) {
-            return;
-        }
         updateRepeat(controller != null ? controller.getRepeatMode() : PlaybackStateCompat.REPEAT_MODE_INVALID);
         updateShuffle(controller != null ? controller.getShuffleMode() : PlaybackStateCompat.SHUFFLE_MODE_INVALID);
 
@@ -230,13 +232,13 @@ public class AudioPlayView extends FrameLayout {
         }
         setViewEnabled(repeat, true);
         if (repeatMode == PlaybackStateCompat.REPEAT_MODE_NONE) {
-            repeat.setImageResource(com.chengfu.android.fuplayer.audio.R.drawable.ic_repeat_black_24dp);
+            repeat.setImageResource(R.drawable.ic_repeat_black_24dp);
             repeat.setAlpha(0.5f);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
-            repeat.setImageResource(com.chengfu.android.fuplayer.audio.R.drawable.ic_repeat_one_black_24dp);
+            repeat.setImageResource(R.drawable.ic_repeat_one_black_24dp);
             repeat.setAlpha(1.0f);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ALL) {
-            repeat.setImageResource(com.chengfu.android.fuplayer.audio.R.drawable.ic_repeat_black_24dp);
+            repeat.setImageResource(R.drawable.ic_repeat_black_24dp);
             repeat.setAlpha(1.0f);
         }
     }
@@ -361,10 +363,6 @@ public class AudioPlayView extends FrameLayout {
         }
     }
 
-    protected boolean isInShowState() {
-        return true;
-    }
-
     public void show() {
         setVisibility(VISIBLE);
     }
@@ -377,7 +375,6 @@ public class AudioPlayView extends FrameLayout {
     public void play() {
         if (controller != null) {
             controller.getTransportControls().play();
-            FuLog.d(TAG, "play ");
         }
     }
 
@@ -428,9 +425,9 @@ public class AudioPlayView extends FrameLayout {
                 if (controller.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_NONE) {
                     controller.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
                 } else if (controller.getShuffleMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
-                    controller.getTransportControls().setShuffleMode(PlaybackStateCompat.REPEAT_MODE_ALL);
+                    controller.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
                 } else if (controller.getShuffleMode() == PlaybackStateCompat.REPEAT_MODE_ALL) {
-                    controller.getTransportControls().setShuffleMode(PlaybackStateCompat.REPEAT_MODE_NONE);
+                    controller.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
                 }
             }
         }
@@ -543,6 +540,5 @@ public class AudioPlayView extends FrameLayout {
             FuLog.d(TAG, "onShuffleModeChanged : shuffleMode=" + shuffleMode);
             updateShuffle(shuffleMode);
         }
-
     }
 }
