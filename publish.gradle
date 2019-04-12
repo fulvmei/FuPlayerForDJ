@@ -4,7 +4,7 @@ ext {
     bintrayRepo = 'fuplayer'
     bintrayName = releaseArtifact
 
-    publishedGroupId = 'com.chengfu.fuexoplayer'
+    publishedGroupId = 'com.chengfu.android.fuplayer'
     libraryName = releaseArtifact
     artifact = releaseArtifact
 

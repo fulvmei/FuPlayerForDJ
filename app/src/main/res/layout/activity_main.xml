@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="关闭" />
 
-    <com.chengfu.android.fuplayer.dj.audio.widget.AudioControlView
+    <com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView
         android:id="@+id/audioControlView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
