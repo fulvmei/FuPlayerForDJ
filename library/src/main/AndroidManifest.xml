@@ -3,9 +3,9 @@
 
     <application>
         <service
-            android:name=".audio.MusicService"
-            android:icon="@drawable/ic_notification"
-            android:process=":music">
+            android:name="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService"
+            android:process=":music"
+            android:permission="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
