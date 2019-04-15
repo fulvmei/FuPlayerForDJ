@@ -38,20 +38,20 @@ public class NotificationBuilder {
         this.context = context;
 
         skipToPreviousAction = new NotificationCompat.Action(
-                R.drawable.default_icon_previous,
-                context.getString(R.string.notification_skip_to_previous),
+                R.drawable.fu_ic_skip_previous,
+                context.getString(R.string.fu_notification_skip_to_previous),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS));
         playAction = new NotificationCompat.Action(
-                R.drawable.default_icon_play,
-                context.getString(R.string.notification_play),
+                R.drawable.fu_ic_play,
+                context.getString(R.string.fu_notification_play),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PLAY));
         pauseAction = new NotificationCompat.Action(
-                R.drawable.default_icon_pause,
-                context.getString(R.string.notification_pause),
+                R.drawable.fu_ic_pause,
+                context.getString(R.string.fu_notification_pause),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PAUSE));
         skipToNextAction = new NotificationCompat.Action(
-               R.drawable.default_icon_next,
-                context.getString(R.string.notification_skip_to_next),
+               R.drawable.fu_ic_skip_next,
+                context.getString(R.string.fu_notification_skip_to_next),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_NEXT));
 
         stopPendingIntent = new MediaButtonReceiver().buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP);
@@ -123,9 +123,9 @@ public class NotificationBuilder {
     private void createNowPlayingChannel() {
 
         NotificationChannel notificationChannel = new NotificationChannel(NOW_PLAYING_CHANNEL,
-                context.getString(R.string.notification_channel),
+                context.getString(R.string.fu_notification_channel),
                 NotificationManager.IMPORTANCE_LOW);
-        notificationChannel.setDescription(context.getString(R.string.notification_channel_description));
+        notificationChannel.setDescription(context.getString(R.string.fu_notification_channel_description));
 
         platformNotificationManager.createNotificationChannel(notificationChannel);
     }

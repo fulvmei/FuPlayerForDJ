@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="fpu_color_progress_bg">#80FFFFFF</color>
-    <color name="fpu_color_progress_progress">#F85959</color>
-    <color name="fpu_color_progress_progress2">#FFFFFFFF</color>
-    <color name="fpu_color_light_white">#D8D8D8</color>
-    <color name="fpu_color_dark_white">#80D8D8D8</color>
+    <color name="fu_color_progress_bg">#80FFFFFF</color>
+    <color name="fu_color_progress_progress">#F85959</color>
+    <color name="fu_color_progress_progress2">#FFFFFFFF</color>
+    <color name="fu_color_light_white">#D8D8D8</color>
+    <color name="fu_color_dark_white">#80D8D8D8</color>
 
-    <color name="fpu_color_transparent99">#99000000</color>
+    <color name="fu_color_transparent99">#99000000</color>
 </resources>

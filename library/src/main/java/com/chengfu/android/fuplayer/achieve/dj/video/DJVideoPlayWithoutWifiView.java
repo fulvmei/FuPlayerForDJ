@@ -39,7 +39,7 @@ public class DJVideoPlayWithoutWifiView extends BaseStateView {
 
         this.context = context;
 
-        LayoutInflater.from(context).inflate(R.layout.fpu_view_video_state_without_wifi, this, true);
+        LayoutInflater.from(context).inflate(R.layout.fu_view_video_state_without_wifi, this, true);
 
         findViewById(R.id.btnPlayWithoutWifi).setOnClickListener(v -> {
             allowPlayInNoWifi = true;

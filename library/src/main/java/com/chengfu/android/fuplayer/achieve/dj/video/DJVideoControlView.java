@@ -99,7 +99,7 @@ public class DJVideoControlView extends DefaultControlView {
 
     @Override
     protected int getLayoutResourcesId(int layoutId) {
-        return R.layout.fpu_view_controller;
+        return R.layout.fu_view_controller;
     }
 
     @Override
@@ -178,15 +178,15 @@ public class DJVideoControlView extends DefaultControlView {
     protected void updatePlayPauseViewResource(@NonNull ImageButton imageButton, boolean playWhenReady) {
         if (playWhenReady) {
             if (fullScreen) {
-                imageButton.setImageResource(R.drawable.fpu_selector_pause_land);
+                imageButton.setImageResource(R.drawable.fu_selector_pause_land);
             } else {
-                imageButton.setImageResource(R.drawable.fpu_selector_pause_port);
+                imageButton.setImageResource(R.drawable.fu_selector_pause_port);
             }
         } else {
             if (fullScreen) {
-                imageButton.setImageResource(R.drawable.fpu_selector_play_land);
+                imageButton.setImageResource(R.drawable.fu_selector_play_land);
             } else {
-                imageButton.setImageResource(R.drawable.fpu_selector_play_port);
+                imageButton.setImageResource(R.drawable.fu_selector_play_port);
             }
 
         }
@@ -291,9 +291,9 @@ public class DJVideoControlView extends DefaultControlView {
             return;
         }
         if (fullScreen) {
-            imageButton.setImageResource(R.drawable.fpu_selector_back_land);
+            imageButton.setImageResource(R.drawable.fu_selector_back_land);
         } else {
-            imageButton.setImageResource(R.drawable.fpu_selector_back_port);
+            imageButton.setImageResource(R.drawable.fu_selector_back_port);
         }
     }
 
@@ -302,9 +302,9 @@ public class DJVideoControlView extends DefaultControlView {
             return;
         }
         if (fullScreen) {
-            imageButton.setImageResource(R.drawable.fpu_ic_exit_full_screen);
+            imageButton.setImageResource(R.drawable.fu_ic_exit_full_screen);
         } else {
-            imageButton.setImageResource(R.drawable.fpu_ic_full_screen);
+            imageButton.setImageResource(R.drawable.fu_ic_full_screen);
         }
     }
 
@@ -312,16 +312,16 @@ public class DJVideoControlView extends DefaultControlView {
     protected void updateVolumeViewResource(@NonNull ImageButton imageButton, float volume) {
         if (volume > 0.0f) {
             if (fullScreen) {
-                imageButton.setImageResource(R.drawable.fpu_ic_control_volume_on_land);
+                imageButton.setImageResource(R.drawable.fu_ic_control_volume_on_land);
             } else {
-                imageButton.setImageResource(R.drawable.fpu_ic_control_volume_on_port);
+                imageButton.setImageResource(R.drawable.fu_ic_control_volume_on_port);
             }
 
         } else {
             if (fullScreen) {
-                imageButton.setImageResource(R.drawable.fpu_ic_control_volume_off_land);
+                imageButton.setImageResource(R.drawable.fu_ic_control_volume_off_land);
             } else {
-                imageButton.setImageResource(R.drawable.fpu_ic_control_volume_off_port);
+                imageButton.setImageResource(R.drawable.fu_ic_control_volume_off_port);
             }
         }
     }
@@ -430,7 +430,7 @@ public class DJVideoControlView extends DefaultControlView {
                         slideForwardProgress.setProgress((int) (newPosition * 1.0f / duration * 100));
                     }
                     if (slideForwardImage != null) {
-                        slideForwardImage.setImageResource(percent < 0 ? R.drawable.fpu_ic_control_slide_rewind : R.drawable.fpu_ic_control_slide_forward);
+                        slideForwardImage.setImageResource(percent < 0 ? R.drawable.fu_ic_control_slide_rewind : R.drawable.fu_ic_control_slide_forward);
                     }
                     break;
                 case Gesture.SLIDE_TYPE_VOLUME:

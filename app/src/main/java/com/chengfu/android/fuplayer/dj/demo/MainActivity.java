@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FuLog.enabled=true;
+
         audioControlView = findViewById(R.id.audioControlView);
 
         findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {

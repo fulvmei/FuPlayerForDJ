@@ -159,7 +159,7 @@ public class AudioControlView extends FrameLayout {
     }
 
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.defaut_audio_view, parent, false);
+        return inflater.inflate(R.layout.fu_defaut_audio_view, parent, false);
     }
 
     public void setSessionToken(MediaSessionCompat.Token sessionToken) {
@@ -245,13 +245,13 @@ public class AudioControlView extends FrameLayout {
         }
         setViewEnabled(repeat, true);
         if (repeatMode == PlaybackStateCompat.REPEAT_MODE_NONE) {
-            repeat.setImageResource(R.drawable.ic_repeat_black_24dp);
+            repeat.setImageResource(R.drawable.fu_ic_repeat_black_24dp);
             repeat.setAlpha(0.5f);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
-            repeat.setImageResource(R.drawable.ic_repeat_one_black_24dp);
+            repeat.setImageResource(R.drawable.fu_ic_repeat_one_black_24dp);
             repeat.setAlpha(1.0f);
         } else if (repeatMode == PlaybackStateCompat.REPEAT_MODE_ALL) {
-            repeat.setImageResource(R.drawable.ic_repeat_black_24dp);
+            repeat.setImageResource(R.drawable.fu_ic_repeat_black_24dp);
             repeat.setAlpha(1.0f);
         }
     }

@@ -35,7 +35,7 @@ public class DJVideoBufferingView extends SampleBufferingView {
 
     @Override
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.fpu_view_video_state_buffering, parent, false);
+        return inflater.inflate(R.layout.fu_view_video_state_buffering, parent, false);
     }
 
     @Override

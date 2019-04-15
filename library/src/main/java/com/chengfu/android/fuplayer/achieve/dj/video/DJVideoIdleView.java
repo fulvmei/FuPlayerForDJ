@@ -76,7 +76,7 @@ public class DJVideoIdleView extends BaseStateView {
     }
 
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.fpu_view_video_state_idel, parent, false);
+        return inflater.inflate(R.layout.fu_view_video_state_idel, parent, false);
     }
 
     protected void updateVisibility() {

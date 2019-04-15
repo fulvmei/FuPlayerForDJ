@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/fpu_color_transparent99"
+    android:background="@color/fu_color_transparent99"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="播放完成"
-        android:textColor="@color/fpu_color_light_white"
+        android:textColor="@color/fu_color_light_white"
         android:textSize="12sp" />
 
     <ImageView
@@ -20,5 +20,5 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/fpu_ic_control_replay" />
+        android:src="@drawable/fu_ic_control_replay" />
 </LinearLayout>

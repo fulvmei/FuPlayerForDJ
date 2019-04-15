@@ -67,8 +67,6 @@ public class MusicService extends MediaBrowserServiceCompat {
     @Override
     public void onCreate() {
         super.onCreate();
-        FuLog.enabled = true;
-
 
         // Create a new MediaSession.
         mediaSession = new MediaSessionCompat(this, TAG);

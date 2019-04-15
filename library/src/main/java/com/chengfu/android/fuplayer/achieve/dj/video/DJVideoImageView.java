@@ -78,7 +78,7 @@ public class DJVideoImageView extends BaseStateView {
     }
 
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.fpu_view_video_image, parent, false);
+        return inflater.inflate(R.layout.fu_view_video_image, parent, false);
     }
 
     public ImageView getImage() {

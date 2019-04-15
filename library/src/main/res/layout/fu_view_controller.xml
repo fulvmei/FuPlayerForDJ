@@ -7,7 +7,7 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@id/controller_container"
+            android:id="@id/fu_controller_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -15,7 +15,7 @@
                 android:id="@+id/controller_top"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/fpu_bg_video_controller_top"
+                android:background="@drawable/fu_bg_video_controller_top"
                 android:gravity="center_vertical"
                 android:paddingBottom="20dp">
 
@@ -28,7 +28,7 @@
                     android:paddingTop="12dp"
                     android:paddingRight="4dp"
                     android:paddingBottom="12dp"
-                    android:src="@drawable/fpu_selector_back_port" />
+                    android:src="@drawable/fu_selector_back_port" />
 
                 <TextView
                     android:id="@+id/controller_title"
@@ -41,16 +41,16 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@id/controller_play_pause_switch"
+                android:id="@id/fu_controller_play_pause_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:background="@null"
                 android:padding="12dp"
-                android:src="@drawable/fpu_selector_play_port" />
+                android:src="@drawable/fu_selector_play_port" />
 
             <ImageButton
-                android:id="@id/controller_volume_switch"
+                android:id="@id/fu_controller_volume_switch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -58,20 +58,20 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:padding="14dp"
-                android:src="@drawable/fpu_ic_control_volume_on_port" />
+                android:src="@drawable/fu_ic_control_volume_on_port" />
 
             <LinearLayout
-                android:id="@+id/controller_bottom"
+                android:id="@+id/fu_controller_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/fpu_bg_video_controller_bottom"
+                android:background="@drawable/fu_bg_video_controller_bottom"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingTop="20dp">
 
                 <TextView
-                    android:id="@id/controller_position"
+                    android:id="@id/fu_controller_position"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
@@ -83,7 +83,7 @@
                     tools:text="00:00" />
 
                 <SeekBar
-                    android:id="@id/controller_seek"
+                    android:id="@id/fu_controller_seek"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -93,11 +93,11 @@
                     android:paddingTop="8dp"
                     android:paddingRight="4dp"
                     android:paddingBottom="8dp"
-                    android:progressDrawable="@drawable/fpu_bg_controller_progress"
-                    android:thumb="@drawable/fpu_ic_controller_thumb" />
+                    android:progressDrawable="@drawable/fu_bg_controller_progress"
+                    android:thumb="@drawable/fu_ic_controller_thumb" />
 
                 <TextView
-                    android:id="@id/controller_duration"
+                    android:id="@id/fu_controller_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
@@ -114,7 +114,7 @@
                     android:layout_marginEnd="6dp"
                     android:layout_marginRight="6dp"
                     android:padding="8dp"
-                    android:src="@drawable/fpu_ic_full_screen" />
+                    android:src="@drawable/fu_ic_full_screen" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -124,7 +124,7 @@
             android:layout_width="155dp"
             android:layout_height="120dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/fpu_bg_controller_slide"
+            android:background="@drawable/fu_bg_controller_slide"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone">
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/fpu_ic_control_slide_brightness" />
+                android:src="@drawable/fu_ic_control_slide_brightness" />
 
             <TextView
                 android:id="@+id/controller_slide_brightness_percent"
@@ -152,7 +152,7 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="24dp"
-                android:progressDrawable="@drawable/fpu_bg_controller_progress" />
+                android:progressDrawable="@drawable/fu_bg_controller_progress" />
 
         </LinearLayout>
 
@@ -161,7 +161,7 @@
             android:layout_width="155dp"
             android:layout_height="120dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/fpu_bg_controller_slide"
+            android:background="@drawable/fu_bg_controller_slide"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone">
@@ -171,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/fpu_ic_control_slide_forward" />
+                android:src="@drawable/fu_ic_control_slide_forward" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -184,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="00:00"
-                    android:textColor="@color/fpu_color_progress_progress"
+                    android:textColor="@color/fu_color_progress_progress"
                     android:textSize="12sp" />
 
                 <TextView
@@ -214,7 +214,7 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="24dp"
-                android:progressDrawable="@drawable/fpu_bg_controller_progress" />
+                android:progressDrawable="@drawable/fu_bg_controller_progress" />
 
         </LinearLayout>
 
@@ -223,7 +223,7 @@
             android:layout_width="155dp"
             android:layout_height="120dp"
             android:layout_centerInParent="true"
-            android:background="@drawable/fpu_bg_controller_slide"
+            android:background="@drawable/fu_bg_controller_slide"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:visibility="gone">
@@ -232,7 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/fpu_ic_control_slide_volume_on" />
+                android:src="@drawable/fu_ic_control_slide_volume_on" />
 
             <TextView
                 android:id="@+id/controller_slide_volume_percent"
@@ -251,7 +251,7 @@
                 android:layout_marginLeft="24dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="24dp"
-                android:progressDrawable="@drawable/fpu_bg_controller_progress" />
+                android:progressDrawable="@drawable/fu_bg_controller_progress" />
 
         </LinearLayout>
 
@@ -261,6 +261,6 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_alignParentBottom="true"
-            android:progressDrawable="@drawable/fpu_bg_controller_progress" />
+            android:progressDrawable="@drawable/fu_bg_controller_progress" />
     </RelativeLayout>
 </merge>

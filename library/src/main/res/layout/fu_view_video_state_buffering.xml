@@ -5,7 +5,7 @@
     android:layout_height="45dp"
     android:layout_gravity="center"
     android:indeterminate="true"
-    android:indeterminateDrawable="@drawable/fpu_rotate_video_progress" />
+    android:indeterminateDrawable="@drawable/fu_rotate_video_progress" />
 
 
 
