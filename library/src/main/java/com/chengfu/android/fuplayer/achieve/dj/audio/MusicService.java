@@ -151,7 +151,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         exoPlayer.stop(true);
         mediaSession.setActive(false);
         mediaSession.release();
-
     }
 
     /**

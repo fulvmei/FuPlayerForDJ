@@ -17,6 +17,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.chengfu.android.fuplayer.achieve.dj.R;
+import com.chengfu.android.fuplayer.achieve.dj.audio.util.AppIconHelper;
 
 
 public class NotificationBuilder {
@@ -50,7 +51,7 @@ public class NotificationBuilder {
                 context.getString(R.string.fu_notification_pause),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PAUSE));
         skipToNextAction = new NotificationCompat.Action(
-               R.drawable.fu_ic_skip_next,
+                R.drawable.fu_ic_skip_next,
                 context.getString(R.string.fu_notification_skip_to_next),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_NEXT));
 
@@ -100,13 +101,14 @@ public class NotificationBuilder {
                 .setContentTitle(description.getTitle())
                 .setShowWhen(false)
                 .setDeleteIntent(stopPendingIntent)
-                .setLargeIcon(description.getIconBitmap())
+                .setLargeIcon(AppIconHelper.getAppIconBitmap(context.getPackageManager(), context.getApplicationInfo().packageName))
                 .setOnlyAlertOnce(true)
+                .setOngoing(true)
                 .setSmallIcon(context.getApplicationInfo().icon)
                 .setStyle(mediaStyle)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setPublicVersion(builder.build())
                 .build();
-
     }
 
     private boolean shouldCreateNowPlayingChannel() {
