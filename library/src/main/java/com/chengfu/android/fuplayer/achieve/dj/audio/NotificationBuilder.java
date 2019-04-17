@@ -103,7 +103,6 @@ public class NotificationBuilder {
                 .setDeleteIntent(stopPendingIntent)
                 .setLargeIcon(AppIconHelper.getAppIconBitmap(context.getPackageManager(), context.getApplicationInfo().packageName))
                 .setOnlyAlertOnce(true)
-                .setOngoing(true)
                 .setSmallIcon(context.getApplicationInfo().icon)
                 .setStyle(mediaStyle)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
