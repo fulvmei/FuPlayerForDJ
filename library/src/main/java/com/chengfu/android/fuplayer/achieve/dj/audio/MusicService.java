@@ -3,6 +3,7 @@ package com.chengfu.android.fuplayer.achieve.dj.audio;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -67,14 +68,13 @@ public class MusicService extends MediaBrowserServiceCompat {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        FuLog.DEBUG=true;
         // Create a new MediaSession.
         mediaSession = new MediaSessionCompat(this, TAG);
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
                 MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
                 | MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS);
         mediaSession.setActive(true);
-
 
         /**
          * In order for [MediaBrowserCompat.ConnectionCallback.onConnected] to be called,
@@ -214,11 +214,15 @@ public class MusicService extends MediaBrowserServiceCompat {
         if (metadata == null) {
             return;
         }
-        Intent sessionIntent = new Intent();
-        sessionIntent.setAction(MusicContract.ACTION_SESSION_ACTIVITY);
-        sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata.getBundle());
-        PendingIntent sessionActivityPendingIntent = PendingIntent.getBroadcast(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Intent sessionIntent = new Intent();
+        ComponentName componentName = new ComponentName(getPackageName(), getPackageName() + ".fupalyer.FuSessionActivity");
+        FuLog.d(TAG, "getPackageName()=" + getPackageName());
+        sessionIntent.setComponent(componentName);
+
+        sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata.getBundle());
+//        PendingIntent sessionActivityPendingIntent = PendingIntent.getBroadcast(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent sessionActivityPendingIntent = PendingIntent.getActivity(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mediaSession.setSessionActivity(sessionActivityPendingIntent);
     }
 
@@ -227,7 +231,6 @@ public class MusicService extends MediaBrowserServiceCompat {
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             FuLog.d(TAG, "onMetadataChanged  metadata=" + metadata);
-
             try {
                 updateNotification(mediaController.getPlaybackState());
             } catch (RemoteException e) {
@@ -425,11 +428,9 @@ public class MusicService extends MediaBrowserServiceCompat {
         @Override
         public void onReceive(Context context, Intent intent) {
             FuLog.d(TAG, "onReceive : context=" + context + ",intent=" + intent);
-            if (intent.getAction() == AudioManager.ACTION_AUDIO_BECOMING_NOISY) {
+            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
                 controller.getTransportControls().pause();
             }
         }
     }
-
-
 }

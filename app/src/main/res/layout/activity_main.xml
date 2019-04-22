@@ -13,10 +13,17 @@
         android:text="播放" />
 
     <Button
+        android:id="@+id/play2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/play"
+        android:text="播放2" />
+
+    <Button
         android:id="@+id/close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/play2"
         android:text="关闭" />
 
     <com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView

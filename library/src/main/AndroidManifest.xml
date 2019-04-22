@@ -7,8 +7,8 @@
     <application>
         <service
             android:name="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService"
-            android:process=":music"
-            android:permission="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService">
+            android:permission="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService"
+            android:process=":music">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
@@ -20,4 +20,5 @@
             </intent-filter>
         </receiver>
     </application>
+
 </manifest>

@@ -1,4 +1,4 @@
-package com.chengfu.android.fuplayer.dj.demo;
+package com.chengfu1;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.content.ComponentName;

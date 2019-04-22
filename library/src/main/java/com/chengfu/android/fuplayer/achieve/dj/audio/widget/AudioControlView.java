@@ -63,7 +63,7 @@ public class AudioControlView extends FrameLayout {
 
     protected long duration_ms;
 
-    private OnVisibilityChangeListener onVisibilityChangeListener;
+    protected OnVisibilityChangeListener onVisibilityChangeListener;
 
     public interface OnVisibilityChangeListener {
         void onVisibilityChange(View v, boolean visible);
