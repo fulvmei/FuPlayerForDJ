@@ -22,13 +22,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".fupalyer.FuSessionActivity"
-            android:exported="true" />
 
-        <service
-            android:name=".fupalyer.FuSessionService"
-            android:exported="true" />
+        <activity android:name="com.chengfu1.FuSessionActivity">
+            <intent-filter>
+                <action android:name="chengfu.intent.action.ACTION_SESSION_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".TestActivity">
+            <intent-filter>
+                <action android:name="chengfu.intent.action.ACTION_SESSION_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

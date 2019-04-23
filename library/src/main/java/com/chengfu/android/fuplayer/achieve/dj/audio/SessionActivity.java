@@ -12,7 +12,6 @@ public class SessionActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(android.R.style.Theme_Translucent_NoTitleBar_Fullscreen);
-        System.out.println("111111111111111111111111111");
         onNewIntent(getIntent());
     }
 

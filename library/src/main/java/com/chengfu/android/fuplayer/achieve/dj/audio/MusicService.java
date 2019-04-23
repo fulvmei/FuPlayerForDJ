@@ -68,7 +68,7 @@ public class MusicService extends MediaBrowserServiceCompat {
     @Override
     public void onCreate() {
         super.onCreate();
-        FuLog.DEBUG=true;
+
         // Create a new MediaSession.
         mediaSession = new MediaSessionCompat(this, TAG);
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
@@ -216,12 +216,10 @@ public class MusicService extends MediaBrowserServiceCompat {
         }
 
         Intent sessionIntent = new Intent();
-        ComponentName componentName = new ComponentName(getPackageName(), getPackageName() + ".fupalyer.FuSessionActivity");
-        FuLog.d(TAG, "getPackageName()=" + getPackageName());
-        sessionIntent.setComponent(componentName);
-
+        sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata.getBundle());
-//        PendingIntent sessionActivityPendingIntent = PendingIntent.getBroadcast(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        ComponentName componentName = new ComponentName(this, getApplication().getPackageName() + ".FuSessionActivity");
+        sessionIntent.setComponent(componentName);
         PendingIntent sessionActivityPendingIntent = PendingIntent.getActivity(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mediaSession.setSessionActivity(sessionActivityPendingIntent);
     }
@@ -331,6 +329,18 @@ public class MusicService extends MediaBrowserServiceCompat {
             }
             super.onPlay(player);
         }
+
+//        @Override
+//        public void onPause(Player player) {
+//            super.onPause(player);
+//
+//            Intent sessionIntent = new Intent();
+//            sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////            sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata.getBundle());
+//            ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
+//            sessionIntent.setComponent(componentName);
+//            startActivity(sessionIntent);
+//        }
     }
 
 

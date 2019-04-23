@@ -1,6 +1,7 @@
 package com.chengfu1;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -96,16 +97,16 @@ public class MainActivity extends AppCompatActivity {
                     list.add(music);
                     bundle.putParcelableArrayList(MusicContract.KEY_QUEUE_ITEMS, list);
 
-                        MediaMetadataCompat metadata = mediaSessionConnection.mediaController.getMetadata();
-                        if(metadata!=null
-                                &&metadata.getDescription()!=null
-                                &&metadata.getDescription().getMediaId()!=null
-                                &&metadata.getDescription().getMediaId().equals(music.getMediaId())){
-                            mediaSessionConnection.mediaController.getTransportControls().play();
-                        }else {
-                    mediaSessionConnection.mediaController.sendCommand(MusicContract.COMMAND_SET_QUEUE_ITEMS, bundle, null);
-                    mediaSessionConnection.mediaController.getTransportControls().playFromMediaId("2", null);
-                        }
+                    MediaMetadataCompat metadata = mediaSessionConnection.mediaController.getMetadata();
+                    if (metadata != null
+                            && metadata.getDescription() != null
+                            && metadata.getDescription().getMediaId() != null
+                            && metadata.getDescription().getMediaId().equals(music.getMediaId())) {
+                        mediaSessionConnection.mediaController.getTransportControls().play();
+                    } else {
+                        mediaSessionConnection.mediaController.sendCommand(MusicContract.COMMAND_SET_QUEUE_ITEMS, bundle, null);
+                        mediaSessionConnection.mediaController.getTransportControls().playFromMediaId("2", null);
+                    }
                 }
             }
         });
@@ -113,7 +114,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaSessionConnection.mediaController.getTransportControls().stop();
+//                mediaSessionConnection.mediaController.getTransportControls().stop();
+                Intent intent = new Intent("chengfu.intent.action.ACTION_SESSION_ACTIVITY");
+
+//                Intent it = new Intent("chengfu.intent.action.ACTION_SESSION_ACTIVITY");
+                Intent it = new Intent();
+                it.setClassName(getPackageName(), getPackageName() + ".TestActivity");
+//                intent.setAction("chengfu.intent.action.ACTION_SESSION_ACTIVITY");
+                startActivity(it);
             }
         });
 
