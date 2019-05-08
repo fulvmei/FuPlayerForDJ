@@ -7,6 +7,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -22,19 +25,24 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
+import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
+import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
+import com.chengfu.android.fuplayer.ext.mediasession.MediaSessionConnector;
+import com.chengfu.android.fuplayer.ext.mediasession.TimelineQueueNavigator;
+import com.chengfu.android.fuplayer.ui.PlayerNotificationManager;
 import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.ControlDispatcher;
+import com.google.android.exoplayer2.DefaultControlDispatcher;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.ext.mediasession.DefaultPlaybackController;
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
-import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator;
+
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +54,6 @@ public class MusicService extends MediaBrowserServiceCompat {
 
     public static final String COMMAND_ADD_QUEUE_ITEM =
             "android.support.v4.media.session.command.ADD_QUEUE_ITEM";
-
 
     private static final String UAMP_USER_AGENT = "uamp.next";
     private static final String UAMP_BROWSABLE_ROOT = "/";
@@ -62,14 +69,17 @@ public class MusicService extends MediaBrowserServiceCompat {
     private PackageValidator packageValidator;
 
     private boolean isForegroundService;
-    private SimpleExoPlayer exoPlayer;
+    private FuPlayer exoPlayer;
+    private PlayerNotificationManager playerNotificationManager;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        FuLog.DEBUG = true;
         // Create a new MediaSession.
+        Picasso.setSingletonInstance(new Picasso.Builder(getApplicationContext()).build());
+
         mediaSession = new MediaSessionCompat(this, TAG);
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
                 MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
@@ -90,7 +100,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         // Because ExoPlayer will manage the MediaSession, add the service as a callback for
         // state changes.
         mediaController = new MediaControllerCompat(this, mediaSession);
-        mediaController.registerCallback(new MediaControllerCallback());
+//        mediaController.registerCallback(new MediaControllerCallback());
 
         notificationBuilder = new NotificationBuilder(this);
         notificationManager = NotificationManagerCompat.from(this);
@@ -105,7 +115,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         musicSource = new MusicSource();
 
         // ExoPlayer will manage the MediaSession for us.
-        mediaSessionConnector = new MediaSessionConnector(mediaSession, new UampPlaybackController());
+        mediaSessionConnector = new MediaSessionConnector(mediaSession);
 
         DefaultDataSourceFactory dataSourceFactory = new DefaultDataSourceFactory(
                 this, Util.getUserAgent(this, UAMP_USER_AGENT), null);
@@ -115,15 +125,123 @@ public class MusicService extends MediaBrowserServiceCompat {
                 .setUsage(C.USAGE_MEDIA)
                 .build();
 
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this);
-        exoPlayer.setAudioAttributes(attributes, true);
+        exoPlayer = new FuExoPlayerFactory(this).create();
+
+        exoPlayer.getAudioComponent().setAudioAttributes(attributes, true);
+
         MediaSessionConnector.PlaybackPreparer playbackPreparer = new UampPlaybackPreparer(exoPlayer, dataSourceFactory, musicSource);
 
-        mediaSessionConnector.setPlayer(exoPlayer, playbackPreparer);
+
+        mediaSessionConnector.setPlayer(exoPlayer);
+
+        mediaSessionConnector.setControlDispatcher(new UampPlaybackController());
+        mediaSessionConnector.setPlaybackPreparer(playbackPreparer);
         mediaSessionConnector.setQueueNavigator(new UampQueueNavigator(mediaSession));
         mediaSessionConnector.setQueueEditor(new UampQueueEditor());
 
         packageValidator = new PackageValidator(this, R.xml.allowed_media_browser_callers);
+
+        playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(this, "com.chengfu.android.media.NOW_PLAYING", R.string.fu_notification_channel, 1, new PlayerNotificationManager.MediaDescriptionAdapter() {
+
+            @Override
+            public String getCurrentContentTitle(FuPlayer player) {
+                MediaDescriptionCompat description = (MediaDescriptionCompat) player.getCurrentTag();
+                return description != null && description.getTitle() != null ? description.getTitle().toString() : null;
+            }
+
+            @Nullable
+            @Override
+            public PendingIntent createCurrentContentIntent(FuPlayer player) {
+                Intent sessionIntent = new Intent();
+                sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                MediaDescriptionCompat description = (MediaDescriptionCompat) player.getCurrentTag();
+                sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, description != null ? description.getExtras() : null);
+                ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
+                sessionIntent.setComponent(componentName);
+                PendingIntent sessionActivityPendingIntent = PendingIntent.getActivity(MusicService.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                return sessionActivityPendingIntent;
+            }
+
+            @Nullable
+            @Override
+            public String getCurrentContentText(FuPlayer player) {
+                MediaDescriptionCompat description = (MediaDescriptionCompat) player.getCurrentTag();
+                return description != null && description.getSubtitle() != null ? description.getSubtitle().toString() : null;
+            }
+
+            @Nullable
+            @Override
+            public Bitmap getCurrentLargeIcon(FuPlayer player, PlayerNotificationManager.BitmapCallback callback) {
+                MediaDescriptionCompat description = (MediaDescriptionCompat) player.getCurrentTag();
+                if (description == null) {
+                    return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+                }
+                if (description.getIconBitmap() != null) {
+                    return description.getIconBitmap();
+                }
+                if (description.getIconUri() == null) {
+                    return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+                }
+
+                Picasso.get().load(description.getIconUri())
+                        .centerCrop()
+                        .resize(256, 256)
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                callback.onBitmap(bitmap);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
+                            }
+                        });
+                return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+            }
+        });
+
+        playerNotificationManager.setPlaybackPreparer(() -> {
+            if (exoPlayer.getPlaybackState() == FuPlayer.STATE_IDLE && exoPlayer.getPlaybackError() != null) {
+                exoPlayer.retry();
+            }
+        });
+
+        playerNotificationManager.setNotificationListener(new PlayerNotificationManager.NotificationListener() {
+            @Override
+            public void onNotificationCancelled(int notificationId, boolean dismissedByUser) {
+                FuLog.d(TAG, "onNotificationCancelled  notificationId=" + notificationId + ",dismissedByUser=" + dismissedByUser);
+                if (isForegroundService) {
+                    becomingNoisyReceiver.unregister();
+                    stopForeground(true);
+                    isForegroundService = false;
+                }
+            }
+
+            @Override
+            public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
+                FuLog.d(TAG, "onNotificationPosted  notificationId=" + notificationId + ",notification=" + notification);
+                if (!isForegroundService) {
+                    becomingNoisyReceiver.register();
+                    startService(new Intent(getApplicationContext(), MusicService.class));
+                    startForeground(notificationId, notification);
+                    isForegroundService = true;
+                }
+            }
+        });
+
+        playerNotificationManager.setPlayer(exoPlayer);
+        playerNotificationManager.setUseStopAction(true);
+        playerNotificationManager.setUseNavigationActions(true);
+        playerNotificationManager.setFastForwardIncrementMs(0);
+        playerNotificationManager.setRewindIncrementMs(0);
+        playerNotificationManager.setUseChronometer(false);
+        playerNotificationManager.setUseNavigationActionsInCompactView(true);
     }
 
     /**
@@ -229,11 +347,11 @@ public class MusicService extends MediaBrowserServiceCompat {
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             FuLog.d(TAG, "onMetadataChanged  metadata=" + metadata);
-            try {
-                updateNotification(mediaController.getPlaybackState());
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                updateNotification(mediaController.getPlaybackState());
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
 
             updateSessionData(metadata);
         }
@@ -241,11 +359,11 @@ public class MusicService extends MediaBrowserServiceCompat {
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             FuLog.d(TAG, "onPlaybackStateChanged  state=" + state);
-            try {
-                updateNotification(state);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                updateNotification(state);
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
         }
 
 
@@ -315,32 +433,17 @@ public class MusicService extends MediaBrowserServiceCompat {
         }
     }
 
-    private class UampPlaybackController extends DefaultPlaybackController {
+    private class UampPlaybackController extends DefaultControlDispatcher {
         @Override
-        public void onPlay(Player player) {
-            if (exoPlayer == null) {
-                return;
-            }
+        public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
             if (exoPlayer.getPlaybackState() == Player.STATE_ENDED) {
                 exoPlayer.seekTo(0);
             }
             if (player.getPlaybackState() == Player.STATE_IDLE) {
                 exoPlayer.retry();
             }
-            super.onPlay(player);
+            return super.dispatchSetPlayWhenReady(player, playWhenReady);
         }
-
-//        @Override
-//        public void onPause(Player player) {
-//            super.onPause(player);
-//
-//            Intent sessionIntent = new Intent();
-//            sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////            sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata.getBundle());
-//            ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
-//            sessionIntent.setComponent(componentName);
-//            startActivity(sessionIntent);
-//        }
     }
 
 
@@ -352,7 +455,7 @@ public class MusicService extends MediaBrowserServiceCompat {
         }
 
         @Override
-        public MediaDescriptionCompat getMediaDescription(Player player, int windowIndex) {
+        public MediaDescriptionCompat getMediaDescription(FuPlayer player, int windowIndex) {
             player.getCurrentTimeline().getWindow(windowIndex, window, true);
             return (MediaDescriptionCompat) window.tag;
         }
@@ -361,29 +464,46 @@ public class MusicService extends MediaBrowserServiceCompat {
     private class UampQueueEditor implements MediaSessionConnector.QueueEditor {
 
         @Override
-        public void onAddQueueItem(Player player, MediaDescriptionCompat description) {
+        public void onAddQueueItem(FuPlayer player, MediaDescriptionCompat description) {
             FuLog.d(TAG, "onAddQueueItem : description=" + description);
             musicSource.add(description);
         }
 
         @Override
-        public void onAddQueueItem(Player player, MediaDescriptionCompat description, int index) {
+        public void onAddQueueItem(FuPlayer player, MediaDescriptionCompat description, int index) {
             musicSource.add(index, description);
         }
 
         @Override
-        public void onRemoveQueueItem(Player player, MediaDescriptionCompat description) {
+        public void onRemoveQueueItem(FuPlayer player, MediaDescriptionCompat description) {
             musicSource.remove(description);
         }
 
-        @Override
-        public String[] getCommands() {
-            FuLog.d(TAG, "getCommands : ");
-            return new String[]{MusicContract.COMMAND_SET_QUEUE_ITEMS, MusicContract.COMMAND_CLEAR_QUEUE_ITEMS};
-        }
+//        @Override
+//        public String[] getCommands() {
+//            FuLog.d(TAG, "getCommands : ");
+//            return new String[]{MusicContract.COMMAND_SET_QUEUE_ITEMS, MusicContract.COMMAND_CLEAR_QUEUE_ITEMS};
+//        }
+
+//        @Override
+//        public void onCommand(Player player, String command, Bundle extras, ResultReceiver cb) {
+//            FuLog.d(TAG, "onCommand : command=" + command + ",extras=" + extras);
+//            musicSource.clear();
+//            if (MusicContract.COMMAND_SET_QUEUE_ITEMS.equals(command)) {
+//                if (extras != null) {
+//                    extras.setClassLoader(getClass().getClassLoader());
+//                    ArrayList<MediaDescriptionCompat> list = extras.getParcelableArrayList(MusicContract.KEY_QUEUE_ITEMS);
+//                    if (list != null) {
+//                        musicSource.addAll(list);
+//                    }
+//                }
+//            } else {
+//                musicSource.clear();
+//            }
+//        }
 
         @Override
-        public void onCommand(Player player, String command, Bundle extras, ResultReceiver cb) {
+        public boolean onCommand(FuPlayer player, ControlDispatcher controlDispatcher, String command, Bundle extras, ResultReceiver cb) {
             FuLog.d(TAG, "onCommand : command=" + command + ",extras=" + extras);
             musicSource.clear();
             if (MusicContract.COMMAND_SET_QUEUE_ITEMS.equals(command)) {
@@ -394,12 +514,11 @@ public class MusicService extends MediaBrowserServiceCompat {
                         musicSource.addAll(list);
                     }
                 }
-            } else {
-                musicSource.clear();
+                return true;
             }
+            return false;
         }
     }
-
 
     /**
      * Helper class for listening for when headphones are unplugged (or the audio

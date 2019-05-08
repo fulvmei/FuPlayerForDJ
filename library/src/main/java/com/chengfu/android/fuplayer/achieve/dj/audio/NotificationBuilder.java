@@ -19,7 +19,6 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.AppIconHelper;
 
-
 public class NotificationBuilder {
 
     public static final String NOW_PLAYING_CHANNEL = "com.chengfu.android.media.NOW_PLAYING";

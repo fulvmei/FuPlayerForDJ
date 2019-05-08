@@ -45,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mediaSessionConnection.isConnected.getValue()) {
+                    MediaDescriptionCompat music0 = new MediaDescriptionCompat.Builder()
+                            .setMediaId("0")
+                            .setTitle("贵州交通广播")
+                            .setSubtitle("未知来源")
+                            .setMediaUri(Uri.parse("https://hls1.gzstv.com/livegztv/jiaotong/index.m3u8"))
+                            .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
+                            .build();
+
                     MediaDescriptionCompat music = new MediaDescriptionCompat.Builder()
                             .setMediaId("1")
                             .setTitle("爱过的人我已不再拥有，错过的人是否可回首 . （治愈女声）")
@@ -63,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                             .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
                             .build();
 
+                    list.add(music0);
                     list.add(music);
                     list.add(music1);
                     bundle.putParcelableArrayList(MusicContract.KEY_QUEUE_ITEMS, list);
@@ -75,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 //                            mediaSessionConnection.mediaController.getTransportControls().play();
 //                        }else {
                     mediaSessionConnection.mediaController.sendCommand(MusicContract.COMMAND_SET_QUEUE_ITEMS, bundle, null);
-                    mediaSessionConnection.mediaController.getTransportControls().playFromMediaId("1", null);
+                    mediaSessionConnection.mediaController.getTransportControls().playFromMediaId("0", null);
 //                        }
                 }
             }
@@ -116,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                mediaSessionConnection.mediaController.getTransportControls().stop();
                 Intent intent = new Intent("chengfu.intent.action.ACTION_SESSION_ACTIVITY");
-
 //                Intent it = new Intent("chengfu.intent.action.ACTION_SESSION_ACTIVITY");
                 Intent it = new Intent();
                 it.setClassName(getPackageName(), getPackageName() + ".TestActivity");

@@ -7,11 +7,11 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
+import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
+import com.chengfu.android.fuplayer.ext.mediasession.MediaSessionConnector;
 import com.chengfu.android.fuplayer.util.FuLog;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 
@@ -20,10 +20,10 @@ public class UampPlaybackPreparer implements MediaSessionConnector.PlaybackPrepa
     private static final String TAG = "UampPlaybackPreparer";
 
     private MusicSource musicSource;
-    private ExoPlayer exoPlayer;
+    private FuPlayer exoPlayer;
     private DataSource.Factory dataSourceFactory;
 
-    public UampPlaybackPreparer(ExoPlayer exoPlayer, DataSource.Factory dataSourceFactory, MusicSource musicSource) {
+    public UampPlaybackPreparer(FuPlayer exoPlayer, DataSource.Factory dataSourceFactory, MusicSource musicSource) {
         this.musicSource = musicSource;
         this.exoPlayer = exoPlayer;
         this.dataSourceFactory = dataSourceFactory;
@@ -90,13 +90,7 @@ public class UampPlaybackPreparer implements MediaSessionConnector.PlaybackPrepa
     }
 
     @Override
-    public String[] getCommands() {
-        Log.d(TAG, "getCommands");
-        return new String[0];
-    }
-
-    @Override
-    public void onCommand(Player player, String command, Bundle extras, ResultReceiver cb) {
-        Log.d(TAG, "onCommand command=" + command);
+    public boolean onCommand(FuPlayer player, ControlDispatcher controlDispatcher, String command, Bundle extras, ResultReceiver cb) {
+        return false;
     }
 }
