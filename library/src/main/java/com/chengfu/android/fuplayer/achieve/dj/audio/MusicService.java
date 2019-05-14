@@ -17,6 +17,7 @@ import android.os.ResultReceiver;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -38,7 +39,6 @@ import com.google.android.exoplayer2.DefaultControlDispatcher;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioAttributes;
-
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
@@ -141,7 +141,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         packageValidator = new PackageValidator(this, R.xml.allowed_media_browser_callers);
 
-        playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(this, "com.chengfu.android.media.NOW_PLAYING", R.string.fu_notification_channel, 1, new PlayerNotificationManager.MediaDescriptionAdapter() {
+        playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(this, "com.chengfu.android.media.NOW_PLAYING", R.string.fu_notification_channel, 100110, new PlayerNotificationManager.MediaDescriptionAdapter() {
 
             @Override
             public String getCurrentContentTitle(FuPlayer player) {
@@ -228,6 +228,11 @@ public class MusicService extends MediaBrowserServiceCompat {
                 FuLog.d(TAG, "onNotificationPosted  notificationId=" + notificationId + ",notification=" + notification);
                 if (!isForegroundService) {
                     becomingNoisyReceiver.register();
+
+                    ContextCompat.startForegroundService(
+                            getApplicationContext(),
+                            new Intent(getApplicationContext(), MusicService.class));
+
                     startService(new Intent(getApplicationContext(), MusicService.class));
                     startForeground(notificationId, notification);
                     isForegroundService = true;
