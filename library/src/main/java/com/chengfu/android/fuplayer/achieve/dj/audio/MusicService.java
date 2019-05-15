@@ -76,9 +76,10 @@ public class MusicService extends MediaBrowserServiceCompat {
     @Override
     public void onCreate() {
         super.onCreate();
-        FuLog.DEBUG = true;
         // Create a new MediaSession.
-        Picasso.setSingletonInstance(new Picasso.Builder(getApplicationContext()).build());
+        if(Picasso.get()==null){
+            Picasso.setSingletonInstance(new Picasso.Builder(getApplicationContext()).build());
+        }
 
         mediaSession = new MediaSessionCompat(this, TAG);
         mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
