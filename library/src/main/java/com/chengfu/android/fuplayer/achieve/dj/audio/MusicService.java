@@ -86,7 +86,6 @@ public class MusicService extends MediaBrowserServiceCompat {
                 MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
                 | MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS);
         mediaSession.setActive(true);
-
         /**
          * In order for [MediaBrowserCompat.ConnectionCallback.onConnected] to be called,
          * a [MediaSessionCompat.Token] needs to be set on the [MediaBrowserServiceCompat].
