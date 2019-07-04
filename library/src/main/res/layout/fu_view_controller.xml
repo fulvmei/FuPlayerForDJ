@@ -24,17 +24,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:paddingLeft="16dp"
+                    android:paddingStart="16dp"
                     android:paddingTop="12dp"
-                    android:paddingRight="4dp"
+                    android:paddingEnd="4dp"
                     android:paddingBottom="12dp"
-                    android:src="@drawable/fu_selector_back_port" />
+                    android:src="@drawable/fu_selector_back_port"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/controller_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp"
                     android:maxLines="1"
                     android:textColor="#ffffff"
                     android:textSize="14sp" />
@@ -47,7 +48,8 @@
                 android:layout_centerInParent="true"
                 android:background="@null"
                 android:padding="12dp"
-                android:src="@drawable/fu_selector_play_port" />
+                android:src="@drawable/fu_selector_play_port"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@id/fu_controller_volume_switch"
@@ -58,7 +60,8 @@
                 android:layout_centerVertical="true"
                 android:background="@null"
                 android:padding="14dp"
-                android:src="@drawable/fu_ic_control_volume_on_port" />
+                android:src="@drawable/fu_ic_control_volume_on_port"
+                tools:ignore="ContentDescription,RtlHardcoded" />
 
             <LinearLayout
                 android:id="@+id/fu_controller_bottom"
@@ -79,7 +82,7 @@
                     android:paddingLeft="8dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
-                    tools:ignore="RtlSymmetry"
+                    tools:ignore="RtlHardcoded,RtlSymmetry"
                     tools:text="00:00" />
 
                 <SeekBar
@@ -105,7 +108,7 @@
                     android:paddingRight="8dp"
                     android:textColor="#ffffff"
                     android:textSize="12sp"
-                    tools:ignore="RtlSymmetry" />
+                    tools:ignore="RtlHardcoded,RtlSymmetry" />
 
                 <ImageView
                     android:id="@+id/controller_screen_switch"
@@ -114,7 +117,8 @@
                     android:layout_marginEnd="6dp"
                     android:layout_marginRight="6dp"
                     android:padding="8dp"
-                    android:src="@drawable/fu_ic_full_screen" />
+                    android:src="@drawable/fu_ic_full_screen"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -133,7 +137,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/fu_ic_control_slide_brightness" />
+                android:src="@drawable/fu_ic_control_slide_brightness"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/controller_slide_brightness_percent"
@@ -142,7 +147,8 @@
                 android:layout_marginTop="16dp"
                 android:text="0%"
                 android:textColor="#ffffff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="HardcodedText" />
 
             <ProgressBar
                 android:id="@+id/controller_slide_brightness_progress"
@@ -171,7 +177,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/fu_ic_control_slide_forward" />
+                android:src="@drawable/fu_ic_control_slide_forward"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -185,7 +192,8 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="@color/fu_color_progress_progress"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -194,7 +202,8 @@
                     android:layout_marginRight="4dp"
                     android:text="/"
                     android:textColor="#ffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/controller_slide_forward_duration"
@@ -202,7 +211,8 @@
                     android:layout_height="wrap_content"
                     android:text="00:00"
                     android:textColor="#ffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
 
 
@@ -232,7 +242,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/fu_ic_control_slide_volume_on" />
+                android:src="@drawable/fu_ic_control_slide_volume_on"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/controller_slide_volume_percent"
@@ -241,7 +252,8 @@
                 android:layout_marginTop="16dp"
                 android:text="0%"
                 android:textColor="#ffffff"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:ignore="HardcodedText" />
 
             <ProgressBar
                 android:id="@+id/controller_slide_volume_progress"

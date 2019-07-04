@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_info"
+        android:id="@id/fu_state_ended_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="播放完成"
@@ -16,7 +16,7 @@
         android:textSize="12sp" />
 
     <ImageView
-        android:id="@+id/btn_retry"
+        android:id="@id/fu_state_ended_replay"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"

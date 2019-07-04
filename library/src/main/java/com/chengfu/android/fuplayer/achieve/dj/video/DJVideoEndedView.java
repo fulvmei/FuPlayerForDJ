@@ -40,7 +40,7 @@ public class DJVideoEndedView extends SampleEndedView {
 
 
     protected void updateFullScreen(boolean fullScreen) {
-        View retry = findViewById(R.id.btn_retry);
+        View retry = findViewById(R.id.fu_state_ended_replay);
         if (retry == null) {
             return;
         }
