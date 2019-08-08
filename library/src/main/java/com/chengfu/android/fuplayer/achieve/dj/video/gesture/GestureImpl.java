@@ -52,6 +52,7 @@ public class GestureImpl implements DJVideoControlView.Gesture {
         if (view.getContext() instanceof Activity) {
             activity = (Activity) view.getContext();
         }
+
     }
 
     private float getSystemBrightness() {

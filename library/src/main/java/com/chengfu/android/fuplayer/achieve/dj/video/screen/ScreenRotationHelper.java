@@ -14,7 +14,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
 
     private static final String TAG = "ScreenRotationHelper";
 
-    private static final float DEFAUT_RATE = 4f / 3f;//开启竖屏全屏模式的阈值
+    private static final float DEFAULT_RATE = 4f / 3f;//开启竖屏全屏模式的阈值
 
     private Activity activity;
     private Player player;
@@ -85,7 +85,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
     }
 
     private boolean isInPortraitFullScreenState() {
-        return enablePortraitFullScreen && videoRate > DEFAUT_RATE;
+        return enablePortraitFullScreen && videoRate > DEFAULT_RATE;
     }
 
     private boolean isInEnableState() {

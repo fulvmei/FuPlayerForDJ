@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
+import com.google.android.exoplayer2.Timeline;
 
 public class DJVideoIdleView extends BaseStateView {
 
@@ -125,6 +126,11 @@ public class DJVideoIdleView extends BaseStateView {
     private final class ComponentListener implements FuPlayer.EventListener {
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            updateVisibility();
+        }
+
+        @Override
+        public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
             updateVisibility();
         }
     }

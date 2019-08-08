@@ -2,6 +2,7 @@ package com.chengfu.android.fuplayer.achieve.dj.video;
 
 import android.app.Activity;
 import android.content.Context;
+
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,49 +23,50 @@ import com.chengfu.android.fuplayer.ui.DefaultControlView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.text.MessageFormat;
 
 public class DJVideoControlView extends DefaultControlView {
 
     private static final String TAG = "VideoControlView";
 
-    View controllerTop;
-    TextView titleView;
-    ProgressBar mBottomProgressView;
-    ImageView fullScreenView;
-    ImageButton backView;
+    protected View controllerTop;
+    protected TextView titleView;
+    protected ProgressBar mBottomProgressView;
+    protected ImageView fullScreenView;
+    protected ImageButton backView;
 
-    View slideBrightnessView;
-    TextView slideBrightnessPercent;
-    ProgressBar slideBrightnessProgress;
+    protected View slideBrightnessView;
+    protected TextView slideBrightnessPercent;
+    protected ProgressBar slideBrightnessProgress;
 
 
-    View slideForwardView;
-    ImageView slideForwardImage;
-    TextView slideForwardDuration;
-    TextView slideForwardPosition;
-    ProgressBar slideForwardProgress;
+    protected View slideForwardView;
+    protected ImageView slideForwardImage;
+    protected TextView slideForwardDuration;
+    protected TextView slideForwardPosition;
+    protected ProgressBar slideForwardProgress;
 
-    View slideVolumeView;
-    TextView slideVolumePercent;
-    ProgressBar slideVolumeProgress;
+    protected View slideVolumeView;
+    protected TextView slideVolumePercent;
+    protected ProgressBar slideVolumeProgress;
 
     protected OnScreenClickListener onScreenClickListener;
 
-    String title;
+    protected String title;
 
-    boolean showBottomProgress;
-    boolean controlViewShow;
-    boolean fullScreen;
-    boolean showTopOnlyFullScreen;
-    boolean showPlayPauseInBuffering;
+    protected boolean showBottomProgress;
+    protected boolean controlViewShow;
+    protected boolean fullScreen;
+    protected boolean showTopOnlyFullScreen;
+    protected boolean showPlayPauseInBuffering;
 
-    Gesture gestureHelper;
-    GestureDetector gestureDetector;
-    long oldPosition;
-    long newPosition;
-    long duration;
+    protected Gesture gestureHelper;
+    protected GestureDetector gestureDetector;
+    protected long oldPosition;
+    protected long newPosition;
+    protected long duration;
 
-    Rotation rotation;
+    protected Rotation rotation;
 
     public interface OnScreenClickListener {
         void onScreenClick(boolean fullScreen);
@@ -95,6 +97,8 @@ public class DJVideoControlView extends DefaultControlView {
         gestureHelper.setOnSlideChangedListener(onSlideChangedListener);
 
         rotation = new ScreenRotationHelper((Activity) context);
+
+
     }
 
     @Override
@@ -326,6 +330,12 @@ public class DJVideoControlView extends DefaultControlView {
         }
     }
 
+    @Override
+    protected void updatePlayPauseView() {
+        super.updatePlayPauseView();
+        updateBottomProgressView();
+    }
+
     protected void updateBottomProgressView() {
         if (mBottomProgressView == null) {
             return;
@@ -409,7 +419,7 @@ public class DJVideoControlView extends DefaultControlView {
             switch (slideType) {
                 case Gesture.SLIDE_TYPE_BRIGHTNESS:
                     if (slideBrightnessPercent != null) {
-                        slideBrightnessPercent.setText(percent + "%");
+                        slideBrightnessPercent.setText(MessageFormat.format("{0}%", percent));
                     }
                     if (slideBrightnessProgress != null) {
                         slideBrightnessProgress.setProgress(percent);
@@ -435,7 +445,7 @@ public class DJVideoControlView extends DefaultControlView {
                     break;
                 case Gesture.SLIDE_TYPE_VOLUME:
                     if (slideVolumePercent != null) {
-                        slideVolumePercent.setText(percent + "%");
+                        slideVolumePercent.setText(MessageFormat.format("{0}%", percent));
                     }
                     if (slideVolumeProgress != null) {
                         slideVolumeProgress.setProgress(percent);
@@ -552,7 +562,6 @@ public class DJVideoControlView extends DefaultControlView {
         default void setOnScreenChangedListener(OnScreenChangedListener onScreenChangedListener) {
         }
 
-
         default OnScreenChangedListener getOnScreenChangedListener() {
             return null;
         }
@@ -566,6 +575,4 @@ public class DJVideoControlView extends DefaultControlView {
 
         boolean isEnablePortraitFullScreen();
     }
-
-
 }
