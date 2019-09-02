@@ -77,7 +77,13 @@ public class MusicService extends MediaBrowserServiceCompat {
     public void onCreate() {
         super.onCreate();
         // Create a new MediaSession.
-        if(Picasso.get()==null){
+        Picasso picasso = null;
+        try {
+            picasso = Picasso.get();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        if (picasso == null) {
             Picasso.setSingletonInstance(new Picasso.Builder(getApplicationContext()).build());
         }
 
