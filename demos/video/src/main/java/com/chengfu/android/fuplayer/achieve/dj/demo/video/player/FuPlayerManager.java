@@ -1,8 +1,8 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.video.player;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +17,6 @@ import com.chengfu.android.fuplayer.ui.StateView;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.ext.mediasession.DefaultPlaybackController;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.MediaSource;
 
@@ -50,21 +49,21 @@ public class FuPlayerManager implements StateView {
         mMediaSession = new MediaSessionCompat(mContext, TAG);
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
-        MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession, new DefaultPlaybackController() {
-            @Override
-            public void onPlay(Player player) {
-                super.onPlay(player);
-                showController();
-            }
-
-            @Override
-            public void onPause(Player player) {
-                super.onPause(player);
-                showController();
-
-            }
-        });
-        mediaSessionConnector.setPlayer(mPlayer, null);
+//        MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession, new DefaultPlaybackController() {
+//            @Override
+//            public void onPlay(Player player) {
+//                super.onPlay(player);
+//                showController();
+//            }
+//
+//            @Override
+//            public void onPause(Player player) {
+//                super.onPause(player);
+//                showController();
+//
+//            }
+//        });
+//        mediaSessionConnector.setPlayer(mPlayer, null);
 
         mPlayer.addListener(mComponentListener);
     }
@@ -208,8 +207,6 @@ public class FuPlayerManager implements StateView {
             mScreenRotation.pause();
         }
         mPlayer.stop(true);
-
-        Log.e("qwer","stopPlay()"+mPlayer.getPlaybackError());
     }
 
     public void onResume() {

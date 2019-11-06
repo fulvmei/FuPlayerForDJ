@@ -1,7 +1,7 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio;
 
 import android.content.Context;
-import android.support.annotation.XmlRes;
+import androidx.annotation.XmlRes;
 
 public class PackageValidator {
 

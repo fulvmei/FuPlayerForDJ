@@ -3,11 +3,14 @@ package com.chengfu.android.fuplayer.achieve.dj.video;
 import android.app.Activity;
 import android.content.Context;
 
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.graphics.Rect;
+
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.DisplayCutout;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,12 +27,14 @@ import com.chengfu.android.fuplayer.ui.DefaultControlView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.MessageFormat;
+import java.util.List;
 
 public class DJVideoControlView extends DefaultControlView {
 
     private static final String TAG = "VideoControlView";
 
     protected View controllerTop;
+    protected View controllerBottom;
     protected TextView titleView;
     protected ProgressBar mBottomProgressView;
     protected ImageView fullScreenView;
@@ -58,7 +63,7 @@ public class DJVideoControlView extends DefaultControlView {
     protected boolean controlViewShow;
     protected boolean fullScreen;
     protected boolean showTopOnlyFullScreen;
-    protected boolean showPlayPauseInBuffering;
+    protected boolean useDoubleTap;
 
     protected Gesture gestureHelper;
     protected GestureDetector gestureDetector;
@@ -66,7 +71,21 @@ public class DJVideoControlView extends DefaultControlView {
     protected long newPosition;
     protected long duration;
 
+    private float touchMarginLeft;
+    private float touchMarginTop;
+    private float touchMarginRight;
+    private float touchMarginBottom;
+    private boolean fitDisplayCutout;
+
+    private Rect controllerTopPadding;
+    private Rect controllerBottomPadding;
+    private Rect volumeSwitchViewPadding;
+
     protected Rotation rotation;
+
+    private enum DisplayCutoutType {Left_Top, Left_Center, Left_Bottom, Right_Top, Right_Center, Right_Bottom, Top_Center, Bottom_Center}
+
+    ;
 
     public interface OnScreenClickListener {
         void onScreenClick(boolean fullScreen);
@@ -98,7 +117,10 @@ public class DJVideoControlView extends DefaultControlView {
 
         rotation = new ScreenRotationHelper((Activity) context);
 
-
+        touchMarginLeft = getResources().getDimension(R.dimen.default_touch_margin_left);
+        touchMarginTop = getResources().getDimension(R.dimen.default_touch_margin_top);
+        touchMarginRight = getResources().getDimension(R.dimen.default_touch_margin_right);
+        touchMarginBottom = getResources().getDimension(R.dimen.default_touch_margin_bottom);
     }
 
     @Override
@@ -111,6 +133,11 @@ public class DJVideoControlView extends DefaultControlView {
         super.initView(context, attrs, defStyleAttr);
 
         controllerTop = findViewById(R.id.controller_top);
+        controllerBottom = findViewById(R.id.fu_controller_bottom);
+
+        controllerTopPadding = new Rect(controllerTop.getPaddingLeft(), controllerTop.getPaddingTop(), controllerTop.getPaddingRight(), controllerTop.getPaddingBottom());
+        controllerBottomPadding = new Rect(controllerBottom.getPaddingLeft(), controllerBottom.getPaddingTop(), controllerBottom.getPaddingRight(), controllerBottom.getPaddingBottom());
+        volumeSwitchViewPadding = new Rect(mVolumeSwitchView.getPaddingLeft(), mVolumeSwitchView.getPaddingTop(), mVolumeSwitchView.getPaddingRight(), mVolumeSwitchView.getPaddingBottom());
 
         updateTopVisibility();
 
@@ -170,12 +197,96 @@ public class DJVideoControlView extends DefaultControlView {
         if (slideVolumeProgress != null) {
             slideVolumeProgress.setMax(100);
         }
+
+        addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> updateDisplayCutout());
     }
 
     @Override
     protected void updateAll() {
         updateBottomProgressView();
         super.updateAll();
+    }
+
+    private void updateDisplayCutout() {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.P
+                || !(getContext() instanceof Activity)) {
+            return;
+        }
+        if (!isFullScreen()) {
+            resetDisplayCutoutRect();
+            return;
+        }
+        Activity activity = (Activity) getContext();
+        postDelayed(() -> {
+            DisplayCutout displayCutout = activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout();
+            List<Rect> rects = displayCutout != null ? displayCutout.getBoundingRects() : null;
+            if (rects == null || rects.size() == 0) {
+                return;
+            }
+            for (Rect rect : rects) {
+                updateDisplayCutoutRect(rect);
+            }
+        }, 100);
+    }
+
+
+    private void updateDisplayCutoutRect(Rect rect) {
+        DisplayCutoutType displayCutoutType = DisplayCutoutType.Top_Center;
+        if (rect.right < getMeasuredWidth() / 2) {
+            if (rect.bottom < getMeasuredHeight() / 2) {
+                //左上
+                displayCutoutType = DisplayCutoutType.Left_Top;
+            } else if (rect.top > getMeasuredHeight() / 2) {
+                //左下
+                displayCutoutType = DisplayCutoutType.Left_Bottom;
+            } else {
+                //左中
+                displayCutoutType = DisplayCutoutType.Left_Center;
+            }
+        } else if (rect.left > getMeasuredWidth() / 2) {
+            if (rect.bottom < getMeasuredHeight() / 2) {
+                //右上
+                displayCutoutType = DisplayCutoutType.Right_Top;
+            } else if (rect.top > getMeasuredHeight() / 2) {
+                //右下
+                displayCutoutType = DisplayCutoutType.Right_Bottom;
+            } else {
+                //右中
+                displayCutoutType = DisplayCutoutType.Right_Center;
+            }
+        } else {
+            if (rect.bottom < getMeasuredHeight() / 2) {
+                //上中
+                displayCutoutType = DisplayCutoutType.Top_Center;
+            } else if (rect.top > getMeasuredHeight() / 2) {
+                //下中
+                displayCutoutType = DisplayCutoutType.Bottom_Center;
+            }
+        }
+        resetDisplayCutoutRect();
+        switch (displayCutoutType) {
+            case Left_Top:
+                controllerTop.setPadding(controllerTopPadding.left + rect.right, controllerTopPadding.top, controllerTopPadding.right, controllerTopPadding.bottom);
+                break;
+            case Left_Bottom:
+                controllerBottom.setPadding(controllerBottomPadding.left + rect.right, controllerBottomPadding.top, controllerBottomPadding.right, controllerBottomPadding.bottom);
+                break;
+            case Right_Top:
+                controllerTop.setPadding(controllerTopPadding.left, controllerTopPadding.top, controllerTopPadding.right + (getMeasuredWidth() - rect.left), controllerTopPadding.bottom);
+                break;
+            case Right_Center:
+                mVolumeSwitchView.setPadding(volumeSwitchViewPadding.left, volumeSwitchViewPadding.top, volumeSwitchViewPadding.right + (getMeasuredWidth() - rect.left), volumeSwitchViewPadding.bottom);
+                break;
+            case Right_Bottom:
+                controllerBottom.setPadding(controllerBottomPadding.left, controllerBottomPadding.top, controllerBottomPadding.right + (getMeasuredWidth() - rect.left), controllerBottomPadding.bottom);
+                break;
+        }
+    }
+
+    private void resetDisplayCutoutRect() {
+        controllerTop.setPadding(controllerTopPadding.left, controllerTopPadding.top, controllerTopPadding.right, controllerTopPadding.bottom);
+        controllerBottom.setPadding(controllerBottomPadding.left, controllerBottomPadding.top, controllerBottomPadding.right, controllerBottomPadding.bottom);
+        mVolumeSwitchView.setPadding(volumeSwitchViewPadding.left, volumeSwitchViewPadding.top, volumeSwitchViewPadding.right, volumeSwitchViewPadding.bottom);
     }
 
     @Override
@@ -214,6 +325,22 @@ public class DJVideoControlView extends DefaultControlView {
         controlViewShow = !hide;
 
         updateBottomProgressView();
+    }
+
+    public boolean isFitDisplayCutout() {
+        return fitDisplayCutout;
+    }
+
+    public void setFitDisplayCutout(boolean fitDisplayCutout) {
+        this.fitDisplayCutout = fitDisplayCutout;
+    }
+
+    public boolean isUseDoubleTap() {
+        return useDoubleTap;
+    }
+
+    public void setUseDoubleTap(boolean useDoubleTap) {
+        this.useDoubleTap = useDoubleTap;
     }
 
     public void setEnableGestureType(int enableGestureType) {
@@ -271,6 +398,46 @@ public class DJVideoControlView extends DefaultControlView {
         this.onBackClickListener = onBackClickListener;
     }
 
+
+    public void setTouchMargin(float touchMargin) {
+        this.touchMarginLeft = touchMargin;
+        this.touchMarginTop = touchMargin;
+        this.touchMarginRight = touchMargin;
+        this.touchMarginBottom = touchMargin;
+    }
+
+    public float getTouchMarginLeft() {
+        return touchMarginLeft;
+    }
+
+    public void setTouchMarginLeft(float touchMarginLeft) {
+        this.touchMarginLeft = touchMarginLeft;
+    }
+
+    public float getTouchMarginTop() {
+        return touchMarginTop;
+    }
+
+    public void setTouchMarginTop(float touchMarginTop) {
+        this.touchMarginTop = touchMarginTop;
+    }
+
+    public float getTouchMarginRight() {
+        return touchMarginRight;
+    }
+
+    public void setTouchMarginRight(float touchMarginRight) {
+        this.touchMarginRight = touchMarginRight;
+    }
+
+    public float getTouchMarginBottom() {
+        return touchMarginBottom;
+    }
+
+    public void setTouchMarginBottom(float touchMarginBottom) {
+        this.touchMarginBottom = touchMarginBottom;
+    }
+
     @Override
     public boolean isFullScreen() {
         return fullScreen;
@@ -288,6 +455,7 @@ public class DJVideoControlView extends DefaultControlView {
         updatePlayPauseView();
         updateVolumeView();
         updateTopVisibility();
+        updateDisplayCutout();
     }
 
     protected void updateBackViewResource(@Nullable ImageView imageButton, boolean fullScreen) {
@@ -361,22 +529,34 @@ public class DJVideoControlView extends DefaultControlView {
         if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
             gestureHelper.onUp(ev);
         }
-        if (isInShowState()) {
+        if (isInShowState() && isInTouchRange(ev)) {
             return gestureDetector.onTouchEvent(ev);
         }
         return false;
     }
+
 
     @Override
     public boolean onTrackballEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
             gestureHelper.onUp(ev);
         }
-        if (isInShowState()) {
+        if (isInShowState() && isInTouchRange(ev)) {
             return gestureDetector.onTouchEvent(ev);
         }
         return false;
     }
+
+    public boolean isInTouchRange(MotionEvent ev) {
+        if (touchMarginLeft < ev.getX()
+                && (getMeasuredWidth() - touchMarginRight) > ev.getX()
+                && touchMarginTop < ev.getY()
+                && (getMeasuredHeight() - touchMarginBottom) > ev.getY()) {
+            return true;
+        }
+        return false;
+    }
+
 
     private final Gesture.OnSlideChangedListener onSlideChangedListener = new Gesture.OnSlideChangedListener() {
         @Override
@@ -485,12 +665,21 @@ public class DJVideoControlView extends DefaultControlView {
         }
 
         @Override
-        public boolean onSingleTapUp(MotionEvent motionEvent) {
+        public boolean onSingleTapConfirmed(MotionEvent e) {
             if (isShowing()) {
                 hide();
             } else {
                 show();
             }
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            if (!isInShowState() || !useDoubleTap) {
+                return super.onDoubleTap(e);
+            }
+            togglePlayWhenReady();
             return true;
         }
 

@@ -1,8 +1,8 @@
 package com.chengfu.android.fuplayer.achieve.dj.video;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,7 +121,6 @@ public class DJVideoIdleView extends BaseStateView {
         updateVisibility();
         player.removeListener(componentListener);
     }
-
 
     private final class ComponentListener implements FuPlayer.EventListener {
         @Override

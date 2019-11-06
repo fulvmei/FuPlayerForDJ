@@ -2,7 +2,7 @@ package com.chengfu.android.fuplayer.achieve.dj.video.screen;
 
 import android.content.Context;
 import android.hardware.SensorManager;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.view.OrientationEventListener;
 
 import java.lang.annotation.Retention;

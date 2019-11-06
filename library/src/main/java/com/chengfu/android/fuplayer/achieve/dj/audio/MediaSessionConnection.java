@@ -1,6 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.RemoteException;

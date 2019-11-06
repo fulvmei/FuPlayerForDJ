@@ -1,6 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.support.v4.media.MediaDescriptionCompat;
 
 import com.chengfu.android.fuplayer.util.FuLog;

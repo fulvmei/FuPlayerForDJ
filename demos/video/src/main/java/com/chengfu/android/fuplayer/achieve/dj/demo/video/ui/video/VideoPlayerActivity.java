@@ -1,14 +1,14 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.video.ui.video;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -69,7 +69,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         initScreenRotation();
 
-        initFragment();
+//        initFragment();
 
         viewModel = ViewModelProviders.of(this).get(VideoDetailsViewModel.class);
 

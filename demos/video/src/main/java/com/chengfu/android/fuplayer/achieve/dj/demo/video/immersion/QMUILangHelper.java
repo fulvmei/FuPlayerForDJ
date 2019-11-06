@@ -1,6 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.video.immersion;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import java.io.Closeable;
 import java.io.IOException;

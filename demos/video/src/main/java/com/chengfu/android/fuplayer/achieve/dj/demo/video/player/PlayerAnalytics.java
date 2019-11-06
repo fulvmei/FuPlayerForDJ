@@ -1,6 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.video.player;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.Surface;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
