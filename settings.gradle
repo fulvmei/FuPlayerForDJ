@@ -1,3 +1,4 @@
-include ':app'
 include ':demos:video'
+include ':demos:app'
+include ':demos:videofordj'
 include ':library'

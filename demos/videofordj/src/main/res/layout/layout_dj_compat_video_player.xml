@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.chengfu.android.fuplayer.ui.FuPlayerView
+        android:id="@+id/playerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        app:resize_mode="fit"
+        app:shutter_background_color="#000000"
+        app:surface_type="texture_view" />
+
+    <cn.gzmovement.kernel.fu.widget.AppVideoWatermarkView
+        android:id="@+id/videoWatermarkView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.chengfu.android.fuplayer.achieve.dj.video.DJVideoImageView
+        android:id="@+id/videoImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <cn.gzmovement.kernel.fu.widget.AppVideoControlView
+        android:id="@+id/videoControlView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:show_timeout="3000" />
+
+    <com.chengfu.android.fuplayer.achieve.dj.video.DJVideoIdleView
+        android:id="@+id/videoIdleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <com.chengfu.android.fuplayer.achieve.dj.video.DJVideoBufferingView
+        android:id="@+id/videoBufferingView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayErrorView
+        android:id="@+id/videoPlayErrorView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <com.chengfu.android.fuplayer.achieve.dj.video.DJVideoEndedView
+        android:id="@+id/videoEndedView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayWithoutWifiView
+        android:id="@+id/noWifiView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</merge>
