@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.DisplayCutout;
@@ -84,8 +85,6 @@ public class DJVideoControlView extends DefaultControlView {
     protected Rotation rotation;
 
     private enum DisplayCutoutType {Left_Top, Left_Center, Left_Bottom, Right_Top, Right_Center, Right_Bottom, Top_Center, Bottom_Center}
-
-    ;
 
     public interface OnScreenClickListener {
         void onScreenClick(boolean fullScreen);
@@ -398,7 +397,6 @@ public class DJVideoControlView extends DefaultControlView {
         this.onBackClickListener = onBackClickListener;
     }
 
-
     public void setTouchMargin(float touchMargin) {
         this.touchMarginLeft = touchMargin;
         this.touchMarginTop = touchMargin;
@@ -508,7 +506,7 @@ public class DJVideoControlView extends DefaultControlView {
         if (mBottomProgressView == null) {
             return;
         }
-        if (isInShowState() && showBottomProgress && !controlViewShow) {
+        if (isInShowState() && showBottomProgress && !controlViewShow && !mProgressAdapter.isCurrentWindowDynamic()) {
             mBottomProgressView.setVisibility(VISIBLE);
         } else {
             mBottomProgressView.setVisibility(GONE);
@@ -580,7 +578,7 @@ public class DJVideoControlView extends DefaultControlView {
                     oldPosition = mPlayer.getCurrentPosition();
                     duration = mPlayer.getDuration();
                     if (slideForwardDuration != null) {
-                        slideForwardDuration.setText(stringForTime(duration));
+                        slideForwardDuration.setText(mProgressAdapter.getPositionText(duration));
                     }
                     break;
                 case Gesture.SLIDE_TYPE_VOLUME:
@@ -614,7 +612,7 @@ public class DJVideoControlView extends DefaultControlView {
                     }
 
                     if (slideForwardPosition != null) {
-                        slideForwardPosition.setText(stringForTime(newPosition));
+                        slideForwardPosition.setText(mProgressAdapter.getPositionText(newPosition));
                     }
                     if (slideForwardProgress != null) {
                         slideForwardProgress.setProgress((int) (newPosition * 1.0f / duration * 100));

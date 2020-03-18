@@ -1,8 +1,12 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.videofordj;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.net.Uri;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,7 +16,9 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.chengfu.android.fuplayer.FuPlayer;
+import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.Video;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoBufferingView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoEndedView;
@@ -21,12 +27,17 @@ import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoImageView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayErrorView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayWithoutWifiView;
 import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper;
+import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
-import com.chengfu.android.fuplayer.ui.PlayerView;
 import com.chengfu.android.fuplayer.ui.StateView;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 
 import cn.gzmovement.kernel.fu.widget.AppVideoWatermarkView;
 
@@ -45,12 +56,33 @@ public class AppVideoPlayView extends FrameLayout {
     private DJVideoPlayErrorView videoPlayErrorView;
     private DJVideoEndedView videoEndedView;
     private DJVideoPlayWithoutWifiView noWifiView;
+    private VIPStateView vipStateView;
+    private LiveStateView liveStateView;
 
     private FuPlayer player;
     private boolean fullScreen;
     private ScreenRotationHelper screenRotation;
 
     private MediaSessionCompat mediaSession;
+
+    private Video video;
+
+    private EventListener eventListener;
+
+    public interface EventListener {
+        default void onScreenChanged(boolean fullScreen, boolean portrait) {
+        }
+
+        default boolean onRetryClick(View view) {
+            return false;
+        }
+
+        default void onLoginClick(View view) {
+        }
+
+        default void onLiveStateBtnClick(View view, int state) {
+        }
+    }
 
     public AppVideoPlayView(@NonNull Context context) {
         this(context, null);
@@ -71,6 +103,8 @@ public class AppVideoPlayView extends FrameLayout {
         componentListener = new ComponentListener();
 
         initViews();
+
+        initScreenRotation(context);
     }
 
     private void initViews() {
@@ -83,8 +117,142 @@ public class AppVideoPlayView extends FrameLayout {
         videoPlayErrorView = findViewById(R.id.videoPlayErrorView);
         videoEndedView = findViewById(R.id.videoEndedView);
         noWifiView = findViewById(R.id.noWifiView);
+        vipStateView = findViewById(R.id.vipStateView);
+        liveStateView = findViewById(R.id.liveStateView);
 
+        vipStateView.setVisibility(GONE);
+        liveStateView.setVisibility(GONE);
 
+        noWifiView.addVisibilityChangeListener(componentListener);
+        videoPlayErrorView.addVisibilityChangeListener(componentListener);
+        videoEndedView.addVisibilityChangeListener(componentListener);
+
+        videoPlayErrorView.setOnReplayListener(player -> false);
+
+        videoControlView.setShowBottomProgress(true);
+        videoControlView.setShowTopOnlyFullScreen(true);
+        videoControlView.setShowAlwaysInPaused(true);
+
+        videoIdleView.setOnPlayerClickListener(v -> {
+            if (eventListener != null && eventListener.onRetryClick(v)) {
+                return;
+            }
+            if (player != null) {
+                player.retry();
+            }
+        });
+
+        videoPlayErrorView.setOnReplayListener(player -> eventListener != null && eventListener.onRetryClick(videoPlayErrorView));
+
+        videoControlView.addVisibilityChangeListener((stateView, visibility) -> {
+            if (visibility) {
+                videoWatermarkView.setDisable(true);
+            } else {
+                videoWatermarkView.setDisable(false);
+            }
+        });
+
+        videoControlView.setOnScreenClickListener(componentListener);
+        videoControlView.setOnBackClickListener(componentListener);
+
+        vipStateView.setOnLoginClickListener(view -> {
+            if (eventListener != null) {
+                eventListener.onLoginClick(view);
+            }
+        });
+
+        liveStateView.setOnLiveStateBtnClickListener((view, state) -> {
+            if (eventListener != null) {
+                eventListener.onLiveStateBtnClick(view, state);
+            }
+        });
+
+        setVideo(video);
+    }
+
+    private void initScreenRotation(Context context) {
+        screenRotation = new ScreenRotationHelper((Activity) context);
+
+        screenRotation.setDisableInPlayerStateEnd(false);
+        screenRotation.setDisableInPlayerStateError(false);
+        screenRotation.setToggleToPortraitInDisable(true);
+        screenRotation.setEnablePortraitFullScreen(true);
+        screenRotation.setAutoRotationMode(ScreenRotationHelper.AUTO_ROTATION_MODE_SYSTEM);
+
+        screenRotation.setOnScreenChangedListener(portraitFullScreen -> changedScreen(portraitFullScreen,true));
+    }
+
+    private void changedScreen(boolean fullScreen, boolean portrait) {
+        setFullScreen(fullScreen);
+        if (fullScreen) {
+            videoControlView.setEnableGestureType(DJVideoControlView.Gesture.SHOW_TYPE_BRIGHTNESS | DJVideoControlView.Gesture.SHOW_TYPE_PROGRESS | DJVideoControlView.Gesture.SHOW_TYPE_VOLUME);
+        } else {
+            videoControlView.setEnableGestureType(DJVideoControlView.Gesture.SHOW_TYPE_NONE);
+        }
+        if (eventListener != null) {
+            eventListener.onScreenChanged(fullScreen,portrait);
+        }
+    }
+
+    public EventListener getEventLinstener() {
+        return eventListener;
+    }
+
+    public void setEventListener(EventListener eventListener) {
+        this.eventListener = eventListener;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        stopPlay();
+        this.video = video;
+        if (video != null) {
+            liveStateView.setState(video.getStatus());
+            if (video.getStatus() == Video.STATUS_STARTING) {
+                hideLiveState();
+                if (video.isNeed_login()) {
+                    showVip();
+                } else {
+                    hideVip();
+                    if (!TextUtils.isEmpty(video.getStream_url())) {
+                        prepare(video.getStream_url());
+                    } else {
+                        showError();
+                    }
+                }
+            } else {
+                showLiveState();
+                hideVip();
+            }
+        } else {
+            hideVip();
+            hideLiveState();
+            showError();
+        }
+        String thumbnail = video != null ? video.getThumbnail() : null;
+        if (TextUtils.isEmpty(thumbnail)) {
+            videoImageView.getImage().setImageResource(0);
+        } else {
+            Glide.with(this).load(Uri.parse(thumbnail)).into(videoImageView.getImage());
+        }
+
+        videoWatermarkView.setVideoIcon(video != null ? video.getIcon() : null);
+    }
+
+    public void prepare(String url) {
+        if (player == null) {
+            return;
+        }
+        Uri uri = Uri.parse(video.getStream_url());
+        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter.Builder(getContext()).build();
+        DataSource.Factory factory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), getContext().getPackageName()));
+        MediaSource mediaSource = ExoMediaSourceUtil.buildMediaSource(uri, null, factory, defaultBandwidthMeter);
+
+        player.prepare(mediaSource);
+        player.setPlayWhenReady(true);
     }
 
     public FuPlayer getPlayer() {
@@ -97,6 +265,9 @@ public class AppVideoPlayView extends FrameLayout {
         }
         if (this.player != null) {
             this.player.removeListener(componentListener);
+            if (mediaSession != null) {
+                mediaSession.release();
+            }
         }
         this.player = player;
         if (player != null) {
@@ -145,27 +316,10 @@ public class AppVideoPlayView extends FrameLayout {
         videoPlayErrorView.setFullScreen(fullScreen);
         videoEndedView.setFullScreen(fullScreen);
         noWifiView.setFullScreen(fullScreen);
-
-        noWifiView.addVisibilityChangeListener(componentListener);
-        videoPlayErrorView.addVisibilityChangeListener(componentListener);
-        videoEndedView.addVisibilityChangeListener(componentListener);
     }
 
     public boolean isFullScreen() {
         return fullScreen;
-    }
-
-    public void setScreenRotation(ScreenRotationHelper screenRotation) {
-        if (this.screenRotation == screenRotation) {
-            return;
-        }
-        if (this.screenRotation != null) {
-            this.screenRotation.setPlayer(null);
-        }
-        this.screenRotation = screenRotation;
-        if (screenRotation != null) {
-            screenRotation.setPlayer(player);
-        }
     }
 
     public void showController() {
@@ -178,32 +332,68 @@ public class AppVideoPlayView extends FrameLayout {
         }
     }
 
-    public ScreenRotationHelper getScreenRotation() {
-        return screenRotation;
+
+    public void showVip() {
+        vipStateView.setVisibility(VISIBLE);
+        liveStateView.setVisibility(GONE);
+        noWifiView.hide();
+        videoIdleView.hide();
+        videoBufferingView.hide();
+        videoPlayErrorView.hide();
+        videoEndedView.hide();
+    }
+
+    public void hideVip() {
+        vipStateView.setVisibility(GONE);
+    }
+
+    public void showLiveState() {
+        vipStateView.setVisibility(GONE);
+        liveStateView.setVisibility(VISIBLE);
+        noWifiView.hide();
+        videoIdleView.hide();
+        videoBufferingView.hide();
+        videoPlayErrorView.hide();
+        videoEndedView.hide();
+    }
+
+    public void hideLiveState() {
+        liveStateView.setVisibility(GONE);
+    }
+
+    public void showIdle() {
+        vipStateView.setVisibility(GONE);
+
+        videoIdleView.show();
+        videoPlayErrorView.hide();
+        videoEndedView.hide();
     }
 
     public void showBuffering() {
+        vipStateView.setVisibility(GONE);
         videoBufferingView.show();
         videoPlayErrorView.hide();
         videoEndedView.hide();
     }
 
     public void showError() {
+        vipStateView.setVisibility(GONE);
         videoBufferingView.hide();
         videoPlayErrorView.show();
         videoEndedView.hide();
     }
 
-    public void stopPlay() {
-        if (playerView != null) {
-            playerView.onPause();
-        }
-        if (screenRotation != null) {
-            screenRotation.pause();
-        }
-        player.stop(true);
-    }
 
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            changedScreen(true,false);
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            changedScreen(false,false);
+        }
+    }
+    protected boolean onResumePlay;
     public void onResume() {
         if (playerView != null) {
             playerView.onResume();
@@ -211,12 +401,12 @@ public class AppVideoPlayView extends FrameLayout {
         if (screenRotation != null) {
             screenRotation.resume();
         }
-        if (player != null && player.getPlaybackState() == Player.STATE_IDLE
-                && player.getPlaybackError() == null) {
-            player.retry();
-        }
+//        if (player != null && player.getPlaybackState() == Player.STATE_IDLE
+//                && player.getPlaybackError() == null) {
+//            player.retry();
+//        }
+        player.setPlayWhenReady(onResumePlay);
     }
-
 
     public void onPause() {
         if (playerView != null) {
@@ -225,12 +415,22 @@ public class AppVideoPlayView extends FrameLayout {
         if (screenRotation != null) {
             screenRotation.pause();
         }
-        if (player.getPlaybackState() == Player.STATE_BUFFERING
-                || player.getPlaybackState() == Player.STATE_READY) {
-            player.stop();
-        }
+//        if (player.getPlaybackState() == Player.STATE_BUFFERING
+//                || player.getPlaybackState() == Player.STATE_READY) {
+//            player.stop();
+//        }
+        onResumePlay = player.getPlayWhenReady();
+        player.setPlayWhenReady(false);
     }
 
+    public void stopPlay() {
+        if (playerView != null) {
+            playerView.onPause();
+        }
+        if (player != null) {
+            player.stop(true);
+        }
+    }
 
     public boolean onBackPressed() {
         if (screenRotation != null) {

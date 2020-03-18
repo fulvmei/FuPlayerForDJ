@@ -25,7 +25,6 @@ public class DJVideoIdleView extends BaseStateView {
         void onPlayClick(View v);
     }
 
-
     public DJVideoIdleView(@NonNull Context context) {
         this(context, null);
     }

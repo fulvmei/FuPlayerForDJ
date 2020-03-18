@@ -1,6 +1,5 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.videofordj;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,17 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
+import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.Video;
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
-import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
-import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 
 import java.util.Objects;
 
@@ -40,6 +32,46 @@ public class VideoPlayFragment extends VideoPlayFragmentApi {
         super.onViewCreated(view, savedInstanceState);
 
         appVideoPlayView = view.findViewById(R.id.appVideoPlayView);
+
+        appVideoPlayView.setEventListener(new AppVideoPlayView.EventListener() {
+
+            @Override
+            public void onScreenChanged(boolean fullScreen, boolean portrait) {
+                if (requireActivity() instanceof IPlayActivity) {
+                    IPlayActivity playActivity = (IPlayActivity) requireActivity();
+                    playActivity.onVideoScreenChanged(fullScreen, portrait);
+                }
+            }
+
+            @Override
+            public boolean onRetryClick(View view) {
+                if (requireActivity() instanceof IPlayActivity) {
+                    IPlayActivity playActivity = (IPlayActivity) requireActivity();
+                    return playActivity.onVideoRetryClick(video);
+                }
+                return false;
+            }
+
+            @Override
+            public void onLoginClick(View view) {
+                video.setNeed_login(false);
+                appVideoPlayView.setVideo(video);
+            }
+
+            @Override
+            public void onLiveStateBtnClick(View view, int state) {
+                if (state == Video.STATUS_SOON_START) {
+                    video.setStatus(Video.STATUS_STARTED);
+                    appVideoPlayView.setVideo(video);
+                } else if (state == Video.STATUS_STARTED) {
+                    video.setStatus(Video.STATUS_REVIEW);
+                    appVideoPlayView.setVideo(video);
+                } else if (state == Video.STATUS_REVIEW) {
+                    video.setStatus(Video.STATUS_STARTING);
+                    appVideoPlayView.setVideo(video);
+                }
+            }
+        });
     }
 
     @Override
@@ -48,10 +80,36 @@ public class VideoPlayFragment extends VideoPlayFragmentApi {
 
         video = Objects.requireNonNull(getArguments() != null ? (Video) getArguments().getSerializable(EXTRA_KEY_VIDEO) : null);
 
-        appVideoPlayView.setPlayer(new FuExoPlayerFactory(requireContext()).create());
+        FuPlayer player = new FuExoPlayerFactory(requireContext()).create();
 
-        MediaSource mediaSource = ExoMediaSourceUtil.buildMediaSource(Uri.parse(video.getStream_url()), null, new DefaultDataSourceFactory(requireContext(), Util.getUserAgent(requireContext(),requireContext().getPackageName()), new DefaultBandwidthMeter()));
+        appVideoPlayView.setPlayer(player);
 
-        appVideoPlayView.getPlayer().prepare(mediaSource);
+        appVideoPlayView.setVideo(video);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        appVideoPlayView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        appVideoPlayView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        appVideoPlayView.onDestroy();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (appVideoPlayView != null) {
+            return appVideoPlayView.onBackPressed();
+        }
+        return false;
     }
 }

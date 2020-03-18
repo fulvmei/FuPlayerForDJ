@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/fu_color_transparent99"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fu_state_live_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="直播未开始，请于指定时间进行观看"
+            android:textColor="@color/fu_color_light_white"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/fu_state_live_btn"
+            android:layout_width="72dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/fu_selector_video_replay_frame"
+            android:text="重 试"
+            android:textColor="@color/fu_selector_video_replay_text"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</merge>

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.Video;
 
-public abstract class VideoPlayFragmentApi extends Fragment {
+public abstract class VideoPlayFragmentApi extends Fragment implements IVideoPlayFragment{
 
     public static final String ROUTER_PATH = "cn_gzmovement_business_comment_api_CommentListFragment";
     public static final String EXTRA_KEY_VIDEO = "extra_key_video";
