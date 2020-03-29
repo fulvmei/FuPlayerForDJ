@@ -25,6 +25,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
@@ -469,6 +470,39 @@ public class MusicService extends MediaBrowserServiceCompat {
         public MediaDescriptionCompat getMediaDescription(FuPlayer player, int windowIndex) {
             player.getCurrentTimeline().getWindow(windowIndex, window, true);
             return (MediaDescriptionCompat) window.tag;
+        }
+
+        @Override
+        public long getSupportedQueueNavigatorActions(FuPlayer player) {
+            boolean enableSkipTo = false;
+            boolean enablePrevious = false;
+            boolean enableNext = false;
+            Timeline timeline = player.getCurrentTimeline();
+            if (!timeline.isEmpty() && !player.isPlayingAd()) {
+                timeline.getWindow(player.getCurrentWindowIndex(), window);
+                enableSkipTo = timeline.getWindowCount() > 1;
+                enablePrevious = player.hasPrevious();
+                enableNext =  player.hasNext();
+            }
+
+            long actions = 0;
+            if (enableSkipTo) {
+                actions |= PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM;
+            }
+            if (enablePrevious) {
+                actions |= PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
+            }
+            if (enableNext) {
+                actions |= PlaybackStateCompat.ACTION_SKIP_TO_NEXT;
+            }
+            return actions;
+        }
+
+        @Override
+        public void onSkipToPrevious(FuPlayer player, ControlDispatcher controlDispatcher) {
+            Log.d("gggg","onSkipToPrevious");
+            player.previous();
+//            super.onSkipToPrevious(player, controlDispatcher);
         }
     }
 

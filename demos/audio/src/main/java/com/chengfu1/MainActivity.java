@@ -7,7 +7,9 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.View;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
+import com.chengfu.android.fuplayer.util.FuLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FuLog.DEBUG = true;
         audioControlView = findViewById(R.id.audioControlView);
 
         mediaSessionConnection = new MediaSessionConnection(this, new ComponentName(this, MusicService.class));
