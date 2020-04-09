@@ -1,0 +1,302 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+MERGED from [androidx.appcompat:appcompat:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e0bf7a1378b089145a4173dbe100ad5f\appcompat-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-31:12
+MERGED from [com.google.android.exoplayer:extension-mediasession:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9d8dedab07c553e8724c02e4faec6481\jetified-extension-mediasession-2.10.5\AndroidManifest.xml:17:1-24:12
+MERGED from [com.chengfu.android.fuplayer:extension-exo:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\2471bb3287b696eb494c5eb0a0f49c54\jetified-extension-exo-1.2.2\AndroidManifest.xml:2:1-9:12
+MERGED from [com.chengfu.android.fuplayer:extension-mediasession:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\abb38b66c3a4e63318f4047330203758\jetified-extension-mediasession-1.2.2\AndroidManifest.xml:2:1-9:12
+MERGED from [com.chengfu.android.fuplayer:fuplayer:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\24d0f6a65d6e7087f5fccd0dea5bb9fb\jetified-fuplayer-1.2.2\AndroidManifest.xml:2:1-9:12
+MERGED from [com.chengfu.android.fuplayer:fuplayer-ui:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f57d156a5362cea7c1b26e78dfde1c07\jetified-fuplayer-ui-1.2.2\AndroidManifest.xml:2:1-9:12
+MERGED from [com.chengfu.android.fuplayer:fuplayer-core:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\922c0d3b1dd1e2cbca075374ff55c3fd\jetified-fuplayer-core-1.2.2\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.media:media:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\de9a02f95bc9ee2252b278f4f507d8fb\media-1.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\240771d857112f890ce43d718fa724d5\lifecycle-extensions-2.1.0\AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e6bac47ec37a9f69c217567c03dd9276\fragment-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e95ed74f5e71a7ca400779763d3995f9\vectordrawable-animated-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f95baf5014c3cff11dbb2a5839bdb434\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\65284e09fd5d2fb474f5e6ec77a34db3\legacy-support-core-utils-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e207f1d742b1ee06aaad3fddee8bd28b\vectordrawable-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8b308f03fb92f933483665d7c4317d17\loader-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\1b60faf70e642de78377b1b24077f6df\viewpager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\bab7dda18876811903b8df648287834a\coordinatorlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\5492c474b46aa56e14fceabd782ece38\drawerlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\a9ae92a0d1731801f08091e7f03619ec\slidingpanelayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\323a1a9e2acab93c23c79aa93f5df769\customview-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f8e44783270ceef49b55736fcd49e23b\swiperefreshlayout-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8ad5b422e60117d902b982cf53420d91\asynclayoutinflater-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4d276c979826195a1becf81b3caaef8b\core-1.1.0\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9fa4919b8bcfb0c295f1689b6f42fe03\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\76c3e09f89f47eb8041a845e1b5c03dd\cursoradapter-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:2:1-14:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b2033dd2cedc294cced13e97461c56ca\documentfile-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3a1f50d24cfa979e1bf9e42225cc134f\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8569a74af1a361c26a287d249027bdb6\print-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\fca2237b919a1c92d561348e1853bfd7\jetified-exoplayer-dash-2.10.5\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\527bcbbc9a1117f1e970e2bab8e294be\jetified-exoplayer-hls-2.10.5\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b1830c2e28953ab1a50c354b399337be\jetified-exoplayer-smoothstreaming-2.10.5\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:extension-rtmp:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\903cace432616c914ec30f4dc7f83dee\jetified-extension-rtmp-2.10.5\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3fe678743496931a4a4239a5f66a8e75\jetified-exoplayer-core-2.10.5\AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b16a5e1b02ce5709f59af621514f4bb9\jetified-lifecycle-service-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\101699534b1c227d293a26511f7bc657\lifecycle-runtime-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\901f675224a171359bb626270f69707f\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\827ccd4aaf0614d2aaa013d00e086a93\lifecycle-livedata-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f185ac599d7724819cf367cb0563a470\lifecycle-livedata-core-2.1.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\49cb3c40d064ee31e0e5457f3a452d6a\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e8890f16ed6bc62c17498ffd50d7fdf\exifinterface-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\ed30935793d558364a62e4f93e16043f\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [net.butterflytv.utils:rtmp-client:3.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\96415d1d6a2504eeb91ea2e6dec72c23\jetified-rtmp-client-3.1.0\AndroidManifest.xml:2:1-13:12
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+	package
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:4:5-27
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:3:5-51
+	android:versionCode
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:1-42:12
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:6:5-80
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:6:22-77
+application
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:8:5-40:19
+MERGED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-29:19
+MERGED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:14:5-29:19
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\240771d857112f890ce43d718fa724d5\lifecycle-extensions-2.1.0\AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\240771d857112f890ce43d718fa724d5\lifecycle-extensions-2.1.0\AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.core:core:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4d276c979826195a1becf81b3caaef8b\core-1.1.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4d276c979826195a1becf81b3caaef8b\core-1.1.0\AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9fa4919b8bcfb0c295f1689b6f42fe03\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9fa4919b8bcfb0c295f1689b6f42fe03\versionedparcelable-1.1.0\AndroidManifest.xml:24:5-25:19
+MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:7:5-12:19
+MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:7:5-12:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:22:5-28:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:22:5-28:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4d276c979826195a1becf81b3caaef8b\core-1.1.0\AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:14:9-35
+	android:label
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:11:9-41
+	tools:ignore
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:16:9-48
+	android:roundIcon
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:13:9-54
+	tools:targetApi
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:17:9-28
+	android:icon
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:10:9-43
+	android:allowBackup
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:9:9-35
+	android:theme
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:15:9-40
+	android:networkSecurityConfig
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:12:9-61
+activity#com.chengfu1.MainActivity
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:18:9-24:20
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:18:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:19:13-23:29
+action#android.intent.action.MAIN
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:20:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:22:17-77
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:22:27-74
+activity#com.chengfu1.FuSessionActivity
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:26:9-31:20
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:26:19-64
+intent-filter#action:name:chengfu.intent.action.ACTION_SESSION_ACTIVITY+category:name:android.intent.category.DEFAULT
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:27:13-30:29
+action#chengfu.intent.action.ACTION_SESSION_ACTIVITY
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:28:17-88
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:28:25-85
+category#android.intent.category.DEFAULT
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:29:17-76
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:29:27-73
+activity#com.chengfu1.TestActivity
+ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:33:9-38:20
+	android:name
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml:33:19-47
+uses-sdk
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+MERGED from [androidx.appcompat:appcompat:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e0bf7a1378b089145a4173dbe100ad5f\appcompat-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e0bf7a1378b089145a4173dbe100ad5f\appcompat-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.exoplayer:extension-mediasession:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9d8dedab07c553e8724c02e4faec6481\jetified-extension-mediasession-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:extension-mediasession:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9d8dedab07c553e8724c02e4faec6481\jetified-extension-mediasession-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.chengfu.android.fuplayer:extension-exo:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\2471bb3287b696eb494c5eb0a0f49c54\jetified-extension-exo-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:extension-exo:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\2471bb3287b696eb494c5eb0a0f49c54\jetified-extension-exo-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:extension-mediasession:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\abb38b66c3a4e63318f4047330203758\jetified-extension-mediasession-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:extension-mediasession:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\abb38b66c3a4e63318f4047330203758\jetified-extension-mediasession-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:fuplayer:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\24d0f6a65d6e7087f5fccd0dea5bb9fb\jetified-fuplayer-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:fuplayer:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\24d0f6a65d6e7087f5fccd0dea5bb9fb\jetified-fuplayer-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:fuplayer-ui:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f57d156a5362cea7c1b26e78dfde1c07\jetified-fuplayer-ui-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:fuplayer-ui:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f57d156a5362cea7c1b26e78dfde1c07\jetified-fuplayer-ui-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:fuplayer-core:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\922c0d3b1dd1e2cbca075374ff55c3fd\jetified-fuplayer-core-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.chengfu.android.fuplayer:fuplayer-core:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\922c0d3b1dd1e2cbca075374ff55c3fd\jetified-fuplayer-core-1.2.2\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.media:media:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\de9a02f95bc9ee2252b278f4f507d8fb\media-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\de9a02f95bc9ee2252b278f4f507d8fb\media-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\240771d857112f890ce43d718fa724d5\lifecycle-extensions-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-extensions:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\240771d857112f890ce43d718fa724d5\lifecycle-extensions-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e6bac47ec37a9f69c217567c03dd9276\fragment-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e6bac47ec37a9f69c217567c03dd9276\fragment-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e95ed74f5e71a7ca400779763d3995f9\vectordrawable-animated-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e95ed74f5e71a7ca400779763d3995f9\vectordrawable-animated-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f95baf5014c3cff11dbb2a5839bdb434\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f95baf5014c3cff11dbb2a5839bdb434\legacy-support-core-ui-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\65284e09fd5d2fb474f5e6ec77a34db3\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\65284e09fd5d2fb474f5e6ec77a34db3\legacy-support-core-utils-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e207f1d742b1ee06aaad3fddee8bd28b\vectordrawable-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\e207f1d742b1ee06aaad3fddee8bd28b\vectordrawable-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8b308f03fb92f933483665d7c4317d17\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8b308f03fb92f933483665d7c4317d17\loader-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\1b60faf70e642de78377b1b24077f6df\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\1b60faf70e642de78377b1b24077f6df\viewpager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\bab7dda18876811903b8df648287834a\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\bab7dda18876811903b8df648287834a\coordinatorlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\5492c474b46aa56e14fceabd782ece38\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\5492c474b46aa56e14fceabd782ece38\drawerlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\a9ae92a0d1731801f08091e7f03619ec\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\a9ae92a0d1731801f08091e7f03619ec\slidingpanelayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\323a1a9e2acab93c23c79aa93f5df769\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\323a1a9e2acab93c23c79aa93f5df769\customview-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f8e44783270ceef49b55736fcd49e23b\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f8e44783270ceef49b55736fcd49e23b\swiperefreshlayout-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8ad5b422e60117d902b982cf53420d91\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8ad5b422e60117d902b982cf53420d91\asynclayoutinflater-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4d276c979826195a1becf81b3caaef8b\core-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4d276c979826195a1becf81b3caaef8b\core-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9fa4919b8bcfb0c295f1689b6f42fe03\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9fa4919b8bcfb0c295f1689b6f42fe03\versionedparcelable-1.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\76c3e09f89f47eb8041a845e1b5c03dd\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\76c3e09f89f47eb8041a845e1b5c03dd\cursoradapter-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:5:5-44
+MERGED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:5:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b2033dd2cedc294cced13e97461c56ca\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b2033dd2cedc294cced13e97461c56ca\documentfile-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3a1f50d24cfa979e1bf9e42225cc134f\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3a1f50d24cfa979e1bf9e42225cc134f\localbroadcastmanager-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8569a74af1a361c26a287d249027bdb6\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\8569a74af1a361c26a287d249027bdb6\print-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\fca2237b919a1c92d561348e1853bfd7\jetified-exoplayer-dash-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-dash:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\fca2237b919a1c92d561348e1853bfd7\jetified-exoplayer-dash-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\527bcbbc9a1117f1e970e2bab8e294be\jetified-exoplayer-hls-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-hls:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\527bcbbc9a1117f1e970e2bab8e294be\jetified-exoplayer-hls-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b1830c2e28953ab1a50c354b399337be\jetified-exoplayer-smoothstreaming-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b1830c2e28953ab1a50c354b399337be\jetified-exoplayer-smoothstreaming-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:extension-rtmp:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\903cace432616c914ec30f4dc7f83dee\jetified-extension-rtmp-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:extension-rtmp:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\903cace432616c914ec30f4dc7f83dee\jetified-extension-rtmp-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3fe678743496931a4a4239a5f66a8e75\jetified-exoplayer-core-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3fe678743496931a4a4239a5f66a8e75\jetified-exoplayer-core-2.10.5\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b16a5e1b02ce5709f59af621514f4bb9\jetified-lifecycle-service-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-service:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\b16a5e1b02ce5709f59af621514f4bb9\jetified-lifecycle-service-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\101699534b1c227d293a26511f7bc657\lifecycle-runtime-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\101699534b1c227d293a26511f7bc657\lifecycle-runtime-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\901f675224a171359bb626270f69707f\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\901f675224a171359bb626270f69707f\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\827ccd4aaf0614d2aaa013d00e086a93\lifecycle-livedata-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\827ccd4aaf0614d2aaa013d00e086a93\lifecycle-livedata-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f185ac599d7724819cf367cb0563a470\lifecycle-livedata-core-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\f185ac599d7724819cf367cb0563a470\lifecycle-livedata-core-2.1.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\49cb3c40d064ee31e0e5457f3a452d6a\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\49cb3c40d064ee31e0e5457f3a452d6a\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e8890f16ed6bc62c17498ffd50d7fdf\exifinterface-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.exifinterface:exifinterface:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e8890f16ed6bc62c17498ffd50d7fdf\exifinterface-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\ed30935793d558364a62e4f93e16043f\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\ed30935793d558364a62e4f93e16043f\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [net.butterflytv.utils:rtmp-client:3.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\96415d1d6a2504eeb91ea2e6dec72c23\jetified-rtmp-client-3.1.0\AndroidManifest.xml:7:5-9:41
+MERGED from [net.butterflytv.utils:rtmp-client:3.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\96415d1d6a2504eeb91ea2e6dec72c23\jetified-rtmp-client-3.1.0\AndroidManifest.xml:7:5-9:41
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		ADDED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+		INJECTED from D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\demos\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:5-67
+MERGED from [net.butterflytv.utils:rtmp-client:3.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\96415d1d6a2504eeb91ea2e6dec72c23\jetified-rtmp-client-3.1.0\AndroidManifest.xml:11:5-67
+MERGED from [net.butterflytv.utils:rtmp-client:3.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\96415d1d6a2504eeb91ea2e6dec72c23\jetified-rtmp-client-3.1.0\AndroidManifest.xml:11:5-67
+	android:name
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:11:22-64
+uses-permission#android.permission.FOREGROUND_SERVICE
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:5-77
+	android:name
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:12:22-74
+service#com.chengfu.android.fuplayer.achieve.dj.audio.MusicService
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:15:9-22:19
+	android:process
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:18:13-37
+	android:permission
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:17:13-92
+	android:name
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-86
+intent-filter#action:name:android.media.browse.MediaBrowserService
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:19:13-21:29
+action#android.media.browse.MediaBrowserService
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:17-83
+	android:name
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:20:25-80
+receiver#androidx.media.session.MediaButtonReceiver
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:9-28:20
+	android:name
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:24:19-76
+intent-filter#action:name:android.intent.action.MEDIA_BUTTON
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:25:13-27:29
+action#android.intent.action.MEDIA_BUTTON
+ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:17-77
+	android:name
+		ADDED from [:library] D:\ChengFu\AndroidStudioProjects\FuPlayerForDJ\library\build\intermediates\library_manifest\debug\AndroidManifest.xml:26:25-74
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.chengfu.android.fuplayer:fuplayer-core:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\922c0d3b1dd1e2cbca075374ff55c3fd\jetified-fuplayer-core-1.2.2\AndroidManifest.xml:9:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3fe678743496931a4a4239a5f66a8e75\jetified-exoplayer-core-2.10.5\AndroidManifest.xml:24:5-79
+MERGED from [com.google.android.exoplayer:exoplayer-core:2.10.5] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\3fe678743496931a4a4239a5f66a8e75\jetified-exoplayer-core-2.10.5\AndroidManifest.xml:24:5-79
+	android:name
+		ADDED from [com.chengfu.android.fuplayer:fuplayer-core:1.2.2] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\922c0d3b1dd1e2cbca075374ff55c3fd\jetified-fuplayer-core-1.2.2\AndroidManifest.xml:9:22-76
+provider#com.squareup.picasso.PicassoProvider
+ADDED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:8:9-11:40
+	android:authorities
+		ADDED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:10:13-72
+	android:exported
+		ADDED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:11:13-37
+	android:name
+		ADDED from [com.squareup.picasso:picasso:2.71828] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\9b4942452ba5cc8e39d2f1941e2ca74a\jetified-picasso-2.71828\AndroidManifest.xml:9:13-64
+provider#androidx.lifecycle.ProcessLifecycleOwnerInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:23:9-27:43
+	android:authorities
+		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:25:13-69
+	android:multiprocess
+		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:27:13-40
+	android:exported
+		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:26:13-37
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.1.0] C:\Users\fulvmei\.gradle\caches\transforms-2\files-2.1\4e7b2d2525d7e3896fbea4716fb734d6\jetified-lifecycle-process-2.1.0\AndroidManifest.xml:24:13-79
