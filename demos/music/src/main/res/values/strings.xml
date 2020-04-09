@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">music</string>
+    <string name="tab_text_my">我的</string>
+    <string name="tab_text_songs">歌曲</string>
+    <string name="tab_text_category">分类</string>
+
+    <string name="menu_play">播放</string>
+    <string name="menu_add_to_playlist">添加到歌单</string>
+    <string name="menu_delete">删除</string>
+</resources>

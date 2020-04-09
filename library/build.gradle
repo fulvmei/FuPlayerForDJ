@@ -26,6 +26,7 @@ android {
     lintOptions {
         abortOnError false
     }
+
 }
 
 dependencies {
@@ -36,6 +37,8 @@ dependencies {
     api 'com.chengfu.android.fuplayer:extension-mediasession:' + fuplayer
 
     implementation 'com.squareup.picasso:picasso:' + picasso
+    api 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
 }
 
 ext {
