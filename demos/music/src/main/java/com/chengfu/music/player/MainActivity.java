@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.ComponentName;
 import android.media.browse.MediaBrowser;
+import android.media.session.MediaController;
 import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,23 +29,24 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "p_test";
     //媒体浏览器
-    private MediaBrowserCompat mMediaBrowser;
+    private MediaBrowser mMediaBrowser;
     //媒体控制器
-    private MediaControllerCompat mMediaController;
-    private MediaBrowserCompat.ConnectionCallback connectionCallback = new MediaBrowserCompat.ConnectionCallback() {
+    private MediaController mMediaController;
+    private MediaBrowser.ConnectionCallback connectionCallback = new MediaBrowser.ConnectionCallback() {
         @Override
         public void onConnected() {
             super.onConnected();
             Log.d(TAG, "onConnected");
-            mMediaBrowser.subscribe(mMediaBrowser.getRoot(), new MediaBrowserCompat.SubscriptionCallback() {
+
+            mMediaBrowser.subscribe(mMediaBrowser.getRoot(), new MediaBrowser.SubscriptionCallback() {
                 @Override
-                public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children) {
+                public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowser.MediaItem> children) {
                     super.onChildrenLoaded(parentId, children);
                     Log.d(TAG, "onChildrenLoaded1");
                 }
 
                 @Override
-                public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children, @NonNull Bundle options) {
+                public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowser.MediaItem> children, @NonNull Bundle options) {
                     super.onChildrenLoaded(parentId, children, options);
                     Log.d(TAG, "onChildrenLoaded2");
                 }
@@ -61,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onError2");
                 }
             });
+
+
         }
 
         @Override
@@ -115,10 +119,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void test() {
-        mMediaBrowser = new MediaBrowserCompat(this,
+        mMediaBrowser = new MediaBrowser(this,
                 new ComponentName(this, MusicService.class), connectionCallback, null);
         mMediaBrowser.connect();
-
     }
 
 

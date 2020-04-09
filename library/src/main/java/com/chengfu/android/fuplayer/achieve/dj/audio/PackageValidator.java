@@ -9,7 +9,7 @@ public class PackageValidator {
 
     }
 
-    public boolean isKnownCaller(String callingPackage, int callingUid) {
+    public  boolean isKnownCaller(String callingPackage, int callingUid) {
         return true;
     }
 }
