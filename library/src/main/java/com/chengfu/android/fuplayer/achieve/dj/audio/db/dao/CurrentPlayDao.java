@@ -27,7 +27,7 @@ public interface CurrentPlayDao {
 //    @Query("SELECT * FROM current_play WHERE audio_id IN (:playListIds)")
 //    LiveData<List<CurrentPlayEntity>> queryByIds(int... playListIds);
 
-    @Query("SELECT * FROM current_play WHERE play_order >= :index")
+    @Query("SELECT * FROM current_play WHERE position >= :index")
     List<CurrentPlayEntity> queryUpIndex(int index);
 
     @Query("SELECT * FROM current_play WHERE playing")
@@ -70,7 +70,7 @@ public interface CurrentPlayDao {
     void deleteAll();
 
     @Transaction
-    @Query("Select * From current_play ORDER BY play_order")
+    @Query("Select * From current_play ORDER BY position")
     LiveData<List<CurrentPlay>> getCurrentPlayList();
 
 }

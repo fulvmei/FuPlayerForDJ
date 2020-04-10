@@ -6,7 +6,7 @@ import androidx.room.Junction;
 import androidx.room.Relation;
 
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.AudioEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.PlaylistEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.PlaylistMapEntity;
 
@@ -18,20 +18,20 @@ public class Playlist {
     public PlaylistEntity playlist;
 
     @Relation(
-            parentColumn = "id",
-            entity = AudioEntity.class,
-            entityColumn = "id",
+            parentColumn = "playlist_id",
+            entity = MediaEntity.class,
+            entityColumn = "media_id",
             associateBy = @Junction(
                     value = PlaylistMapEntity.class,
                     parentColumn = "playlist_id",
-                    entityColumn = "audio_id"))
-    public List<AudioEntity> audioList;
+                    entityColumn = "media_id"))
+    public List<MediaEntity> audioList;
 
     @Ignore
     public Playlist() {
     }
 
-    public Playlist(PlaylistEntity playlist, List<AudioEntity> audioList) {
+    public Playlist(PlaylistEntity playlist, List<MediaEntity> audioList) {
         this.playlist = playlist;
         this.audioList = audioList;
     }

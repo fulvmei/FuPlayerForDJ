@@ -7,12 +7,12 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.AudioEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 
 import java.util.List;
 
 @Dao
-public interface AudioDao {
+public interface MediaDao {
 
 //    @Query("SELECT * FROM audio WHERE id==:id")
 //    LiveData<List<AudioEntity>> queryById(long id);
@@ -26,14 +26,14 @@ public interface AudioDao {
 //    @Query("SELECT * FROM audio WHERE id IN (:playListIds)")
 //    List<AudioEntity> queryByIdsSyn(long... playListIds);
 
-    @Query("SELECT * FROM audio")
-    LiveData<List<AudioEntity>> queryAll();
+    @Query("SELECT * FROM media")
+    LiveData<List<MediaEntity>> queryAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long insert(AudioEntity playlist);
+    long insert(MediaEntity playlist);
 //
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    long[] insertAll(List<AudioEntity> list);
+    long[] insertAll(List<MediaEntity> list);
 //
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    long[] insertAll(AudioEntity... playlists);
@@ -48,7 +48,7 @@ public interface AudioDao {
 //    int updateAll(AudioEntity... playlists);
 //
     @Delete
-    int delete(AudioEntity playlist);
+    int delete(MediaEntity playlist);
 //
 //    @Delete
 //    int deleteAll(List<AudioEntity> list);

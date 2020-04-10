@@ -7,7 +7,7 @@ import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.AudioEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.CurrentPlayEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class AudioPlayManager {
 
     @WorkerThread
-    public static void setCurrentPlayList(@NonNull Context context, List<AudioEntity> list, int currentPlayingIndex) {
+    public static void setCurrentPlayList(@NonNull Context context, List<MediaEntity> list, int currentPlayingIndex) {
         AudioDatabase.getInstance(context).currentPlayDao().deleteAll();
         if (list == null || list.size() == 0) {
             return;
@@ -26,7 +26,7 @@ public class AudioPlayManager {
 
         List<CurrentPlayEntity> currentPlayList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            CurrentPlayEntity currentPlay = new CurrentPlayEntity(list.get(i).id, i);
+            CurrentPlayEntity currentPlay = new CurrentPlayEntity(list.get(i).media_id, i);
             if (i == currentPlayingIndex) {
                 currentPlay.playing = true;
             }
@@ -36,7 +36,7 @@ public class AudioPlayManager {
     }
 
     @WorkerThread
-    public static void addToNextPlay(@NonNull Context context, AudioEntity entity) {
+    public static void addToNextPlay(@NonNull Context context, MediaEntity entity) {
         if (entity == null) {
             return;
         }
@@ -44,16 +44,16 @@ public class AudioPlayManager {
 
         CurrentPlayEntity currentPlaying = AudioDatabase.getInstance(context).currentPlayDao().queryCurrentPlaying();
         if (currentPlaying != null) {
-            List<CurrentPlayEntity> temp = AudioDatabase.getInstance(context).currentPlayDao().queryUpIndex(currentPlaying.playOrder + 1);
+            List<CurrentPlayEntity> temp = AudioDatabase.getInstance(context).currentPlayDao().queryUpIndex(currentPlaying.position + 1);
             if (temp != null && temp.size() > 0) {
                 for (int i = 0; i < temp.size(); i++) {
-                    temp.get(i).playOrder++;
+                    temp.get(i).position++;
                 }
                 AudioDatabase.getInstance(context).currentPlayDao().updateAll(temp);
             }
         }
 
-        CurrentPlayEntity currentPlay = new CurrentPlayEntity(entity.id, currentPlaying != null ? currentPlaying.playOrder + 1 : 0);
+        CurrentPlayEntity currentPlay = new CurrentPlayEntity(entity.media_id, currentPlaying != null ? currentPlaying.position + 1 : 0);
         AudioDatabase.getInstance(context).currentPlayDao().insert(currentPlay);
     }
 

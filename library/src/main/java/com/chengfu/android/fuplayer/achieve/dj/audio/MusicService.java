@@ -1,29 +1,31 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio;
 
-import android.media.browse.MediaBrowser;
-import android.media.session.MediaSession;
 import android.os.Bundle;
-import android.service.media.MediaBrowserService;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.media.MediaBrowserServiceCompat;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
+import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 import com.chengfu.android.fuplayer.util.FuLog;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class MusicService extends MediaBrowserService implements LifecycleOwner {
+public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner {
     public static final String TAG = "MusicService";
 
-    private MediaSession mediaSession;
     private LifecycleRegistry lifecycle;
+    private MediaSessionCompat mediaSession;
+    private MediaSessionPlayer player;
 
     @Override
     public void onCreate() {
@@ -33,29 +35,43 @@ public class MusicService extends MediaBrowserService implements LifecycleOwner 
         lifecycle = new LifecycleRegistry(this);
         lifecycle.setCurrentState(Lifecycle.State.RESUMED);
 
-        mediaSession = new MediaSession(this, TAG);
-
+        mediaSession = new MediaSessionCompat(this, TAG);
+        mediaSession.setActive(true);
         setSessionToken(mediaSession.getSessionToken());
+
+        player = new MediaSessionPlayer(this, mediaSession);
+
+        AudioPlayManager.getCurrentPlayList(this).observe(this, new Observer<List<CurrentPlay>>() {
+            @Override
+            public void onChanged(List<CurrentPlay> currentPlays) {
+                player.setPlayQueue(ConverterUtil.currentPlayListToMediaDescriptionList(currentPlays));
+            }
+        });
     }
 
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
         FuLog.d(TAG, "onGetRoot : clientPackageName=" + clientPackageName + ",clientUid=" + clientUid + ",rootHints=" + rootHints);
-            return new BrowserRoot("root", null);
+        return new BrowserRoot("root", null);
     }
 
     @Override
-    public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowser.MediaItem>> result) {
+    public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         FuLog.d(TAG, "onLoadChildren : parentId=" + parentId);
-        result.detach();
-        AudioPlayManager.getCurrentPlayList(this).observe(this, new Observer<List<CurrentPlay>>() {
-            @Override
-            public void onChanged(List<CurrentPlay> currentPlays) {
-                result.sendResult(new ArrayList<>());
-            }
-        });
+//        LiveData<List<CurrentPlay>> currentPlayList = AudioPlayManager.getCurrentPlayList(this);
+//        currentPlayList.observe(this, new Observer<List<CurrentPlay>>() {
+//            @Override
+//            public void onChanged(List<CurrentPlay> currentPlays) {
+//                FuLog.d(TAG, "onLoadChildren : onChanged=");
+//                result.sendResult(new ArrayList<>());
+//            }
+//        });
+        result.sendResult(new ArrayList<>());
+//        result.detach();
     }
+
+
 
     @NonNull
     @Override

@@ -10,23 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
+import com.chengfu.music.player.R;
 
 public class AppAudioControlView extends AudioControlView {
 
 
     public AppAudioControlView(@NonNull Context context) {
-        super(context);
+        this(context, null);
     }
 
     public AppAudioControlView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public AppAudioControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(com.chengfu.android.fuplayer.achieve.dj.R.layout.fu_defaut_audio_view, parent, false);
-    }
+//    @Override
+//    protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
+//        return inflater.inflate(R.layout.app_audio_control_view, parent, false);
+//    }
 }
