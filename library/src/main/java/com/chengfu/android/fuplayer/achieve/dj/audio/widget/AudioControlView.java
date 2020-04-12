@@ -190,8 +190,8 @@ public class AudioControlView extends FrameLayout {
         updateRepeat(controller != null ? controller.getRepeatMode() : PlaybackStateCompat.REPEAT_MODE_INVALID);
         updateShuffle(controller != null ? controller.getShuffleMode() : PlaybackStateCompat.SHUFFLE_MODE_INVALID);
 
-        updatePlaybackState(controller != null ? controller.getPlaybackState() : null);
         updateMetadata(controller != null ? controller.getMetadata() : null);
+        updatePlaybackState(controller != null ? controller.getPlaybackState() : null);
     }
 
     protected void updateMetadata(MediaMetadataCompat metadata) {
@@ -290,7 +290,7 @@ public class AudioControlView extends FrameLayout {
 
         if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
             long timeToEnd = (duration_ms - currentPosition);
-
+            System.out.println("1111111111111111  timeToEnd="+timeToEnd);
             if (timeToEnd > 0) {
                 if (progressAnimator != null) {
                     progressAnimator.cancel();

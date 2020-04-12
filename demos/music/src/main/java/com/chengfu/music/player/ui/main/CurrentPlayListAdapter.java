@@ -3,6 +3,7 @@ package com.chengfu.music.player.ui.main;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,8 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CurrentPlay item = list.get(position);
+
+        holder.img.setImageBitmap(item.audio.icon);
         holder.title.setText(item.audio.title);
     }
 
@@ -46,12 +49,13 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView img;
         TextView title;
         TextView subTitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            img = itemView.findViewById(R.id.img);
             title = itemView.findViewById(R.id.title);
             subTitle = itemView.findViewById(R.id.subTitle);
         }

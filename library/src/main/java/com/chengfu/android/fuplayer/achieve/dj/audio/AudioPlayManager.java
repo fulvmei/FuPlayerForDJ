@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.CurrentPlayEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.QueueItemEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ public class AudioPlayManager {
         }
         AudioDatabase.getInstance(context).audioDao().insertAll(list);
 
-        List<CurrentPlayEntity> currentPlayList = new ArrayList<>();
+        List<QueueItemEntity> currentPlayList = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            CurrentPlayEntity currentPlay = new CurrentPlayEntity(list.get(i).media_id, i);
-            if (i == currentPlayingIndex) {
-                currentPlay.playing = true;
-            }
+            QueueItemEntity currentPlay = new QueueItemEntity(list.get(i).mediaId, i);
+//            if (i == currentPlayingIndex) {
+//                currentPlay.playing = true;
+//            }
             currentPlayList.add(currentPlay);
         }
         AudioDatabase.getInstance(context).currentPlayDao().insertAll(currentPlayList);
@@ -42,19 +42,19 @@ public class AudioPlayManager {
         }
         AudioDatabase.getInstance(context).audioDao().insert(entity);
 
-        CurrentPlayEntity currentPlaying = AudioDatabase.getInstance(context).currentPlayDao().queryCurrentPlaying();
-        if (currentPlaying != null) {
-            List<CurrentPlayEntity> temp = AudioDatabase.getInstance(context).currentPlayDao().queryUpIndex(currentPlaying.position + 1);
-            if (temp != null && temp.size() > 0) {
-                for (int i = 0; i < temp.size(); i++) {
-                    temp.get(i).position++;
-                }
-                AudioDatabase.getInstance(context).currentPlayDao().updateAll(temp);
-            }
-        }
+//        QueueItemEntity currentPlaying = AudioDatabase.getInstance(context).currentPlayDao().queryCurrentPlaying();
+//        if (currentPlaying != null) {
+//            List<QueueItemEntity> temp = AudioDatabase.getInstance(context).currentPlayDao().queryUpIndex(currentPlaying.position + 1);
+//            if (temp != null && temp.size() > 0) {
+//                for (int i = 0; i < temp.size(); i++) {
+//                    temp.get(i).position++;
+//                }
+//                AudioDatabase.getInstance(context).currentPlayDao().updateAll(temp);
+//            }
+//        }
 
-        CurrentPlayEntity currentPlay = new CurrentPlayEntity(entity.media_id, currentPlaying != null ? currentPlaying.position + 1 : 0);
-        AudioDatabase.getInstance(context).currentPlayDao().insert(currentPlay);
+//        QueueItemEntity currentPlay = new QueueItemEntity(entity.mediaId, currentPlaying != null ? currentPlaying.position + 1 : 0);
+//        AudioDatabase.getInstance(context).currentPlayDao().insert(currentPlay);
     }
 
     public static LiveData<List<CurrentPlay>> getCurrentPlayList(@NonNull Context context) {

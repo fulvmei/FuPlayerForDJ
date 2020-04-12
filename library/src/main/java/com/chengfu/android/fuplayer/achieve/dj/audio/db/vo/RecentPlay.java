@@ -13,8 +13,8 @@ public class RecentPlay {
     public RecentPlayEntity entity;
 
     @Relation(
-            parentColumn = "media_id",
-            entityColumn = "media_id",
+            parentColumn = "mediaId",
+            entityColumn = "mediaId",
             entity = MediaEntity.class)
     public MediaEntity audio;
 

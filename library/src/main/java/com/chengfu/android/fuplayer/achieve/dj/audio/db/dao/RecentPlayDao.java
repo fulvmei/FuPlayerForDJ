@@ -16,7 +16,7 @@ import java.util.List;
 @Dao
 public interface RecentPlayDao {
 
-    @Query("SELECT * FROM recent_play")
+    @Query("SELECT * FROM RecentPlayEntity")
     LiveData<List<RecentPlayEntity>> queryAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -50,7 +50,7 @@ public interface RecentPlayDao {
 //    void deleteAll();
 
     @Transaction
-    @Query("Select * From recent_play")
+    @Query("Select * From RecentPlayEntity")
     LiveData<List<RecentPlay>> getRecentPlayList();
 
 }

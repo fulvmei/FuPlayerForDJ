@@ -5,26 +5,22 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.RemoteException;
-
-import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
-
 import android.support.v4.media.MediaDescriptionCompat;
-
-import androidx.media.app.FuMediaStyle;
-import androidx.media.app.NotificationCompat.MediaStyle;
-import androidx.media.session.MediaButtonReceiver;
-
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 
-import com.chengfu.android.fuplayer.achieve.dj.R;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.media.app.NotificationCompat.MediaStyle;
+import androidx.media.session.MediaButtonReceiver;
 
-public class NotificationBuilder {
+import com.chengfu.android.fuplayer.achieve.dj.R;
+import com.chengfu.android.fuplayer.achieve.dj.audio.util.AppIconHelper;
+
+public class NotificationBuilderRev {
 
     public static final String NOW_PLAYING_CHANNEL = "com.chengfu.android.media.NOW_PLAYING";
     public static final int NOW_PLAYING_NOTIFICATION = 0xb339;
@@ -39,7 +35,7 @@ public class NotificationBuilder {
     private NotificationCompat.Action skipToNextAction;
     private PendingIntent stopPendingIntent;
 
-    public NotificationBuilder(Context context) {
+    public NotificationBuilderRev(Context context) {
         this.context = context;
 
         skipToPreviousAction = new NotificationCompat.Action(
@@ -59,8 +55,7 @@ public class NotificationBuilder {
                 context.getString(R.string.fu_notification_skip_to_next),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_NEXT));
 
-//        MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP);
-        stopPendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(MusicService.ACTION_NOTIFICATION_CLOSED), 0);
+        stopPendingIntent = new MediaButtonReceiver().buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP);
 
         platformNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -77,12 +72,13 @@ public class NotificationBuilder {
         PlaybackStateCompat playbackState = controller.getPlaybackState();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL);
+
         // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
-        int playPauseIndex = 0;
-        if (PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)) {
-            builder.addAction(skipToPreviousAction);
-            ++playPauseIndex;
-        }
+        int[] actions = new int[]{0};
+//        if (PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)) {
+//            builder.addAction(skipToPreviousAction);
+//            actions = new int[]{0, 1};
+//        }
         if (PlaybackStateCompatExt.isPlaying(playbackState)) {
             builder.addAction(pauseAction);
         } else {
@@ -90,38 +86,22 @@ public class NotificationBuilder {
         }
         if (PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)) {
             builder.addAction(skipToNextAction);
+            actions = new int[]{0, 1};
         }
-//        int[] actions = new int[]{0};
-//        if (PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)) {
-//            builder.addAction(skipToPreviousAction);
-//            actions = new int[]{0, 1};
-//        }
-//        if (PlaybackStateCompatExt.isPlaying(playbackState)) {
-//            builder.addAction(pauseAction);
-//        } else {
-//            builder.addAction(playAction);
-//        }
-//        if (PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)) {
-//            builder.addAction(skipToNextAction);
-//            actions = new int[]{0, 1};
-//        }
 
-
-        MediaStyle mediaStyle = new FuMediaStyle()
+        MediaStyle mediaStyle = new MediaStyle()
                 .setCancelButtonIntent(stopPendingIntent)
                 .setMediaSession(sessionToken)
-                .setShowCancelButton(true)
-                .setShowActionsInCompactView(playPauseIndex);
+                .setShowActionsInCompactView(actions)
+                .setShowCancelButton(true);
 
         return builder.setContentIntent(controller.getSessionActivity())
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentText(description.getSubtitle())
-                .setColorized(true)
                 .setContentTitle(description.getTitle())
-                .setOngoing(true)
+                .setShowWhen(false)
                 .setDeleteIntent(stopPendingIntent)
-                .setLargeIcon(description.getIconBitmap())
-//                .setLargeIcon(AppIconHelper.getAppIconBitmap(context.getPackageManager(), context.getApplicationInfo().packageName))
+                .setLargeIcon(AppIconHelper.getAppIconBitmap(context.getPackageManager(), context.getApplicationInfo().packageName))
                 .setOnlyAlertOnce(true)
                 .setSmallIcon(context.getApplicationInfo().icon)
                 .setStyle(mediaStyle)

@@ -7,38 +7,40 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
-@Entity(tableName = "media",primaryKeys = "media_id")
+@Entity(tableName = "media")
 public class MediaEntity {
+    @PrimaryKey
     @NonNull
-    public String media_id;
+    public String mediaId;
     public String title;
-    public String sub_title;
+    public String subTitle;
     public String description;
     public Bitmap icon;
-    public Uri icon_uri;
+    public Uri iconUri;
     public Bundle extras;
-    public Uri media_uri;
+    public Uri mediaUri;
 
     @Ignore
-    public MediaEntity(@NonNull String media_id) {
-        this.media_id = media_id;
+    public MediaEntity(@NonNull String mediaId) {
+        this.mediaId = mediaId;
     }
 
     @Ignore
-    public MediaEntity(@NonNull String media_id, String title) {
-        this.media_id = media_id;
+    public MediaEntity(@NonNull String mediaId, String title) {
+        this.mediaId = mediaId;
         this.title = title;
     }
 
-    public MediaEntity(@NonNull String media_id, String title, String sub_title, String description, Bitmap icon, Uri icon_uri, Bundle extras, Uri media_uri) {
-        this.media_id = media_id;
+    public MediaEntity(@NonNull String mediaId, String title, String subTitle, String description, Bitmap icon, Uri iconUri, Bundle extras, Uri mediaUri) {
+        this.mediaId = mediaId;
         this.title = title;
-        this.sub_title = sub_title;
+        this.subTitle = subTitle;
         this.description = description;
         this.icon = icon;
-        this.icon_uri = icon_uri;
+        this.iconUri = iconUri;
         this.extras = extras;
-        this.media_uri = media_uri;
+        this.mediaUri = mediaUri;
     }
 }

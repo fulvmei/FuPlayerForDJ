@@ -6,19 +6,20 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "playlist",primaryKeys = "playlist_id")
+@Entity()
 public class PlaylistEntity {
+    @PrimaryKey
     @NonNull
-    public String playlist_id;
+    public String playlistId;
     public String title;
 
     @Ignore
-    public PlaylistEntity(@NonNull String playlist_id) {
-        this.playlist_id = playlist_id;
+    public PlaylistEntity(@NonNull String playlistId) {
+        this.playlistId = playlistId;
     }
 
-    public PlaylistEntity(@NonNull String playlist_id, String title) {
-        this.playlist_id = playlist_id;
+    public PlaylistEntity(@NonNull String playlistId, String title) {
+        this.playlistId = playlistId;
         this.title = title;
     }
 }

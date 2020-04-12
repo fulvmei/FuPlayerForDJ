@@ -5,16 +5,16 @@ import androidx.room.Ignore;
 import androidx.room.Relation;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.CurrentPlayEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.QueueItemEntity;
 
 public class CurrentPlay {
 
     @Embedded
-    public CurrentPlayEntity entity;
+    public QueueItemEntity entity;
 
     @Relation(
-            parentColumn = "media_id",
-            entityColumn = "media_id",
+            parentColumn = "mediaId",
+            entityColumn = "mediaId",
             entity = MediaEntity.class)
     public MediaEntity audio;
 
@@ -22,7 +22,7 @@ public class CurrentPlay {
     public CurrentPlay() {
     }
 
-    public CurrentPlay(CurrentPlayEntity entity, MediaEntity audio) {
+    public CurrentPlay(QueueItemEntity entity, MediaEntity audio) {
         this.entity = entity;
         this.audio = audio;
     }

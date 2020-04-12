@@ -20,6 +20,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
@@ -32,7 +33,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG = "p_test";
+    public static final String TAG = "MainActivity";
     //媒体浏览器
     private MediaBrowserCompat mMediaBrowser;
     //媒体控制器
@@ -50,68 +51,66 @@ public class MainActivity extends AppCompatActivity {
             mMediaController.registerCallback(new MediaControllerCompat.Callback() {
                 @Override
                 public void onSessionReady() {
-                    super.onSessionReady();
+                    Log.d(TAG, "onSessionReady");
                 }
 
                 @Override
                 public void onSessionDestroyed() {
-                    super.onSessionDestroyed();
+                    Log.d(TAG, "onSessionDestroyed");
                 }
 
                 @Override
                 public void onSessionEvent(String event, Bundle extras) {
-                    super.onSessionEvent(event, extras);
+                    Log.d(TAG, "onSessionEvent : event=" + event + ",extras=" + extras);
                 }
 
                 @Override
                 public void onPlaybackStateChanged(PlaybackStateCompat state) {
-                    super.onPlaybackStateChanged(state);
+                    Log.d(TAG, "onPlaybackStateChanged : state=" + state);
                 }
 
                 @Override
                 public void onMetadataChanged(MediaMetadataCompat metadata) {
-                    super.onMetadataChanged(metadata);
+                    Log.d(TAG, "onMetadataChanged : metadata=" + metadata);
+                    img.setImageBitmap(metadata.getBitmap("METADATA_KEY_DISPLAY_ICON"));
+
                 }
 
                 @Override
                 public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
-                    super.onQueueChanged(queue);
+                    Log.d(TAG, "onQueueChanged : queue=" + queue);
                 }
 
                 @Override
                 public void onQueueTitleChanged(CharSequence title) {
-                    super.onQueueTitleChanged(title);
+                    Log.d(TAG, "onQueueTitleChanged : title=" + title);
                 }
 
                 @Override
                 public void onExtrasChanged(Bundle extras) {
-                    super.onExtrasChanged(extras);
+                    Log.d(TAG, "onExtrasChanged : extras=" + extras);
                 }
 
                 @Override
                 public void onAudioInfoChanged(MediaControllerCompat.PlaybackInfo info) {
-                    super.onAudioInfoChanged(info);
+                    Log.d(TAG, "onAudioInfoChanged : info=" + info);
                 }
 
                 @Override
                 public void onCaptioningEnabledChanged(boolean enabled) {
-                    super.onCaptioningEnabledChanged(enabled);
+                    Log.d(TAG, "onCaptioningEnabledChanged : enabled=" + enabled);
                 }
 
                 @Override
                 public void onRepeatModeChanged(int repeatMode) {
-                    super.onRepeatModeChanged(repeatMode);
+                    Log.d(TAG, "onRepeatModeChanged : repeatMode=" + repeatMode);
                 }
 
                 @Override
                 public void onShuffleModeChanged(int shuffleMode) {
-                    super.onShuffleModeChanged(shuffleMode);
+                    Log.d(TAG, "onShuffleModeChanged : shuffleMode=" + shuffleMode);
                 }
 
-                @Override
-                public void binderDied() {
-                    super.binderDied();
-                }
             });
 
             mMediaBrowser.subscribe(mMediaBrowser.getRoot(), new MediaBrowserCompat.SubscriptionCallback() {
@@ -157,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     View audioControlView;
-
+    ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
 
         test();
 
+         img=findViewById(R.id.img);
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -199,11 +200,46 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
+        findViewById(R.id.previous).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMediaController.getTransportControls().skipToPrevious();
+            }
+        });
 
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mMediaController.getTransportControls().skipToNext();
+            }
+        });
+
+        findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMediaController.getTransportControls().prepare();
+                mMediaController.getTransportControls().play();
+            }
+        });
+
+        findViewById(R.id.pause).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMediaController.getTransportControls().pause();
+            }
+        });
+
+        findViewById(R.id.fast_rewind).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMediaController.getTransportControls().rewind();
+            }
+        });
+
+        findViewById(R.id.fast_forward).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMediaController.getTransportControls().fastForward();
             }
         });
     }

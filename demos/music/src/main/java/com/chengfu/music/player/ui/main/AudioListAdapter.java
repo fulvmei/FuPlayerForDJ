@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,8 +43,9 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MediaEntity item = list.get(position);
+        holder.img.setImageBitmap(item.icon);
         holder.title.setText(item.title);
-        holder.subTitle.setText(item.sub_title);
+        holder.subTitle.setText(item.subTitle);
     }
 
     @Override
@@ -52,12 +54,13 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView img;
         TextView title;
         TextView subTitle;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            img = itemView.findViewById(R.id.img);
             title = itemView.findViewById(R.id.title);
             subTitle = itemView.findViewById(R.id.subTitle);
 
@@ -67,7 +70,7 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            AudioDatabase.getInstance(view.getContext()).recentPlayDao().insert(new RecentPlayEntity(list.get(getAdapterPosition()).media_id, 0));
+                            AudioDatabase.getInstance(view.getContext()).recentPlayDao().insert(new RecentPlayEntity(list.get(getAdapterPosition()).mediaId, 0));
                         }
                     }).start();
                 }

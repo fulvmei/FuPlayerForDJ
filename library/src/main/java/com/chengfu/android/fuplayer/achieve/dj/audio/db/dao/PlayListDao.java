@@ -25,7 +25,7 @@ public interface PlayListDao {
 //    @Query("SELECT * FROM playlist WHERE id IN (:playListIds)")
 //    LiveData<List<PlaylistEntity>> queryByIds(int... playListIds);
 
-    @Query("SELECT * FROM playlist")
+    @Query("SELECT * FROM PlaylistEntity")
     LiveData<List<PlaylistEntity>> queryAll();
 //
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -57,7 +57,7 @@ public interface PlayListDao {
 //
 //
     @Transaction
-    @Query("Select * From playlist")
+    @Query("Select * From PlaylistEntity")
     LiveData<List<Playlist>> getPlaylist();
 
 //    @Transaction

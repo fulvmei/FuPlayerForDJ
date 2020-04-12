@@ -7,7 +7,8 @@
     <application>
         <service
             android:name="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService"
-            android:permission="com.chengfu.android.fuplayer.achieve.dj.audio.MusicService"
+            android:enabled="true"
+            android:exported="true"
             android:process=":music">
             <intent-filter>
                 <action android:name="android.media.browse.MediaBrowserService" />

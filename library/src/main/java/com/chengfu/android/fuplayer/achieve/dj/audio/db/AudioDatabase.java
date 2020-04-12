@@ -13,13 +13,13 @@ import com.chengfu.android.fuplayer.achieve.dj.audio.db.dao.PlayListDao;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.dao.PlayListMapDao;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.dao.RecentPlayDao;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.CurrentPlayEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.QueueItemEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.PlaylistEntity;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.PlaylistMapEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.PlaylistMediaXRef;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.RecentPlayEntity;
 
 
-@Database(entities = {MediaEntity.class, PlaylistEntity.class, PlaylistMapEntity.class, CurrentPlayEntity.class, RecentPlayEntity.class}, exportSchema = false, version = 1)
+@Database(entities = {MediaEntity.class, PlaylistEntity.class, PlaylistMediaXRef.class, QueueItemEntity.class, RecentPlayEntity.class}, exportSchema = false, version = 1)
 @TypeConverters(DataConverter.class)
 public abstract class AudioDatabase extends RoomDatabase {
 
