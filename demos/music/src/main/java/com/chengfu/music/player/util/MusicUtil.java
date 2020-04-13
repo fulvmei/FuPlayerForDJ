@@ -81,7 +81,7 @@ public class MusicUtil {
             entity.title = titles[i % titles.length];
             entity.subTitle = "未知专辑";
             entity.iconUri = Uri.parse(imgs[i % titles.length]);
-            entity.icon=bitmaps[i % titles.length];
+//            entity.icon=bitmaps[i % titles.length];
 
             musics.add(entity);
         }

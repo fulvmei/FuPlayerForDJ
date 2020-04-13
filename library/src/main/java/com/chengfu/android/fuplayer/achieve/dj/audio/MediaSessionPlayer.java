@@ -360,6 +360,10 @@ public final class MediaSessionPlayer {
         player.stop();
     }
 
+    public void release() {
+        player.release();
+    }
+
     private class PlayerEventListener implements FuPlayer.EventListener {
         @Override
         public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
@@ -507,12 +511,16 @@ public final class MediaSessionPlayer {
 
         @Override
         public void onRewind() {
-            player.seekTo(5000);
+            if (player.isCurrentWindowSeekable() && rewindMs > 0) {
+                player.seekTo(player.getCurrentPosition() - rewindMs);
+            }
         }
 
         @Override
         public void onFastForward() {
-            player.seekTo(player.getDuration() - 5000);
+            if (player.isCurrentWindowSeekable() && fastForwardMs > 0) {
+                player.seekTo( player.getCurrentPosition() + fastForwardMs);
+            }
         }
 
         @Override

@@ -59,8 +59,8 @@ public class NotificationBuilder {
                 context.getString(R.string.fu_notification_skip_to_next),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_NEXT));
 
-//        MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP);
-        stopPendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(MusicService.ACTION_NOTIFICATION_CLOSED), 0);
+        stopPendingIntent = MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_STOP);
+//        stopPendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(MusicService.ACTION_NOTIFICATION_CLOSED), 0);
 
         platformNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

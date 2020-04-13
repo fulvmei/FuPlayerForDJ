@@ -35,6 +35,7 @@ import androidx.media.MediaBrowserServiceCompat;
 import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
+import com.chengfu.android.fuplayer.achieve.dj.audio.notification.AudioNotificationManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 import com.chengfu.android.fuplayer.ui.PlayerNotificationManager;
 import com.chengfu.android.fuplayer.util.FuLog;
@@ -49,25 +50,18 @@ import static com.chengfu.android.fuplayer.achieve.dj.audio.NotificationBuilder.
 
 public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner {
     public static final String TAG = "MusicService";
-    public static final String ACTION_NOTIFICATION_CLOSED = "com.chengfu.android.fuplayer.achieve.dj.audio.ACTION_NOTIFICATION_CLOSED";
 
     private LifecycleRegistry lifecycle;
     private boolean isForegroundService;
 
     private MediaSessionCompat mediaSession;
-    private MediaControllerCompat mediaController;
-
-    private NotificationBuilder notificationBuilder;
-    private NotificationManagerCompat notificationManager;
 
     private BecomingNoisyReceiver becomingNoisyReceiver;
 
     private MediaSessionPlayer mediaSessionPlayer;
     private QueueAdapter queueAdapter;
 
-    private MediaControllerCallback mediaControllerCallback;
-    private NotificationBroadcastReceiver notificationBroadcastReceiver;
-
+    private AudioNotificationManager audioNotificationManager;
 
     @Override
     public void onCreate() {
@@ -77,23 +71,101 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         lifecycle = new LifecycleRegistry(this);
         lifecycle.setCurrentState(Lifecycle.State.RESUMED);
 
-        notificationBroadcastReceiver = new NotificationBroadcastReceiver();
-        registerReceiver(notificationBroadcastReceiver, new IntentFilter(ACTION_NOTIFICATION_CLOSED));
-
         mediaSession = new MediaSessionCompat(this, TAG);
         mediaSession.setActive(true);
 
         setSessionToken(mediaSession.getSessionToken());
 
-        mediaController = new MediaControllerCompat(this, mediaSession);
-        notificationBuilder = new NotificationBuilder(this);
-        notificationManager = NotificationManagerCompat.from(this);
+        audioNotificationManager = new AudioNotificationManager(this, mediaSession);
+
+        Picasso picasso = null;
+        try {
+            picasso = Picasso.get();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        if (picasso == null) {
+            Picasso.setSingletonInstance(new Picasso.Builder(getApplicationContext()).build());
+        }
+
+        audioNotificationManager.setNotificationListener(new AudioNotificationManager.NotificationListener() {
+
+            @Nullable
+            @Override
+            public PendingIntent createCurrentContentIntent(MediaDescriptionCompat description) {
+                FuLog.d(TAG, "createCurrentContentIntent  description=" + description);
+                Intent sessionIntent = new Intent();
+                sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, description != null ? description.getExtras() : null);
+                ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
+                sessionIntent.setComponent(componentName);
+                return PendingIntent.getActivity(MusicService.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
+
+            @Nullable
+            @Override
+            public Bitmap getCurrentLargeIcon(MediaDescriptionCompat description, AudioNotificationManager.BitmapCallback callback) {
+                if (description == null) {
+                    return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+                }
+                if (description.getIconBitmap() != null) {
+                    return description.getIconBitmap();
+                }
+                if (description.getIconUri() == null) {
+                    return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+                }
+                Picasso.get().load(description.getIconUri())
+                        .centerCrop()
+                        .resize(336, 336)
+                        .into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                callback.onBitmap(bitmap);
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                                callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                                callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
+                            }
+                        });
+                return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+            }
+
+            @Override
+            public void onNotificationPosted(int notificationId, Notification notification) {
+                FuLog.d(TAG, "onNotificationPosted  notification=" + notification);
+                if (!isForegroundService) {
+                    becomingNoisyReceiver.register();
+
+                    ContextCompat.startForegroundService(
+                            getApplicationContext(),
+                            new Intent(getApplicationContext(), MusicService.class));
+
+                    startService(new Intent(getApplicationContext(), MusicService.class));
+                    startForeground(notificationId, notification);
+                    isForegroundService = true;
+                }
+            }
+
+            @Override
+            public void onNotificationCancelled() {
+                FuLog.d(TAG, "onNotificationCancelled");
+                if (isForegroundService) {
+                    becomingNoisyReceiver.unregister();
+                    stopForeground(true);
+                    isForegroundService = false;
+                }
+            }
+        });
 
         mediaSessionPlayer = new MediaSessionPlayer(this, mediaSession);
         queueAdapter = new QueueAdapterImpl();
         mediaSessionPlayer.setQueueAdapter(queueAdapter);
-
-        mediaSession.setSessionActivity(getSessionActivity(mediaSessionPlayer));
 
         AudioPlayManager.getCurrentPlayList(this).observe(this, new Observer<List<CurrentPlay>>() {
             @Override
@@ -103,13 +175,6 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
             }
         });
 
-        mediaController = new MediaControllerCompat(this, mediaSession);
-        mediaControllerCallback = new MediaControllerCallback();
-        mediaController.registerCallback(mediaControllerCallback);
-
-        notificationBuilder = new NotificationBuilder(this);
-        notificationManager = NotificationManagerCompat.from(this);
-
         try {
             becomingNoisyReceiver =
                     new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
@@ -117,61 +182,6 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
             e.printStackTrace();
         }
 
-    }
-
-    private PendingIntent getSessionActivity(MediaSessionPlayer mediaSessionPlayer) {
-        Intent sessionIntent = new Intent();
-        sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        MediaDescriptionCompat description = (MediaDescriptionCompat) mediaSessionPlayer.getPlayer().getCurrentTag();
-        sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, description != null ? description.getExtras() : null);
-        ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
-        sessionIntent.setComponent(componentName);
-        return PendingIntent.getActivity(MusicService.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private void updateNotification(PlaybackStateCompat state) {
-        int updatedState = state.getState();
-        // Skip building a notification when state is "none" and metadata is null.
-        Notification notification = null;
-        if (mediaController.getMetadata() != null
-                && updatedState != PlaybackStateCompat.STATE_NONE) {
-            try {
-                notification = notificationBuilder.buildNotification(mediaSession.getSessionToken(),getSessionActivity(mediaSessionPlayer));
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        }
-        if (updatedState == PlaybackStateCompat.STATE_BUFFERING ||
-                updatedState == PlaybackStateCompat.STATE_PLAYING) {
-            becomingNoisyReceiver.register();
-            if (notification != null) {
-                notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification);
-
-                if (!isForegroundService) {
-                    ContextCompat.startForegroundService(
-                            getApplicationContext(),
-                            new Intent(getApplicationContext(), MusicService.class));
-                    startForeground(NOW_PLAYING_NOTIFICATION, notification);
-                    isForegroundService = true;
-                }
-            }
-        } else {
-            becomingNoisyReceiver.unregister();
-            if (isForegroundService) {
-                stopForeground(false);
-                isForegroundService = false;
-                // If playback has ended, also stop the service.
-                if (updatedState == PlaybackStateCompat.STATE_NONE) {
-                    stopSelf();
-                }
-
-                if (notification != null) {
-                    notificationManager.notify(NOW_PLAYING_NOTIFICATION, notification);
-                } else {
-                    stopForeground(true);
-                }
-            }
-        }
     }
 
     @Nullable
@@ -205,23 +215,15 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
     @Override
     public void onDestroy() {
         super.onDestroy();
+        FuLog.d(TAG, "onDestroy");
         lifecycle.setCurrentState(Lifecycle.State.DESTROYED);
-        unregisterReceiver(notificationBroadcastReceiver);
+        mediaSessionPlayer.release();
         mediaSession.setActive(false);
         mediaSession.release();
-    }
-
-    private class MediaControllerCallback extends MediaControllerCompat.Callback {
-        @Override
-        public void onMetadataChanged(MediaMetadataCompat metadata) {
-            updateNotification(mediaController.getPlaybackState());
+        if (becomingNoisyReceiver != null) {
+            becomingNoisyReceiver.unregister();
         }
-
-        @Override
-        public void onPlaybackStateChanged(PlaybackStateCompat state) {
-            updateNotification(state);
-        }
-
+        audioNotificationManager.onDestroy();
     }
 
     private static class BecomingNoisyReceiver extends BroadcastReceiver {
@@ -263,18 +265,18 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         }
     }
 
-    private class NotificationBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            stopForeground(true);
-            if (mediaSessionPlayer != null) {
-                mediaSessionPlayer.stop();
-//                mediaSessionPlayer.setPlayList(new ArrayList<>());
-            }
-            if (mediaSession != null && mediaSession.isActive()) {
-//                mediaSession.sendSessionEvent();
-            }
-        }
-    }
+//    private class NotificationBroadcastReceiver extends BroadcastReceiver {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            stopForeground(true);
+//            if (mediaSessionPlayer != null) {
+//                mediaSessionPlayer.stop();
+////                mediaSessionPlayer.setPlayList(new ArrayList<>());
+//            }
+//            if (mediaSession != null && mediaSession.isActive()) {
+////                mediaSession.sendSessionEvent();
+//            }
+//        }
+//    }
 }
