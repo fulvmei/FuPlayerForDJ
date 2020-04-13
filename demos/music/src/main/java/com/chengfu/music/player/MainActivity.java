@@ -2,6 +2,7 @@ package com.chengfu.music.player;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.viewpager2.widget.ViewPager2;
 
 
@@ -187,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         test();
 
          img=findViewById(R.id.img);
@@ -255,6 +257,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        }).start();
+
+
     }
 
     private void test() {

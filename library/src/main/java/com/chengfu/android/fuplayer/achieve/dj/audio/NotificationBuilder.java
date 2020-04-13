@@ -66,7 +66,7 @@ public class NotificationBuilder {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    public Notification buildNotification(MediaSessionCompat.Token sessionToken) throws RemoteException {
+    public Notification buildNotification(MediaSessionCompat.Token sessionToken, PendingIntent contentIntent) throws RemoteException {
         if (shouldCreateNowPlayingChannel()) {
             createNowPlayingChannel();
         }
@@ -77,24 +77,13 @@ public class NotificationBuilder {
         PlaybackStateCompat playbackState = controller.getPlaybackState();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL);
-        // Only add actions for skip back, play/pause, skip forward, based on what's enabled.
-        int playPauseIndex = 0;
-        if (PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)) {
-            builder.addAction(skipToPreviousAction);
-            ++playPauseIndex;
-        }
-        if (PlaybackStateCompatExt.isPlaying(playbackState)) {
-            builder.addAction(pauseAction);
-        } else {
-            builder.addAction(playAction);
-        }
-        if (PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)) {
-            builder.addAction(skipToNextAction);
-        }
-//        int[] actions = new int[]{0};
+
+
+//        boolean hasPreviousAction = false;
+//        boolean hasNextAction = false;
 //        if (PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)) {
 //            builder.addAction(skipToPreviousAction);
-//            actions = new int[]{0, 1};
+//            hasPreviousAction = true;
 //        }
 //        if (PlaybackStateCompatExt.isPlaying(playbackState)) {
 //            builder.addAction(pauseAction);
@@ -103,20 +92,37 @@ public class NotificationBuilder {
 //        }
 //        if (PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)) {
 //            builder.addAction(skipToNextAction);
+//            hasNextAction = true;
+//        }
+//
+//        int[] actions = new int[]{1};
+//        if (hasPreviousAction && hasNextAction) {
+//            actions = new int[]{1, 2};
+//        }else if (hasNextAction) {
 //            actions = new int[]{0, 1};
+//        }else if (hasPreviousAction) {
+//            actions = new int[]{1};
 //        }
 
+        builder.addAction(skipToPreviousAction);
+        if (PlaybackStateCompatExt.isPlaying(playbackState)) {
+            builder.addAction(pauseAction);
+        } else {
+            builder.addAction(playAction);
+        }
+        builder.addAction(skipToNextAction);
 
         MediaStyle mediaStyle = new FuMediaStyle()
                 .setCancelButtonIntent(stopPendingIntent)
                 .setMediaSession(sessionToken)
                 .setShowCancelButton(true)
-                .setShowActionsInCompactView(playPauseIndex);
+                .setShowActionsInCompactView(1);
 
-        return builder.setContentIntent(controller.getSessionActivity())
+        return builder.setContentIntent(contentIntent)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentText(description.getSubtitle())
-                .setColorized(true)
+                .setColorized(false)
+                .setShowWhen(false)
                 .setContentTitle(description.getTitle())
                 .setOngoing(true)
                 .setDeleteIntent(stopPendingIntent)

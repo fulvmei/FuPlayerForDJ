@@ -21,13 +21,13 @@ import java.util.List;
 
 public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.ViewHolder> {
 
-
     private List<MediaEntity> list;
 
     public void setData(List<MediaEntity> list) {
         this.list = list;
         notifyDataSetChanged();
     }
+
 
     public List<MediaEntity> getList() {
         return list;

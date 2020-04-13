@@ -408,7 +408,7 @@ public class MusicServiceRev extends MediaBrowserServiceCompat {
             // Skip building a notification when state is "none".
 
             if (updatedState != PlaybackStateCompat.STATE_NONE) {
-                notification = notificationBuilder.buildNotification(mediaSession.getSessionToken());
+                notification = notificationBuilder.buildNotification(mediaSession.getSessionToken(),null);
             }
             if (updatedState == PlaybackStateCompat.STATE_BUFFERING || updatedState == PlaybackStateCompat.STATE_PLAYING) {
                 becomingNoisyReceiver.register();

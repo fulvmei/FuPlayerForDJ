@@ -30,6 +30,13 @@
         </activity>
 
         <activity android:name=".AudioPlayActivity" />
+
+        <activity android:name=".FuSessionActivity">
+            <intent-filter>
+                <action android:name="chengfu.intent.action.ACTION_SESSION_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
