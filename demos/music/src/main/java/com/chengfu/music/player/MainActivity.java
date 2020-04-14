@@ -2,27 +2,28 @@ package com.chengfu.music.player;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DiffUtil;
+import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 
 import android.content.ComponentName;
 import android.content.Intent;
-import android.media.browse.MediaBrowser;
-import android.media.session.MediaController;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.IMediaControllerCallback;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
@@ -31,6 +32,8 @@ import com.chengfu.music.player.util.MusicUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -158,10 +161,23 @@ public class MainActivity extends AppCompatActivity {
 
     View audioControlView;
     ImageView img;
+    Toolbar toolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        toolbar = findViewById(R.id.toolbar);
+
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                addList(mMediaController);
+                return true;
+            }
+        });
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this);
         ViewPager2 viewPager2 = findViewById(R.id.viewPager2);
@@ -191,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
 
         test();
 
-         img=findViewById(R.id.img);
+        img = findViewById(R.id.img);
 
         new Thread(new Runnable() {
             @Override
@@ -271,5 +287,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mMediaBrowser.disconnect();
+    }
+
+    public static void addList(MediaControllerCompat mediaController) {
+        MediaDescriptionCompat music0 = new MediaDescriptionCompat.Builder()
+                .setMediaId("0")
+                .setTitle("贵州交通广播")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"))
+                .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
+                .build();
+
+        MediaDescriptionCompat music = new MediaDescriptionCompat.Builder()
+                .setMediaId("1")
+                .setTitle("爱过的人我已不再拥有，错过的人是否可回首 . （治愈女声）")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1104/581b63392f6cb.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/1104/581b633864635.jpg"))
+                .build();
+        Bundle bundle = new Bundle();
+        ArrayList<MediaDescriptionCompat> list = new ArrayList<>();
+
+        MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
+                .setMediaId("2")
+                .setTitle("3D潮音 - 3D环绕嗨曲")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0517/573b1240d0118.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+        list.add(music0);
+        list.add(music);
+        list.add(music1);
+        Collections.shuffle(list);
+        bundle.putParcelableArrayList(MusicContract.KEY_QUEUE_ITEMS, list);
+        mediaController.sendCommand(MusicContract.COMMAND_ADD_QUEUE_ITEMS, bundle, null);
     }
 }

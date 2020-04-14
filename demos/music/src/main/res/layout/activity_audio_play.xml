@@ -7,6 +7,13 @@
     android:orientation="vertical"
     tools:context=".AudioPlayActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        app:menu="@menu/menu_main"/>
+
     <com.chengfu.music.player.ui.widget.AppAudioControlView
         android:id="@+id/audioControlView"
         android:layout_width="match_parent"

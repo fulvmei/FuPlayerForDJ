@@ -8,9 +8,11 @@
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        app:menu="@menu/menu_main">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

@@ -1,5 +1,6 @@
 package com.chengfu.music.player.ui.main;
 
+import android.support.v4.media.session.MediaSessionCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,14 @@ import java.util.List;
 public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayListAdapter.ViewHolder> {
 
 
-    private List<CurrentPlay> list;
+    private List<MediaSessionCompat.QueueItem> list;
 
-    public void setData(List<CurrentPlay> list) {
+    public void setData(List<MediaSessionCompat.QueueItem> list) {
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public List<CurrentPlay> getList() {
+    public List<MediaSessionCompat.QueueItem> getList() {
         return list;
     }
 
@@ -37,10 +38,10 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CurrentPlay item = list.get(position);
+        MediaSessionCompat.QueueItem item = list.get(position);
 
-        holder.img.setImageBitmap(item.audio.icon);
-        holder.title.setText(item.audio.title);
+        holder.img.setImageBitmap(item.getDescription().getIconBitmap());
+        holder.title.setText(item.getDescription().getTitle());
     }
 
     @Override

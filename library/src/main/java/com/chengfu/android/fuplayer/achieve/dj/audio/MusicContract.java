@@ -10,6 +10,8 @@ public class MusicContract {
 
     public static final String COMMAND_SET_QUEUE_ITEMS = "command_set_queue_items";
 
+    public static final String COMMAND_ADD_QUEUE_ITEMS = "command_add_queue_items";
+
     public static final String COMMAND_CLEAR_QUEUE_ITEMS = "command_clear_queue_items";
 
     public static final String KEY_QUEUE_ITEMS = "key_queue_items";

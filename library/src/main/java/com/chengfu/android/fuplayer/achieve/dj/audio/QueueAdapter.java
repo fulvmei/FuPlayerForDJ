@@ -1,5 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio;
 
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,14 @@ public interface QueueAdapter {
     void add(int index, MediaSessionCompat.QueueItem item);
 
     void addAll(Collection<MediaSessionCompat.QueueItem> items);
+
+    void addMedia(MediaDescriptionCompat media);
+
+    void addMedia(int index,MediaDescriptionCompat media);
+
+    void addAllMedias(List<MediaDescriptionCompat> medias);
+
+    void addAllMedias(int index,List<MediaDescriptionCompat> medias);
 
     void addAll(int index, Collection<MediaSessionCompat.QueueItem> items);
 
@@ -70,5 +79,7 @@ public interface QueueAdapter {
     MediaSessionCompat.QueueItem skipToPrevious();
 
     boolean checkIndex(int position);
+
+     long findMaxItemId();
 
 }

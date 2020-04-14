@@ -1,5 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio;
 
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.NonNull;
@@ -49,6 +50,39 @@ public class QueueAdapterImpl implements QueueAdapter {
     @Override
     public void addAll(Collection<MediaSessionCompat.QueueItem> items) {
         addAll(getItemCount(), items);
+    }
+
+    @Override
+    public void addMedia(MediaDescriptionCompat media) {
+        addMedia(media);
+    }
+
+    @Override
+    public void addMedia(int index, MediaDescriptionCompat media) {
+        if (media == null) {
+            return;
+        }
+        MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(media, findMaxItemId() + 1);
+        add(index, item);
+    }
+
+    @Override
+    public void addAllMedias(List<MediaDescriptionCompat> medias) {
+        addAllMedias(0, medias);
+    }
+
+    @Override
+    public void addAllMedias(int index, List<MediaDescriptionCompat> medias) {
+        if (medias == null || medias.size() == 0) {
+            return;
+        }
+        List<MediaSessionCompat.QueueItem> items = new ArrayList<>();
+        long maxItemId = findMaxItemId();
+        for (int i = 0; i < medias.size(); i++) {
+            MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(medias.get(i), findMaxItemId() + i + 1);
+            items.add(item);
+        }
+        addAll(index, items);
     }
 
     @Override
@@ -233,6 +267,17 @@ public class QueueAdapterImpl implements QueueAdapter {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public long findMaxItemId() {
+        long maxId = 0;
+        for (MediaSessionCompat.QueueItem item : queueItemList) {
+            if (item.getQueueId() > maxId) {
+                maxId = item.getQueueId();
+            }
+        }
+        return maxId;
     }
 
     private void notifyDataChanged() {
