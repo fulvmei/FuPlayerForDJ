@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -72,7 +73,8 @@ public class AudioNotificationManager {
     public static final int NOTIFICATION_ID = 0xb339;
 
     private final Context context;
-    private final MediaSessionCompat mediaSession;
+    @NonNull
+    private final MediaSessionCompat.Token sessionToken;
 
     private final IntentFilter intentFilter;
     private final NotificationBroadcastReceiver notificationBroadcastReceiver;
@@ -95,17 +97,23 @@ public class AudioNotificationManager {
     private int currentNotificationTag;
 
 
-    public AudioNotificationManager(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
+    public AudioNotificationManager(Context context, @NonNull MediaSessionCompat.Token sessionToken) {
         this.context = context;
-        this.mediaSession = mediaSession;
+        this.sessionToken = sessionToken;
 
         this.intentFilter = new IntentFilter(ACTION_NOTIFICATION_DISMISS);
         this.notificationBroadcastReceiver = new NotificationBroadcastReceiver();
         mainHandler = new Handler(Looper.getMainLooper());
 
-        mediaController = new MediaControllerCompat(context, mediaSession);
         mediaControllerCallback = new MediaControllerCallback();
-        mediaController.registerCallback(mediaControllerCallback);
+        MediaControllerCompat tempMediaController = null;
+        try {
+            tempMediaController = new MediaControllerCompat(context, sessionToken);
+            tempMediaController.registerCallback(mediaControllerCallback);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        mediaController = tempMediaController;
 
         notificationManager = NotificationManagerCompat.from(context);
 
@@ -140,7 +148,7 @@ public class AudioNotificationManager {
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL);
 
-        MediaDescriptionCompat description = mediaController.getMetadata().getDescription();
+        MediaDescriptionCompat description = mediaController.getMetadata() != null ? mediaController.getMetadata().getDescription() : new MediaDescriptionCompat.Builder().build();
         PlaybackStateCompat playbackState = mediaController.getPlaybackState();
 
         builder.addAction(skipToPreviousAction);
@@ -153,7 +161,7 @@ public class AudioNotificationManager {
 
         androidx.media.app.NotificationCompat.MediaStyle mediaStyle = new FuMediaStyle()
                 .setCancelButtonIntent(cancelPendingIntent)
-                .setMediaSession(mediaSession.getSessionToken())
+                .setMediaSession(sessionToken)
                 .setShowCancelButton(true)
                 .setShowActionsInCompactView(1);
 
@@ -240,7 +248,7 @@ public class AudioNotificationManager {
         notificationManager.createNotificationChannel(notificationChannel);
     }
 
-    public void onDestroy(){
+    public void onDestroy() {
         context.unregisterReceiver(notificationBroadcastReceiver);
     }
 

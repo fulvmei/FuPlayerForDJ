@@ -15,38 +15,30 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
-import com.chengfu.android.fuplayer.FuPlayer;
-import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 import com.chengfu.android.fuplayer.achieve.dj.audio.notification.AudioNotificationManager;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer;
+import com.chengfu.android.fuplayer.achieve.dj.audio.receiver.BecomingNoisyReceiver;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
-import com.chengfu.android.fuplayer.ui.PlayerNotificationManager;
 import com.chengfu.android.fuplayer.util.FuLog;
-import com.google.android.exoplayer2.C;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.chengfu.android.fuplayer.achieve.dj.audio.NotificationBuilder.NOW_PLAYING_NOTIFICATION;
 
 public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner {
     public static final String TAG = "MusicService";
@@ -76,7 +68,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         setSessionToken(mediaSession.getSessionToken());
 
-        audioNotificationManager = new AudioNotificationManager(this, mediaSession);
+        audioNotificationManager = new AudioNotificationManager(this, mediaSession.getSessionToken());
 
         Picasso picasso = null;
         try {
@@ -167,21 +159,15 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         queueAdapter = new QueueAdapterImpl();
         mediaSessionPlayer.setQueueAdapter(queueAdapter);
 
-        AudioPlayManager.getCurrentPlayList(this).observe(this, new Observer<List<CurrentPlay>>() {
-            @Override
-            public void onChanged(List<CurrentPlay> currentPlays) {
-                Log.d("fff", "onChanged size" + currentPlays.size());
-                queueAdapter.addAll(ConverterUtil.currentPlayListToQueueItemList(currentPlays));
-            }
-        });
+//
+//        AudioPlayManager.getCurrentPlayList(this).observe(this, new Observer<List<CurrentPlay>>() {
+//            @Override
+//            public void onChanged(List<CurrentPlay> currentPlays) {
+//                queueAdapter.addAll(ConverterUtil.currentPlayListToQueueItemList(currentPlays));
+//            }
+//        });
 
-        try {
-            becomingNoisyReceiver =
-                    new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
+        becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
     }
 
     @Nullable
@@ -225,58 +211,4 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         }
         audioNotificationManager.onDestroy();
     }
-
-    private static class BecomingNoisyReceiver extends BroadcastReceiver {
-        private Context context;
-        private MediaSessionCompat.Token sessionToken;
-        private IntentFilter noisyIntentFilter;
-        private MediaControllerCompat controller;
-        private boolean registered = false;
-
-        public BecomingNoisyReceiver(Context context,
-                                     MediaSessionCompat.Token sessionToken) throws RemoteException {
-            this.context = context;
-            this.sessionToken = sessionToken;
-
-            noisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-            controller = new MediaControllerCompat(context, sessionToken);
-        }
-
-        public void register() {
-            if (!registered) {
-                context.registerReceiver(this, noisyIntentFilter);
-                registered = true;
-            }
-        }
-
-        public void unregister() {
-            if (registered) {
-                context.unregisterReceiver(this);
-                registered = false;
-            }
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FuLog.d(TAG, "onReceive : context=" + context + ",intent=" + intent);
-            if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
-                controller.getTransportControls().pause();
-            }
-        }
-    }
-
-//    private class NotificationBroadcastReceiver extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            stopForeground(true);
-//            if (mediaSessionPlayer != null) {
-//                mediaSessionPlayer.stop();
-////                mediaSessionPlayer.setPlayList(new ArrayList<>());
-//            }
-//            if (mediaSession != null && mediaSession.isActive()) {
-////                mediaSession.sendSessionEvent();
-//            }
-//        }
-//    }
 }
