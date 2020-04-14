@@ -33,6 +33,9 @@ import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -98,16 +101,11 @@ public final class MediaSessionPlayer {
 
     private final FuPlayer player;
 
-
     private final MediaSessionCompat mediaSession;
     private MediaControllerCompat mediaController;
 
     private final DataChangedListener dataChangedListener;
     private QueueAdapter queueAdapter;
-    private long activeItemId = MediaSessionCompat.QueueItem.UNKNOWN_ID;
-    private boolean activePlayingAd = false;
-    private long activeDuration = -1;
-
 
     private MediaSource mediaSource;
     private final DefaultDataSourceFactory dataSourceFactory;
@@ -116,6 +114,7 @@ public final class MediaSessionPlayer {
     private int rewindMs;
     private int fastForwardMs;
 
+    private final WindowInfo windowInfo;
 
     public MediaSessionPlayer(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
         //init player
@@ -147,6 +146,8 @@ public final class MediaSessionPlayer {
         fastForwardMs = DEFAULT_FAST_FORWARD_MS;
 //        mediaSession.setMetadata(METADATA_EMPTY);
 //        mediaSession.setPlaybackState(INITIAL_PLAYBACK_STATE);
+
+        windowInfo = new WindowInfo();
     }
 
     public FuPlayer getPlayer() {
@@ -193,34 +194,32 @@ public final class MediaSessionPlayer {
     }
 
     private void updateMediaSessionMetadata() {
-        Log.d("TAG", "updateMediaSessionMetadata");
+        boolean isPlayingAd = player.isPlayingAd();
         long duration = player.isCurrentWindowDynamic() || player.getDuration() == C.TIME_UNSET || player.getDuration() <= 0 ? -1 : player.getDuration();
-        long activeItemId = queueAdapter != null && queueAdapter.getActiveItem() != null ? queueAdapter.getActiveItem().getQueueId() : MediaSessionCompat.QueueItem.UNKNOWN_ID;
-        if (this.activeItemId != activeItemId
-                || activePlayingAd != player.isPlayingAd()
-                || activeDuration != duration) {
-            MediaDescriptionCompat description = queueAdapter != null && queueAdapter.getActiveItem() != null ? queueAdapter.getActiveItem().getDescription() : null;
-            mediaSession.setMetadata(getMetadata(description));
+
+        MediaDescriptionCompat tag = (player.getCurrentTag() instanceof MediaDescriptionCompat) ?
+                (MediaDescriptionCompat) player.getCurrentTag() : null;
+
+        if (windowInfo.duration != duration
+                || windowInfo.isPlayingAd != isPlayingAd
+                || windowInfo.tag != tag) {
+            Log.e("ddd","updateMediaSessionMetadata duration="+duration+",isPlayingAd="+isPlayingAd+",tag="+tag);
+            mediaSession.setMetadata(getMetadata(windowInfo));
         }
-        this.activeItemId = activeItemId;
+        windowInfo.set(isPlayingAd, duration, tag);
     }
 
-    private MediaMetadataCompat getMetadata(MediaDescriptionCompat description) {
-        if (description == null) {
+    private MediaMetadataCompat getMetadata(@NonNull WindowInfo windowInfo) {
+        if (windowInfo.tag == null) {
             return METADATA_EMPTY;
         }
         MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-        activePlayingAd = player.isPlayingAd();
-        if (activePlayingAd) {
-            builder.putLong(MediaMetadataCompat.METADATA_KEY_ADVERTISEMENT, 1);
-        }
-        activeDuration = player.isCurrentWindowDynamic() || player.getDuration() == C.TIME_UNSET ? -1 : player.getDuration();
+        builder.putLong(MediaMetadataCompat.METADATA_KEY_ADVERTISEMENT, windowInfo.isPlayingAd ? 1 : 0);
         builder.putLong(
                 MediaMetadataCompat.METADATA_KEY_DURATION,
-                activeDuration);
+                windowInfo.duration);
 
-
-        Bundle extras = description.getExtras();
+        Bundle extras = windowInfo.tag.getExtras();
         if (extras != null) {
             for (String key : extras.keySet()) {
                 Object value = extras.get(key);
@@ -239,38 +238,38 @@ public final class MediaSessionPlayer {
                 }
             }
         }
-        CharSequence title = description.getTitle();
+        CharSequence title = windowInfo.tag.getTitle();
         if (title != null) {
             String titleString = String.valueOf(title);
             builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, titleString);
             builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, titleString);
         }
-        CharSequence subtitle = description.getSubtitle();
+        CharSequence subtitle = windowInfo.tag.getSubtitle();
         if (subtitle != null) {
             builder.putString(
                     MediaMetadataCompat.METADATA_KEY_DISPLAY_SUBTITLE, String.valueOf(subtitle));
         }
-        CharSequence displayDescription = description.getDescription();
+        CharSequence displayDescription = windowInfo.tag.getDescription();
         if (displayDescription != null) {
             builder.putString(
                     MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION,
                     String.valueOf(displayDescription));
         }
-        Bitmap iconBitmap = description.getIconBitmap();
+        Bitmap iconBitmap = windowInfo.tag.getIconBitmap();
         if (iconBitmap != null) {
             builder.putBitmap(MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON, iconBitmap);
         }
-        Uri iconUri = description.getIconUri();
+        Uri iconUri = windowInfo.tag.getIconUri();
         if (iconUri != null) {
             builder.putString(
                     MediaMetadataCompat.METADATA_KEY_DISPLAY_ICON_URI, String.valueOf(iconUri));
         }
-        String mediaId = description.getMediaId();
+        String mediaId = windowInfo.tag.getMediaId();
         if (mediaId != null) {
             builder.putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID, mediaId);
         }
 
-        Uri mediaUri = description.getMediaUri();
+        Uri mediaUri = windowInfo.tag.getMediaUri();
         if (mediaUri != null) {
             builder.putString(
                     MediaMetadataCompat.METADATA_KEY_MEDIA_URI, String.valueOf(mediaUri));
@@ -352,12 +351,27 @@ public final class MediaSessionPlayer {
         player.release();
     }
 
+    private static final class WindowInfo {
+        boolean isPlayingAd;
+        long duration;
+        MediaDescriptionCompat tag;
+
+        WindowInfo set(boolean isPlayingAd, long duration, MediaDescriptionCompat tag) {
+            this.isPlayingAd = isPlayingAd;
+            this.duration = duration;
+            this.tag = tag;
+            return this;
+        }
+    }
+
     private class PlayerEventListener implements FuPlayer.EventListener {
         @Override
         public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
             FuLog.d(TAG, "onTimelineChanged : timeline=" + timeline + ",manifest=" + manifest + ",reason=" + reason);
             updateMediaSessionMetadata();
             updateMediaSessionPlaybackState();
+
+
         }
 
         @Override
@@ -556,7 +570,9 @@ public final class MediaSessionPlayer {
                 mediaSource = ExoMediaSourceUtil.buildMediaSource(item.getDescription().getMediaUri(), null, dataSourceFactory, item.getDescription());
                 player.prepare(mediaSource);
             }
-            updateMediaSessionMetadata();
+//            updateMediaSessionMetadata();
         }
     }
+
+
 }
