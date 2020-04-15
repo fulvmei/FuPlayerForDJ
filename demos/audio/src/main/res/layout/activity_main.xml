@@ -26,6 +26,13 @@
         android:layout_below="@id/play2"
         android:text="关闭" />
 
+    <Button
+        android:id="@+id/m3u8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/close"
+        android:text="m3u8" />
+
     <com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView
         android:id="@+id/audioControlView"
         android:layout_width="match_parent"

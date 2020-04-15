@@ -74,8 +74,6 @@ public class AudioPlayActivity extends AppCompatActivity {
                     Log.d(TAG, "onError2");
                 }
             });
-
-
         }
 
         @Override
