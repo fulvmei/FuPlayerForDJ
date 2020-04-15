@@ -48,6 +48,11 @@ public class PlaybackStateCompatExt {
         return (actions & PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS) != 0L;
     }
 
+    public static boolean isSeekToEnabled(PlaybackStateCompat playbackState) {
+        long actions = playbackState.getActions();
+        return (actions & PlaybackStateCompat.ACTION_SEEK_TO) != 0L;
+    }
+
     public static String stateName(PlaybackStateCompat playbackStateCompat) {
         int state = playbackStateCompat.getState();
         switch (state) {

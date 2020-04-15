@@ -4,8 +4,10 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.RemoteException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -290,7 +292,6 @@ public class AudioControlView extends FrameLayout {
 
         if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
             long timeToEnd = (duration_ms - currentPosition);
-            System.out.println("1111111111111111  timeToEnd="+timeToEnd);
             if (timeToEnd > 0) {
                 if (progressAnimator != null) {
                     progressAnimator.cancel();
@@ -334,6 +335,12 @@ public class AudioControlView extends FrameLayout {
             setVisibility(play2, false);
             setVisibility(pause2, true);
         }
+
+        setViewEnabled(seek, state != null && PlaybackStateCompatExt.isSeekToEnabled(state));
+
+//        if (seek != null && state != null && !PlaybackStateCompatExt.isSeekToEnabled(state)) {
+//            seek
+//        }
 
         updateProgress(state);
 

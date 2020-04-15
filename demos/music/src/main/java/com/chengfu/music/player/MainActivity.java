@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                 .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
                 .build();
 
-        MediaDescriptionCompat music = new MediaDescriptionCompat.Builder()
+        MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
                 .setMediaId("1")
                 .setTitle("爱过的人我已不再拥有，错过的人是否可回首 . （治愈女声）")
                 .setSubtitle("未知来源")
@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         ArrayList<MediaDescriptionCompat> list = new ArrayList<>();
 
-        MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
+        MediaDescriptionCompat music2 = new MediaDescriptionCompat.Builder()
                 .setMediaId("2")
                 .setTitle("3D潮音 - 3D环绕嗨曲")
                 .setSubtitle("未知来源")
@@ -316,10 +316,39 @@ public class MainActivity extends AppCompatActivity {
                 .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
                 .build();
 
-        list.add(music0);
-        list.add(music);
+        MediaDescriptionCompat music3 = new MediaDescriptionCompat.Builder()
+                .setMediaId("3")
+                .setTitle("电音House 耳机福利")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1108/5821463c8ea94.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+
+        MediaDescriptionCompat music4 = new MediaDescriptionCompat.Builder()
+                .setMediaId("4")
+                .setTitle("感觉很放松，我最喜欢在我的兰博基尼上听这首歌，先不说，我换一下电池，还能再听几圈")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1123/5834c6bc02059.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+        MediaDescriptionCompat music5 = new MediaDescriptionCompat.Builder()
+                .setMediaId("5")
+                .setTitle("一辈子有多少的来不及发现已失去最重要的东西 . （精神节奏）")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0703/5778246106dab.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+
+        list.add(music5);
+        list.add(music4);
+        list.add(music3);
+        list.add(music2);
         list.add(music1);
-        Collections.shuffle(list);
+        list.add(music0);
+//        Collections.shuffle(list);
         bundle.putParcelableArrayList(MusicContract.KEY_QUEUE_ITEMS, list);
         mediaController.sendCommand(MusicContract.COMMAND_ADD_QUEUE_ITEMS, bundle, null);
     }
