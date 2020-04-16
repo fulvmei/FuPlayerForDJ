@@ -18,6 +18,7 @@ import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 
 import com.chengfu.android.fuplayer.FuPlayer;
+import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.QueueListUtil;
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
@@ -90,10 +91,10 @@ public final class MediaSessionPlayer {
     private final PlayerEventListener playerEventListener;
     private final MediaSessionCallback mediaSessionCallback;
 
+    private Context context;
     private final FuPlayer player;
 
     private final MediaSessionCompat mediaSession;
-    private MediaControllerCompat mediaController;
 
     private final ConcatenatingMediaSource concatenatingMediaSource;
     private final DefaultDataSourceFactory dataSourceFactory;
@@ -108,6 +109,7 @@ public final class MediaSessionPlayer {
     private final List<MediaSessionCompat.QueueItem> queueItemList;
 
     public MediaSessionPlayer(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
+        this.context = context;
         metadataInfo = new MetadataInfo();
         playbackStateInfo = new PlaybackStateInfo();
         enabledPlaybackActions = DEFAULT_PLAYBACK_ACTIONS;
@@ -122,7 +124,6 @@ public final class MediaSessionPlayer {
 
         //init mediaSession
         this.mediaSession = mediaSession;
-        mediaController = mediaSession.getController();
         mediaSessionCallback = new MediaSessionCallback();
         mediaSession.setCallback(mediaSessionCallback, new Handler(Util.getLooper()));
         mediaSession.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
@@ -336,6 +337,10 @@ public final class MediaSessionPlayer {
                 playbackStateInfo.repeatMode != repeatMode ||
                 playbackStateInfo.shuffleMode != shuffleMode ||
                 playbackStateInfo.tag != tag) {
+
+            if (playbackStateInfo.tag != tag && tag != null) {
+                invalidateRecentList(tag.getDescription());
+            }
             playbackStateInfo.set(actions, bufferedPosition, state, currentPosition, playbackSpeed, repeatMode, shuffleMode, tag);
             mediaSession.setPlaybackState(getPlaybackState(playbackStateInfo));
         } else {
@@ -354,6 +359,10 @@ public final class MediaSessionPlayer {
         mediaSession.setRepeatMode(playbackStateInfo.repeatMode);
         mediaSession.setShuffleMode(playbackStateInfo.shuffleMode);
         return builder.build();
+    }
+
+    private void invalidateRecentList(MediaDescriptionCompat media) {
+        AudioPlayClient.addToRecentList(context, media);
     }
 
     public void stop(boolean reset) {
@@ -518,17 +527,30 @@ public final class MediaSessionPlayer {
         }
 
         @Override
+        public void onPlayFromMediaId(String mediaId, Bundle extras) {
+            int position = QueueListUtil.getPositionByMediaId(queueItemList, mediaId);
+            if (position >= 0 && position < player.getCurrentTimeline().getWindowCount()) {
+                player.seekTo(position, 0);
+            }
+        }
+
+        @Override
         public void onPause() {
             player.setPlayWhenReady(false);
         }
 
         @Override
         public void onSkipToNext() {
-            if (concatenatingMediaSource.getSize() == 0) {
-                return;
-            }
             if (player.hasNext()) {
                 player.next();
+            }
+        }
+
+        @Override
+        public void onSkipToQueueItem(long id) {
+            int position = QueueListUtil.getPositionById(queueItemList, id);
+            if (position >= 0 && position < player.getCurrentTimeline().getWindowCount()) {
+                player.seekTo(position, 0);
             }
         }
 

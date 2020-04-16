@@ -84,8 +84,14 @@ public class QueueListUtil {
         return maxId;
     }
 
-    public static void findItemId(@NonNull ConcatenatingMediaSource mediaSource, @NonNull List<MediaSessionCompat.QueueItem> items) {
-
+    public static int getPositionById(@NonNull List<MediaSessionCompat.QueueItem> items, long itemId) {
+        for (int i = 0; i < items.size(); i++) {
+            MediaSessionCompat.QueueItem item = items.get(i);
+            if (item.getQueueId() == itemId) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static int getPositionByMediaId(@NonNull List<MediaSessionCompat.QueueItem> items, String mediaId) {

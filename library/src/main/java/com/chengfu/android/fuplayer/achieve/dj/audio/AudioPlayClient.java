@@ -11,10 +11,19 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
+
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.RecentPlay;
+import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AudioPlayClient {
     @NonNull
@@ -124,11 +133,36 @@ public class AudioPlayClient {
         }
     }
 
+    public void playFromItemId(long id) {
+        if (mediaBrowser.isConnected() && mediaController != null) {
+            mediaController.getTransportControls().skipToQueueItem(id);
+        }
+        pendingPlayMediaId = null;
+    }
+
     public void playFromMediaId(String mediaId) {
         if (mediaBrowser.isConnected() && mediaController != null) {
             mediaController.getTransportControls().playFromMediaId(mediaId, null);
         }
         pendingPlayMediaId = null;
+    }
+
+    public static void addToRecentList(@NonNull Context context, @NonNull MediaDescriptionCompat media) {
+        new Thread(() -> {
+            MediaEntity entity = ConverterUtil.mediaDescriptionToMediaEntity(media);
+            DataBaseManager.addToRecentList(context, entity);
+        }).start();
+    }
+
+    public static LiveData<List<MediaDescriptionCompat>> getRecentList(@NonNull Context context) {
+        LiveData<List<RecentPlay>> recentPlayList = AudioDatabase.getInstance(context).recentPlayDao().getRecentPlayList();
+        return Transformations.map(recentPlayList, input -> {
+            List<MediaDescriptionCompat> medias = new ArrayList<>();
+            for (RecentPlay item : input) {
+                medias.add(ConverterUtil.mediaEntityToMediaDescription(item.audio));
+            }
+            return medias;
+        });
     }
 
     private class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback {

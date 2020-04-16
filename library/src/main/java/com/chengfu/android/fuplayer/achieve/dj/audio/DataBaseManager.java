@@ -9,12 +9,14 @@ import androidx.lifecycle.LiveData;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.QueueItemEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.RecentPlayEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.RecentPlay;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AudioPlayManager {
+public class DataBaseManager {
 
     @WorkerThread
     public static void setCurrentPlayList(@NonNull Context context, List<MediaEntity> list, int currentPlayingIndex) {
@@ -61,5 +63,14 @@ public class AudioPlayManager {
         return AudioDatabase.getInstance(context).currentPlayDao().getCurrentPlayList();
     }
 
+    @WorkerThread
+    public static void addToRecentList(@NonNull Context context, @NonNull MediaEntity media) {
+        AudioDatabase.getInstance(context).audioDao().insert(media);
+        RecentPlayEntity recent = new RecentPlayEntity(media.mediaId);
+        AudioDatabase.getInstance(context).recentPlayDao().insert(recent);
+    }
 
+    public static LiveData<List<RecentPlay>> getRecentPlayList(@NonNull Context context) {
+        return AudioDatabase.getInstance(context).recentPlayDao().getRecentPlayList();
+    }
 }

@@ -50,7 +50,6 @@ public interface RecentPlayDao {
 //    void deleteAll();
 
     @Transaction
-    @Query("Select * From RecentPlayEntity")
+    @Query("Select * From RecentPlayEntity ORDER BY modifiedTime DESC")
     LiveData<List<RecentPlay>> getRecentPlayList();
-
 }

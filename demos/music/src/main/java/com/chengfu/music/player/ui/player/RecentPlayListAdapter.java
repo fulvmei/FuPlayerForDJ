@@ -1,5 +1,6 @@
-package com.chengfu.music.player.ui.main;
+package com.chengfu.music.player.ui.player;
 
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,23 +11,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 import com.chengfu.music.player.R;
 
 import java.util.List;
 
-public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayListAdapter.ViewHolder> {
+public class RecentPlayListAdapter extends RecyclerView.Adapter<RecentPlayListAdapter.ViewHolder> {
 
 
-    private List<MediaSessionCompat.QueueItem> list;
+    private List<MediaDescriptionCompat> list;
     private long activeQueueItemId = MediaSessionCompat.QueueItem.UNKNOWN_ID;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
-        void onClick(View v, MediaSessionCompat.QueueItem item);
+        void onClick(View v,MediaDescriptionCompat item);
     }
 
-    public void setData(List<MediaSessionCompat.QueueItem> list) {
+    public void setData(List<MediaDescriptionCompat> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -40,7 +40,7 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
         this.onItemClickListener = onItemClickListener;
     }
 
-    public List<MediaSessionCompat.QueueItem> getList() {
+    public List<MediaDescriptionCompat> getList() {
         return list;
     }
 
@@ -53,17 +53,17 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        MediaSessionCompat.QueueItem item = list.get(position);
+        MediaDescriptionCompat item = list.get(position);
 
-        holder.img.setImageBitmap(item.getDescription().getIconBitmap());
-        holder.title.setText(item.getDescription().getTitle());
-        holder.subTitle.setText(item.getDescription().getSubtitle());
+        holder.img.setImageBitmap(item.getIconBitmap());
+        holder.title.setText(item.getTitle());
+        holder.subTitle.setText(item.getSubtitle());
 
-        if (item.getQueueId() == activeQueueItemId) {
-            holder.playing.setVisibility(View.VISIBLE);
-        } else {
-            holder.playing.setVisibility(View.INVISIBLE);
-        }
+//        if (item.getQueueId() == activeQueueItemId) {
+//            holder.playing.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.playing.setVisibility(View.INVISIBLE);
+//        }
     }
 
     @Override

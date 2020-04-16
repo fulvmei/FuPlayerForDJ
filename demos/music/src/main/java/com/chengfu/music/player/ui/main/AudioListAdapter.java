@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayManager;
+import com.chengfu.android.fuplayer.achieve.dj.audio.DataBaseManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.RecentPlayEntity;
@@ -97,7 +97,7 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            AudioPlayManager.addToNextPlay(view.getContext(), audio);
+                            DataBaseManager.addToNextPlay(view.getContext(), audio);
                         }
                     }).start();
                 } else if (id == R.id.popup_song_add_to_playlist) {

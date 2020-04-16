@@ -12,15 +12,16 @@ public class RecentPlayEntity {
     @PrimaryKey
     @NonNull
     public String mediaId;
-    public int position;
+    public long modifiedTime;
 
     @Ignore
     public RecentPlayEntity(@NonNull String mediaId) {
         this.mediaId = mediaId;
+        modifiedTime = System.currentTimeMillis();
     }
 
-    public RecentPlayEntity(@NonNull String mediaId, int position) {
+    public RecentPlayEntity(@NonNull String mediaId, long modifiedTime) {
         this.mediaId = mediaId;
-        this.position = position;
+        this.modifiedTime = modifiedTime;
     }
 }

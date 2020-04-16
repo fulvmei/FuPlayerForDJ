@@ -18,4 +18,8 @@
         android:id="@+id/add_clear"
         android:title="清除数据" />
 
+    <item
+        android:id="@+id/recent"
+        android:title="播放历史" />
+
 </menu>

@@ -1,6 +1,8 @@
-package com.chengfu.music.player.ui.main;
+package com.chengfu.music.player.ui.player;
 
 import android.os.Bundle;
+import android.support.v4.media.MediaDescriptionCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +14,28 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.DataBaseManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
+import com.chengfu.android.fuplayer.achieve.dj.audio.db.CurrentPlayList;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.music.player.R;
+import com.chengfu.music.player.ui.main.AudioListAdapter;
+import com.chengfu.music.player.ui.main.CurrentPlayListAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.List;
 
-public class AudioListFragment extends Fragment {
+public class RecentListFragment extends BottomSheetDialogFragment {
 
     RecyclerView recyclerView;
-    AudioListAdapter adapter;
+    RecentPlayListAdapter adapter;
+//    AudioPlayClient audioPlayClient;
 
-    public static AudioListFragment newInstance() {
+    public static RecentListFragment newInstance() {
         Bundle args = new Bundle();
 
-        AudioListFragment fragment = new AudioListFragment();
+        RecentListFragment fragment = new RecentListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +43,7 @@ public class AudioListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_audio_list, container, false);
+        return inflater.inflate(R.layout.fragment_recent_list, container, false);
     }
 
     @Override
@@ -45,36 +53,29 @@ public class AudioListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
 
-        view.findViewById(R.id.playAll).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (adapter.getList() == null) {
-                    return;
-                }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DataBaseManager.setCurrentPlayList(requireContext(), adapter.getList(),0);
-                    }
-                }).start();
-            }
-        });
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        adapter = new AudioListAdapter();
+//        audioPlayClient=new AudioPlayClient(requireContext());
+        adapter = new RecentPlayListAdapter();
 
-        recyclerView.setAdapter(adapter);
-
-        AudioDatabase.getInstance(requireContext()).audioDao().queryAll().observe(this, new Observer<List<MediaEntity>>() {
+        adapter.setOnItemClickListener(new RecentPlayListAdapter.OnItemClickListener() {
             @Override
-            public void onChanged(List<MediaEntity> audioEntities) {
-                adapter.setData(audioEntities);
+            public void onClick(View v, MediaDescriptionCompat item) {
+//                audioPlayClient.playFromMediaId(item.getMediaId());
             }
         });
 
+        recyclerView.setAdapter(adapter);
+
+        AudioPlayClient.getRecentList(requireContext()).observe(this, new Observer<List<MediaDescriptionCompat>>() {
+            @Override
+            public void onChanged(List<MediaDescriptionCompat> medias) {
+                adapter.setData(medias);
+            }
+        });
     }
 }

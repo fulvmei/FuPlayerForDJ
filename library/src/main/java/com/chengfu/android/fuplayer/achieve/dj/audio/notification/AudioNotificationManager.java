@@ -29,7 +29,6 @@ import androidx.media.app.FuMediaStyle;
 import androidx.media.session.MediaButtonReceiver;
 
 import com.chengfu.android.fuplayer.achieve.dj.R;
-import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
 
 import java.util.List;
