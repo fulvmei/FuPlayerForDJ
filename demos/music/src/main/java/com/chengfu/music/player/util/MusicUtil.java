@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.media.MediaDescriptionCompat;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 
@@ -14,7 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class MusicUtil {
     public static List<MediaEntity> getMusics(Context context) {
@@ -74,7 +78,7 @@ public class MusicUtil {
 
     public static List<MediaEntity> getNetMusics(Context context) {
         ArrayList<MediaEntity> musics = new ArrayList<>();
-        Bitmap[] bitmaps=getBitmaps(context);
+        Bitmap[] bitmaps = getBitmaps(context);
         for (int i = 0; i < titles.length; i++) {
             MediaEntity entity = new MediaEntity("id_" + i);
             entity.mediaUri = Uri.parse(paths[i % titles.length]);
@@ -108,4 +112,73 @@ public class MusicUtil {
         return new Bitmap[]{bitmap1, bitmap2, bitmap3};
     }
 
+    public static ArrayList<MediaDescriptionCompat> getTestMedias(int count, boolean shuffle) {
+        MediaDescriptionCompat music0 = new MediaDescriptionCompat.Builder()
+                .setMediaId("0")
+                .setTitle("贵州交通广播")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"))
+                .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
+                .build();
+
+        MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
+                .setMediaId("1")
+                .setTitle("爱过的人我已不再拥有，错过的人是否可回首 . （治愈女声）")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1104/581b63392f6cb.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/1104/581b633864635.jpg"))
+                .build();
+
+        MediaDescriptionCompat music2 = new MediaDescriptionCompat.Builder()
+                .setMediaId("2")
+                .setTitle("3D潮音 - 3D环绕嗨曲")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0517/573b1240d0118.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+        MediaDescriptionCompat music3 = new MediaDescriptionCompat.Builder()
+                .setMediaId("3")
+                .setTitle("电音House 耳机福利")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1108/5821463c8ea94.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+
+        MediaDescriptionCompat music4 = new MediaDescriptionCompat.Builder()
+                .setMediaId("4")
+                .setTitle("感觉很放松，我最喜欢在我的兰博基尼上听这首歌，先不说，我换一下电池，还能再听几圈")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1123/5834c6bc02059.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+        MediaDescriptionCompat music5 = new MediaDescriptionCompat.Builder()
+                .setMediaId("5")
+                .setTitle("一辈子有多少的来不及发现已失去最重要的东西 . （精神节奏）")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0703/5778246106dab.mp3"))
+                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .build();
+
+        MediaDescriptionCompat[] musics = new MediaDescriptionCompat[]{music0, music1, music2, music3, music4, music5};
+
+        ArrayList<MediaDescriptionCompat> temp = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            MediaDescriptionCompat item = musics[i % count];
+            MediaDescriptionCompat newItem = new MediaDescriptionCompat.Builder()
+                    .setMediaId(UUID.randomUUID().toString())
+                    .setTitle(item.getTitle())
+                    .setSubtitle(item.getSubtitle())
+                    .setMediaUri(item.getMediaUri())
+                    .setIconUri(item.getIconUri())
+                    .build();
+            temp.add(newItem);
+        }
+        if (shuffle) {
+            Collections.shuffle(temp);
+        }
+        return temp;
+    }
 }

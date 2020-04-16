@@ -13,14 +13,12 @@ import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 
 import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 
 import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
-import com.chengfu.android.fuplayer.achieve.dj.audio.QueueAdapter;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.QueueListUtil;
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 import com.chengfu.android.fuplayer.util.FuLog;
@@ -70,11 +68,6 @@ public final class MediaSessionPlayer {
                     | PlaybackStateCompat.ACTION_SET_REPEAT_MODE
                     | PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE;
 
-    long ACTIONS =
-            PlaybackStateCompat.ACTION_SKIP_TO_QUEUE_ITEM
-                    | PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                    | PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS;
-
     public static final long BASE_PLAYBACK_ACTIONS = PlaybackStateCompat.ACTION_PLAY_PAUSE
             | PlaybackStateCompat.ACTION_PLAY
             | PlaybackStateCompat.ACTION_PAUSE
@@ -102,23 +95,30 @@ public final class MediaSessionPlayer {
     private final MediaSessionCompat mediaSession;
     private MediaControllerCompat mediaController;
 
-    private final DataChangedListener dataChangedListener;
-    //    private QueueAdapter queueAdapter;
     private final ConcatenatingMediaSource concatenatingMediaSource;
-
-    private MediaSource mediaSource;
     private final DefaultDataSourceFactory dataSourceFactory;
 
     private long enabledPlaybackActions;
     private int rewindMs;
     private int fastForwardMs;
 
-    private final WindowInfo windowInfo;
+    private final MetadataInfo metadataInfo;
+    private final PlaybackStateInfo playbackStateInfo;
+
     private final List<MediaSessionCompat.QueueItem> queueItemList;
 
     public MediaSessionPlayer(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
+        metadataInfo = new MetadataInfo();
+        playbackStateInfo = new PlaybackStateInfo();
+        enabledPlaybackActions = DEFAULT_PLAYBACK_ACTIONS;
+        rewindMs = DEFAULT_REWIND_MS;
+        fastForwardMs = DEFAULT_FAST_FORWARD_MS;
+        dataSourceFactory = new DefaultDataSourceFactory(
+                context, Util.getUserAgent(context, context.getApplicationInfo().packageName), null);
 
+        //init source
         queueItemList = new ArrayList<>();
+        concatenatingMediaSource = new ConcatenatingMediaSource();
 
         //init mediaSession
         this.mediaSession = mediaSession;
@@ -141,39 +141,14 @@ public final class MediaSessionPlayer {
         if (player.getAudioComponent() != null) {
             player.getAudioComponent().setAudioAttributes(attributes, true);
         }
-        dataSourceFactory = new DefaultDataSourceFactory(
-                context, Util.getUserAgent(context, context.getApplicationInfo().packageName), null);
+    }
 
-        concatenatingMediaSource = new ConcatenatingMediaSource();
-        player.prepare(concatenatingMediaSource);
-
-
-        dataChangedListener = new DataChangedListener();
-
-        enabledPlaybackActions = DEFAULT_PLAYBACK_ACTIONS;
-        rewindMs = DEFAULT_REWIND_MS;
-        fastForwardMs = DEFAULT_FAST_FORWARD_MS;
-
-        windowInfo = new WindowInfo();
-
-
+    public List<MediaSessionCompat.QueueItem> getQueueItemList() {
+        return queueItemList;
     }
 
     public FuPlayer getPlayer() {
         return player;
-    }
-
-    public void setQueueAdapter(QueueAdapter queueAdapter) {
-//        if (this.queueAdapter == queueAdapter) {
-//            return;
-//        }
-//        if (this.queueAdapter != null) {
-//            this.queueAdapter.removeDataChangedListener(dataChangedListener);
-//        }
-//        this.queueAdapter = queueAdapter;
-//        if (queueAdapter != null) {
-//            queueAdapter.addDataChangedListener(dataChangedListener);
-//        }
     }
 
     private void invalidateMediaSessionMetadata() {
@@ -183,28 +158,27 @@ public final class MediaSessionPlayer {
         MediaSessionCompat.QueueItem tag = (player.getCurrentTag() instanceof MediaSessionCompat.QueueItem) ?
                 (MediaSessionCompat.QueueItem) player.getCurrentTag() : null;
 
-        if (windowInfo.duration != duration
-                || windowInfo.isPlayingAd != isPlayingAd
-                || windowInfo.tag != tag) {
-            windowInfo.set(isPlayingAd, duration, tag);
-            mediaSession.setMetadata(getMetadata(windowInfo));
-            Log.d(TAG, "updateMediaSessionMetadata  tag=" + tag);
+        if (metadataInfo.duration != duration
+                || metadataInfo.isPlayingAd != isPlayingAd
+                || metadataInfo.tag != tag) {
+            metadataInfo.set(isPlayingAd, duration, tag);
+            mediaSession.setMetadata(getMetadata(metadataInfo));
         } else {
-            windowInfo.set(isPlayingAd, duration, tag);
+            metadataInfo.set(isPlayingAd, duration, tag);
         }
     }
 
-    private MediaMetadataCompat getMetadata(@NonNull WindowInfo windowInfo) {
-        if (windowInfo.tag == null || windowInfo.tag.getDescription() == null) {
+    private MediaMetadataCompat getMetadata(@NonNull MetadataInfo metadataInfo) {
+        if (metadataInfo.tag == null || metadataInfo.tag.getDescription() == null) {
             return METADATA_EMPTY;
         }
         MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-        builder.putLong(MediaMetadataCompat.METADATA_KEY_ADVERTISEMENT, windowInfo.isPlayingAd ? 1 : 0);
+        builder.putLong(MediaMetadataCompat.METADATA_KEY_ADVERTISEMENT, metadataInfo.isPlayingAd ? 1 : 0);
         builder.putLong(
                 MediaMetadataCompat.METADATA_KEY_DURATION,
-                windowInfo.duration);
+                metadataInfo.duration);
 
-        MediaDescriptionCompat description = windowInfo.tag.getDescription();
+        MediaDescriptionCompat description = metadataInfo.tag.getDescription();
 
         Bundle extras = description.getExtras();
         if (extras != null) {
@@ -264,28 +238,19 @@ public final class MediaSessionPlayer {
         return builder.build();
     }
 
-    private void invalidateMediaSessionPlaybackState() {
-        PlaybackStateCompat.Builder builder = new PlaybackStateCompat.Builder();
+    private int mapRepeatMode() {
+        int repeatMode = player.getRepeatMode();
+        return repeatMode == FuPlayer.REPEAT_MODE_ONE
+                ? PlaybackStateCompat.REPEAT_MODE_ONE
+                : repeatMode == FuPlayer.REPEAT_MODE_ALL
+                ? PlaybackStateCompat.REPEAT_MODE_ALL
+                : PlaybackStateCompat.REPEAT_MODE_NONE;
+    }
 
-        builder.setActions(buildPlaybackActions());
-        builder.setState(mapPlaybackState(), player.getCurrentPosition(),
-                player.getPlaybackParameters().speed,
-                SystemClock.elapsedRealtime());
-        builder.setBufferedPosition(player.getBufferedPosition());
-
-        @FuPlayer.RepeatMode int repeatMode = player.getRepeatMode();
-        mediaSession.setRepeatMode(
-                repeatMode == FuPlayer.REPEAT_MODE_ONE
-                        ? PlaybackStateCompat.REPEAT_MODE_ONE
-                        : repeatMode == FuPlayer.REPEAT_MODE_ALL
-                        ? PlaybackStateCompat.REPEAT_MODE_ALL
-                        : PlaybackStateCompat.REPEAT_MODE_NONE);
-        mediaSession.setShuffleMode(
-                player.getShuffleModeEnabled()
-                        ? PlaybackStateCompat.SHUFFLE_MODE_ALL
-                        : PlaybackStateCompat.SHUFFLE_MODE_NONE);
-
-        mediaSession.setPlaybackState(builder.build());
+    private int mapShuffleMode() {
+        return player.getShuffleModeEnabled()
+                ? PlaybackStateCompat.SHUFFLE_MODE_ALL
+                : PlaybackStateCompat.SHUFFLE_MODE_NONE;
     }
 
     private int mapPlaybackState() {
@@ -304,6 +269,14 @@ public final class MediaSessionPlayer {
         }
     }
 
+    private boolean enableSeeking() {
+        Timeline timeline = player.getCurrentTimeline();
+        if (!timeline.isEmpty() && !player.isPlayingAd()) {
+            return !player.isCurrentWindowDynamic() && player.getDuration() > 0 && player.isCurrentWindowSeekable();
+        }
+        return false;
+    }
+
     private long buildPlaybackActions() {
         boolean enableSeeking = false;
         boolean enableRewind = false;
@@ -311,7 +284,7 @@ public final class MediaSessionPlayer {
         boolean enableSetRating = false;
         Timeline timeline = player.getCurrentTimeline();
         if (!timeline.isEmpty() && !player.isPlayingAd()) {
-            enableSeeking = !player.isCurrentWindowDynamic() && player.getDuration() > 0 && player.isCurrentWindowSeekable();
+            enableSeeking = enableSeeking();
             enableRewind = enableSeeking && rewindMs > 0;
             enableFastForward = enableSeeking && fastForwardMs > 0;
             enableSetRating = true;
@@ -344,25 +317,54 @@ public final class MediaSessionPlayer {
         return playbackActions;
     }
 
-    public void stop() {
-        player.stop();
+    private void invalidateMediaSessionPlaybackState() {
+        long actions = buildPlaybackActions();
+        long bufferedPosition = enableSeeking() ? player.getBufferedPosition() : 0;
+        long currentPosition = player.getCurrentPosition();
+        float playbackSpeed = player.getPlaybackParameters().speed;
+        int state = mapPlaybackState();
+        int repeatMode = mapRepeatMode();
+        int shuffleMode = mapShuffleMode();
+        MediaSessionCompat.QueueItem tag = (player.getCurrentTag() instanceof MediaSessionCompat.QueueItem) ?
+                (MediaSessionCompat.QueueItem) player.getCurrentTag() : null;
+
+        if (playbackStateInfo.actions != actions ||
+                playbackStateInfo.bufferedPosition != bufferedPosition ||
+                playbackStateInfo.state != mapPlaybackState() ||
+                playbackStateInfo.playbackSpeed != player.getPlaybackParameters().speed ||
+                playbackStateInfo.position != player.getCurrentPosition() ||
+                playbackStateInfo.repeatMode != repeatMode ||
+                playbackStateInfo.shuffleMode != shuffleMode ||
+                playbackStateInfo.tag != tag) {
+            playbackStateInfo.set(actions, bufferedPosition, state, currentPosition, playbackSpeed, repeatMode, shuffleMode, tag);
+            mediaSession.setPlaybackState(getPlaybackState(playbackStateInfo));
+        } else {
+            playbackStateInfo.set(actions, bufferedPosition, state, currentPosition, playbackSpeed, repeatMode, shuffleMode, tag);
+        }
+    }
+
+    public PlaybackStateCompat getPlaybackState(PlaybackStateInfo playbackStateInfo) {
+        PlaybackStateCompat.Builder builder = new PlaybackStateCompat.Builder();
+        builder.setActions(playbackStateInfo.actions);
+        builder.setState(playbackStateInfo.state, playbackStateInfo.position,
+                playbackStateInfo.playbackSpeed,
+                SystemClock.elapsedRealtime());
+        builder.setActiveQueueItemId(playbackStateInfo.tag != null ? playbackStateInfo.tag.getQueueId() : MediaSessionCompat.QueueItem.UNKNOWN_ID);
+        builder.setBufferedPosition(playbackStateInfo.bufferedPosition);
+        mediaSession.setRepeatMode(playbackStateInfo.repeatMode);
+        mediaSession.setShuffleMode(playbackStateInfo.shuffleMode);
+        return builder.build();
+    }
+
+    public void stop(boolean reset) {
+        player.stop(reset);
     }
 
     public void release() {
-        player.release();
-    }
-
-    private static final class WindowInfo {
-        boolean isPlayingAd;
-        long duration;
-        MediaSessionCompat.QueueItem tag;
-
-        WindowInfo set(boolean isPlayingAd, long duration, MediaSessionCompat.QueueItem tag) {
-            this.isPlayingAd = isPlayingAd;
-            this.duration = duration;
-            this.tag = tag;
-            return this;
-        }
+        queueItemList.clear();
+        concatenatingMediaSource.clear();
+        mediaSession.setQueue(queueItemList);
+        stop(true);
     }
 
     private class PlayerEventListener implements FuPlayer.EventListener {
@@ -383,24 +385,15 @@ public final class MediaSessionPlayer {
         }
 
         @Override
-        public void onLoadingChanged(boolean isLoading) {
-            FuLog.d(TAG, "onLoadingChanged : isLoading=" + isLoading);
-//            updateMediaSessionPlaybackState();
-        }
-
-        @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             FuLog.d(TAG, "onPlayerStateChanged : playWhenReady=" + playWhenReady + ",playbackState=" + playbackState);
-//            if (playbackState == FuPlayer.STATE_ENDED) {
-//                mediaSessionCallback.onSkipToNext();
-//            }
             invalidateMediaSessionPlaybackState();
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
             FuLog.d(TAG, "onIsPlayingChanged : isPlaying=" + isPlaying);
-//            updateMediaSessionPlaybackState();
+            invalidateMediaSessionPlaybackState();
         }
 
         @Override
@@ -418,41 +411,45 @@ public final class MediaSessionPlayer {
         @Override
         public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             FuLog.d(TAG, "onPlaybackParametersChanged : playbackParameters=" + playbackParameters);
-//            updateMediaSessionPlaybackState();
-        }
-
-        @Override
-        public void onSeekProcessed() {
-//            updateMediaSessionPlaybackState();
+            invalidateMediaSessionPlaybackState();
         }
 
         @Override
         public void onPositionDiscontinuity(int reason) {
+            FuLog.d(TAG, "onPositionDiscontinuity : reason=" + reason);
             if (currentWindowIndex != player.getCurrentWindowIndex()) {
                 currentWindowIndex = player.getCurrentWindowIndex();
                 invalidateMediaSessionPlaybackState();
                 invalidateMediaSessionMetadata();
-                return;
             } else {
                 invalidateMediaSessionPlaybackState();
             }
-
         }
     }
 
     private class MediaSessionCallback extends MediaSessionCompat.Callback {
+
+        @Override
+        public void onPrepare() {
+            player.prepare(concatenatingMediaSource);
+        }
+
         @Override
         public void onCommand(String command, Bundle extras, ResultReceiver cb) {
             super.onCommand(command, extras, cb);
             FuLog.d(TAG, "onCommand : command=" + command + ",extras=" + extras);
             if (MusicContract.COMMAND_SET_QUEUE_ITEMS.equals(command)) {
-                queueItemList.clear();
-                concatenatingMediaSource.clear();
                 if (extras != null) {
+                    queueItemList.clear();
+                    concatenatingMediaSource.clear();
                     extras.setClassLoader(getClass().getClassLoader());
                     ArrayList<MediaDescriptionCompat> list = extras.getParcelableArrayList(MusicContract.KEY_QUEUE_ITEMS);
-                    if (QueueListUtil.addQueueItems(concatenatingMediaSource, queueItemList, list, dataSourceFactory) > 0) {
-                        mediaSession.setQueue(queueItemList);
+                    QueueListUtil.addQueueItems(concatenatingMediaSource, queueItemList, list, dataSourceFactory);
+                    mediaSession.setQueue(queueItemList);
+                    if (queueItemList.size() == 0) {
+                        stop(true);
+                    } else {
+                        onPrepare();
                     }
                 }
             } else if (MusicContract.COMMAND_ADD_QUEUE_ITEMS.equals(command)) {
@@ -463,6 +460,9 @@ public final class MediaSessionPlayer {
 
                     if (QueueListUtil.addQueueItems(concatenatingMediaSource, queueItemList, index, list, dataSourceFactory) > 0) {
                         mediaSession.setQueue(queueItemList);
+                        if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() != null) {
+                            onPrepare();
+                        }
                     }
                 }
             } else if (MusicContract.COMMAND_CLEAR_QUEUE_ITEMS.equals(command)) {
@@ -473,6 +473,7 @@ public final class MediaSessionPlayer {
                 if (concatenatingMediaSource.getSize() != 0) {
                     concatenatingMediaSource.clear();
                 }
+                stop(true);
             }
         }
 
@@ -480,6 +481,9 @@ public final class MediaSessionPlayer {
         public void onAddQueueItem(MediaDescriptionCompat description) {
             if (QueueListUtil.addQueueItem(concatenatingMediaSource, queueItemList, description, dataSourceFactory) > 0) {
                 mediaSession.setQueue(queueItemList);
+                if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() != null) {
+                    onPrepare();
+                }
             }
         }
 
@@ -487,6 +491,9 @@ public final class MediaSessionPlayer {
         public void onAddQueueItem(MediaDescriptionCompat description, int index) {
             if (QueueListUtil.addQueueItem(concatenatingMediaSource, queueItemList, index, description, dataSourceFactory) > 0) {
                 mediaSession.setQueue(queueItemList);
+                if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() != null) {
+                    onPrepare();
+                }
             }
         }
 
@@ -494,12 +501,15 @@ public final class MediaSessionPlayer {
         public void onRemoveQueueItem(MediaDescriptionCompat description) {
             if (QueueListUtil.removeQueueItem(concatenatingMediaSource, queueItemList, description) > 0) {
                 mediaSession.setQueue(queueItemList);
+                if (queueItemList.size() == 0) {
+                    stop(true);
+                }
             }
         }
 
         @Override
         public void onPlay() {
-            if (player.getPlaybackState() == FuPlayer.STATE_IDLE) {
+            if (player.getPlaybackState() == FuPlayer.STATE_IDLE || player.getPlaybackError() != null) {
                 player.retry();
             } else if (player.getPlaybackState() == FuPlayer.STATE_ENDED) {
                 onSeekTo(0);
@@ -514,12 +524,19 @@ public final class MediaSessionPlayer {
 
         @Override
         public void onSkipToNext() {
-            player.next();
+            if (concatenatingMediaSource.getSize() == 0) {
+                return;
+            }
+            if (player.hasNext()) {
+                player.next();
+            }
         }
 
         @Override
         public void onSkipToPrevious() {
-            player.previous();
+            if (player.hasPrevious()) {
+                player.previous();
+            }
         }
 
         @Override
@@ -538,12 +555,14 @@ public final class MediaSessionPlayer {
 
         @Override
         public void onSeekTo(long pos) {
-            player.seekTo(pos);
+            if (player.isCurrentWindowSeekable()) {
+                player.seekTo(pos);
+            }
         }
 
         @Override
         public void onStop() {
-            super.onStop();
+            player.stop();
         }
 
         @Override
@@ -584,22 +603,39 @@ public final class MediaSessionPlayer {
         }
     }
 
-    private class DataChangedListener implements QueueAdapter.DataChangedListener {
+    private static final class MetadataInfo {
+        boolean isPlayingAd;
+        long duration;
+        MediaSessionCompat.QueueItem tag;
 
-        @Override
-        public void onDataChanged(List<MediaSessionCompat.QueueItem> list) {
-//            if (mediaSession != null && mediaSession.isActive()) {
-//                mediaSession.setQueue(list);
-//            }
+        MetadataInfo set(boolean isPlayingAd, long duration, MediaSessionCompat.QueueItem tag) {
+            this.isPlayingAd = isPlayingAd;
+            this.duration = duration;
+            this.tag = tag;
+            return this;
         }
+    }
 
-        @Override
-        public void onActiveItemChanged(MediaSessionCompat.QueueItem item) {
-//            if (item != null) {
-//                mediaSource = ExoMediaSourceUtil.buildMediaSource(item.getDescription().getMediaUri(), null, dataSourceFactory, item.getDescription());
-//                player.prepare(mediaSource);
-//            }
-//            updateMediaSessionMetadata();
+    private static final class PlaybackStateInfo {
+        long actions;
+        long bufferedPosition;
+        int state;
+        long position;
+        float playbackSpeed;
+        int repeatMode;
+        int shuffleMode;
+        MediaSessionCompat.QueueItem tag;
+
+        public PlaybackStateInfo set(long actions, long bufferedPosition, int state, long position, float playbackSpeed, int repeatMode, int shuffleMode, MediaSessionCompat.QueueItem tag) {
+            this.actions = actions;
+            this.bufferedPosition = bufferedPosition;
+            this.state = state;
+            this.position = position;
+            this.playbackSpeed = playbackSpeed;
+            this.repeatMode = repeatMode;
+            this.shuffleMode = shuffleMode;
+            this.tag = tag;
+            return this;
         }
     }
 

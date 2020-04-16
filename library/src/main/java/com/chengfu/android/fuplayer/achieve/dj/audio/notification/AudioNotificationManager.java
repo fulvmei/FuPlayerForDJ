@@ -32,6 +32,8 @@ import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
 
+import java.util.List;
+
 public class AudioNotificationManager {
 
     public interface NotificationListener {
@@ -172,7 +174,6 @@ public class AudioNotificationManager {
                 .setContentTitle(description.getTitle())
                 .setOngoing(true)
                 .setDeleteIntent(cancelPendingIntent)
-//                .setLargeIcon(description.getIconBitmap())
                 .setOnlyAlertOnce(true)
                 .setSmallIcon(context.getApplicationInfo().icon)
                 .setStyle(mediaStyle)
@@ -263,6 +264,13 @@ public class AudioNotificationManager {
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             Log.d("ttt", "onPlaybackStateChanged state=" + state);
             updateNotification();
+        }
+
+        @Override
+        public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
+            if (queue == null || queue.size() == 0) {
+                stopNotification(true);
+            }
         }
     }
 

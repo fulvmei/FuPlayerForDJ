@@ -36,7 +36,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/menu"
+        android:id="@+id/playing"
         android:padding="10dp"
         android:layout_width="40dp"
         android:layout_height="40dp"

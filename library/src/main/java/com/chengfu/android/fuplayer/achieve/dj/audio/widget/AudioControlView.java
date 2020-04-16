@@ -338,10 +338,6 @@ public class AudioControlView extends FrameLayout {
 
         setViewEnabled(seek, state != null && PlaybackStateCompatExt.isSeekToEnabled(state));
 
-//        if (seek != null && state != null && !PlaybackStateCompatExt.isSeekToEnabled(state)) {
-//            seek
-//        }
-
         updateProgress(state);
 
         updateVisibility(state);
@@ -467,9 +463,9 @@ public class AudioControlView extends FrameLayout {
                 }
                 if (controller.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_NONE) {
                     controller.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ONE);
-                } else if (controller.getShuffleMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
+                } else if (controller.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE) {
                     controller.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
-                } else if (controller.getShuffleMode() == PlaybackStateCompat.REPEAT_MODE_ALL) {
+                } else if (controller.getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ALL) {
                     controller.getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
                 }
             }

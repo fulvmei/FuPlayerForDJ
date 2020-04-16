@@ -19,10 +19,21 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
 
 
     private List<MediaSessionCompat.QueueItem> list;
+    private long activeQueueItemId = MediaSessionCompat.QueueItem.UNKNOWN_ID;
+    private View.OnClickListener onItemClickListener;
 
     public void setData(List<MediaSessionCompat.QueueItem> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public void setActiveQueueItemId(long activeQueueItemId) {
+        this.activeQueueItemId = activeQueueItemId;
+        notifyDataSetChanged();
+    }
+
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public List<MediaSessionCompat.QueueItem> getList() {
@@ -42,6 +53,13 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
 
         holder.img.setImageBitmap(item.getDescription().getIconBitmap());
         holder.title.setText(item.getDescription().getTitle());
+        holder.subTitle.setText(item.getDescription().getSubtitle());
+
+        if (item.getQueueId() == activeQueueItemId) {
+            holder.playing.setVisibility(View.VISIBLE);
+        } else {
+            holder.playing.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -53,12 +71,23 @@ public class CurrentPlayListAdapter extends RecyclerView.Adapter<CurrentPlayList
         ImageView img;
         TextView title;
         TextView subTitle;
+        View playing;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.img);
             title = itemView.findViewById(R.id.title);
             subTitle = itemView.findViewById(R.id.subTitle);
+            playing = itemView.findViewById(R.id.playing);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onClick(view);
+                    }
+                }
+            });
         }
     }
 

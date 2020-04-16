@@ -8,6 +8,7 @@ import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,75 +22,20 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 import com.chengfu.music.player.ui.main.CurrentPlayListAdapter;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
+import com.chengfu.music.player.util.MusicUtil;
 
 import java.util.List;
 
 public class AudioPlayActivity extends AppCompatActivity {
     public static final String TAG = "AudioPlayActivity";
-    //媒体浏览器
-    private MediaBrowserCompat mMediaBrowser;
-    //媒体控制器
-    private MediaControllerCompat mMediaController;
-    private MediaBrowserCompat.ConnectionCallback connectionCallback = new MediaBrowserCompat.ConnectionCallback() {
-        @Override
-        public void onConnected() {
-            super.onConnected();
-            Log.d(TAG, "onConnected");
-            audioControlView.setSessionToken(mMediaBrowser.getSessionToken());
-            try {
-                mMediaController = new MediaControllerCompat(AudioPlayActivity.this, mMediaBrowser.getSessionToken());
-                mMediaController.registerCallback(new MediaControllerCompatCallback());
-                adapter.setData(mMediaController.getQueue());
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-            mMediaBrowser.subscribe(mMediaBrowser.getRoot(), new MediaBrowserCompat.SubscriptionCallback() {
-                @Override
-                public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children) {
-                    super.onChildrenLoaded(parentId, children);
-                    Log.d(TAG, "onChildrenLoaded1");
-                }
-
-                @Override
-                public void onChildrenLoaded(@NonNull String parentId, @NonNull List<MediaBrowserCompat.MediaItem> children, @NonNull Bundle options) {
-                    super.onChildrenLoaded(parentId, children, options);
-                    Log.d(TAG, "onChildrenLoaded2");
-                }
-
-                @Override
-                public void onError(@NonNull String parentId) {
-                    super.onError(parentId);
-                    Log.d(TAG, "onError1");
-                }
-
-                @Override
-                public void onError(@NonNull String parentId, @NonNull Bundle options) {
-                    super.onError(parentId, options);
-                    Log.d(TAG, "onError2");
-                }
-            });
-        }
-
-        @Override
-        public void onConnectionFailed() {
-            super.onConnectionFailed();
-            Log.d(TAG, "onConnectionFailed");
-        }
-
-        @Override
-        public void onConnectionSuspended() {
-            super.onConnectionSuspended();
-            Log.d(TAG, "onConnectionFailed");
-        }
-    };
-
-
+    AudioPlayClient audioPlayClient;
     RecyclerView recyclerView;
     CurrentPlayListAdapter adapter;
     AppAudioControlView audioControlView;
@@ -112,15 +58,22 @@ public class AudioPlayActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-//        AudioPlayManager.getCurrentPlayList(this).observe(this, new Observer<List<CurrentPlay>>() {
-//            @Override
-//            public void onChanged(List<CurrentPlay> currentPlays) {
-//                adapter.setData(currentPlays);
-//            }
-//        });
+        audioPlayClient = new AudioPlayClient(this);
+        audioPlayClient.connect();
 
-        test();
+        audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean connected) {
+                if (connected) {
+                    audioControlView.setSessionToken(audioPlayClient.getMediaBrowser().getSessionToken());
+                    adapter.setData( audioPlayClient.getMediaController().getQueue());
+                    audioPlayClient.getMediaController().registerCallback(new MediaControllerCompatCallback());
 
+                } else {
+                    audioControlView.setSessionToken(null);
+                }
+            }
+        });
     }
 
     @Override
@@ -131,21 +84,25 @@ public class AudioPlayActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        MainActivity.addList(mMediaController);
+        int id = item.getItemId();
+        if (id == R.id.set_list) {
+            audioPlayClient.setPlayList(MusicUtil.getTestMedias(5, false), true);
+        } else if (id == R.id.add_one) {
+            audioPlayClient.appendPlayList(MusicUtil.getTestMedias(1, false), true);
+        } else if (id == R.id.add_two) {
+            audioPlayClient.appendPlayList(MusicUtil.getTestMedias(2, false), true);
+        } else if (id == R.id.add_clear) {
+            audioPlayClient.clearPlayList();
+        }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMediaBrowser.disconnect();
+        audioPlayClient.disconnect();
     }
 
-    private void test() {
-        mMediaBrowser = new MediaBrowserCompat(this,
-                new ComponentName(this, MusicService.class), connectionCallback, null);
-        mMediaBrowser.connect();
-    }
 
     class MediaControllerCompatCallback extends MediaControllerCompat.Callback {
 
@@ -154,6 +111,15 @@ public class AudioPlayActivity extends AppCompatActivity {
             super.onQueueChanged(queue);
             adapter.setData(queue);
             Log.d(TAG, "onQueueChanged : queue=" + queue);
+        }
+
+        @Override
+        public void onPlaybackStateChanged(PlaybackStateCompat state) {
+            if (state == null) {
+                return;
+            }
+            long activeQueueItemId = state.getActiveQueueItemId();
+            adapter.setActiveQueueItemId(activeQueueItemId);
         }
     }
 
