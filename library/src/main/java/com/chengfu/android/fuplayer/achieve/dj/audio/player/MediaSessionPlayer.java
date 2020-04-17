@@ -469,7 +469,7 @@ public final class MediaSessionPlayer {
 
                     if (QueueListUtil.addQueueItems(concatenatingMediaSource, queueItemList, index, list, dataSourceFactory) > 0) {
                         mediaSession.setQueue(queueItemList);
-                        if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() != null) {
+                        if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() == null) {
                             onPrepare();
                         }
                     }

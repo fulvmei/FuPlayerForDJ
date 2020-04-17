@@ -67,63 +67,20 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayoutMediator.attach();
 
+//
+//        audioControlView = findViewById(R.id.audioControlView);
+//
+//        audioControlView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, AudioPlayActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//
+//        img = findViewById(R.id.img);
 
-        audioControlView = findViewById(R.id.audioControlView);
-
-        audioControlView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AudioPlayActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        img = findViewById(R.id.img);
-
-
-        findViewById(R.id.previous).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMediaController.getTransportControls().skipToPrevious();
-            }
-        });
-
-        findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMediaController.getTransportControls().skipToNext();
-            }
-        });
-
-        findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMediaController.getTransportControls().prepare();
-                mMediaController.getTransportControls().play();
-            }
-        });
-
-        findViewById(R.id.pause).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMediaController.getTransportControls().pause();
-            }
-        });
-
-        findViewById(R.id.fast_rewind).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMediaController.getTransportControls().rewind();
-            }
-        });
-
-        findViewById(R.id.fast_forward).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mMediaController.getTransportControls().fastForward();
-            }
-        });
     }
 
 

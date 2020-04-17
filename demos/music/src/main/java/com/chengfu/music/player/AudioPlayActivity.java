@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
+import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
 import com.chengfu.music.player.ui.main.CurrentPlayListAdapter;
 import com.chengfu.music.player.ui.player.RecentListFragment;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
@@ -29,7 +30,7 @@ public class AudioPlayActivity extends AppCompatActivity {
     AudioPlayClient audioPlayClient;
     RecyclerView recyclerView;
     CurrentPlayListAdapter adapter;
-    AppAudioControlView audioControlView;
+    AudioControlView audioControlView;
     Toolbar toolbar;
 
     @Override

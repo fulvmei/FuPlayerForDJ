@@ -14,7 +14,7 @@
         android:background="@color/colorPrimary"
         app:menu="@menu/menu_main"/>
 
-    <com.chengfu.music.player.ui.widget.AppAudioControlView
+    <com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView
         android:id="@+id/audioControlView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
