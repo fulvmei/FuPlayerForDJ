@@ -77,7 +77,7 @@ public class AudioNotificationManager {
     @NonNull
     private final MediaSessionCompat.Token sessionToken;
 
-    private final IntentFilter intentFilter;
+
     private final NotificationBroadcastReceiver notificationBroadcastReceiver;
 
     private final Handler mainHandler;
@@ -102,7 +102,7 @@ public class AudioNotificationManager {
         this.context = context;
         this.sessionToken = sessionToken;
 
-        this.intentFilter = new IntentFilter(ACTION_NOTIFICATION_DISMISS);
+
         this.notificationBroadcastReceiver = new NotificationBroadcastReceiver();
         mainHandler = new Handler(Looper.getMainLooper());
 
@@ -208,7 +208,7 @@ public class AudioNotificationManager {
 
         if (!isNotificationStarted) {
             isNotificationStarted = true;
-            context.registerReceiver(notificationBroadcastReceiver, intentFilter);
+            notificationBroadcastReceiver.register();
         }
         if (notificationListener != null) {
             notificationListener.onNotificationPosted(NOTIFICATION_ID, notification);
@@ -220,7 +220,7 @@ public class AudioNotificationManager {
         if (isNotificationStarted) {
             isNotificationStarted = false;
             notificationManager.cancel(NOTIFICATION_ID);
-            context.unregisterReceiver(notificationBroadcastReceiver);
+            notificationBroadcastReceiver.unregister();
             if (notificationListener != null) {
                 notificationListener.onNotificationCancelled();
             }
@@ -249,7 +249,7 @@ public class AudioNotificationManager {
     }
 
     public void onDestroy() {
-        context.unregisterReceiver(notificationBroadcastReceiver);
+        notificationBroadcastReceiver.unregister();
     }
 
     private class MediaControllerCallback extends MediaControllerCompat.Callback {
@@ -274,6 +274,26 @@ public class AudioNotificationManager {
     }
 
     private class NotificationBroadcastReceiver extends BroadcastReceiver {
+        private boolean registered = false;
+        private final IntentFilter intentFilter;
+
+        public NotificationBroadcastReceiver(){
+            intentFilter = new IntentFilter(ACTION_NOTIFICATION_DISMISS);
+        }
+
+        public void register() {
+            if (!registered) {
+                context.registerReceiver(this, intentFilter);
+                registered = true;
+            }
+        }
+
+        public void unregister() {
+            if (registered) {
+                context.unregisterReceiver(this);
+                registered = false;
+            }
+        }
 
         @Override
         public void onReceive(Context context, Intent intent) {

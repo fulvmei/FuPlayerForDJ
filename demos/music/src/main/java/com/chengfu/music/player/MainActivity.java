@@ -3,6 +3,7 @@ package com.chengfu.music.player;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.viewpager2.widget.ViewPager2;
 
 
@@ -23,11 +24,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.music.player.ui.main.SectionsPagerAdapter;
+import com.chengfu.music.player.ui.widget.AppAudioControlView;
 import com.chengfu.music.player.util.MusicUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -38,13 +41,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
-    //媒体浏览器
-    private MediaBrowserCompat mMediaBrowser;
-    //媒体控制器
-    private MediaControllerCompat mMediaController;
 
-    View audioControlView;
-    ImageView img;
+    public static AudioPlayClient audioPlayClient;
+    AppAudioControlView audioControlView;
     Toolbar toolbar;
 
 
@@ -67,26 +66,25 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayoutMediator.attach();
 
-//
-//        audioControlView = findViewById(R.id.audioControlView);
-//
-//        audioControlView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, AudioPlayActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//
-//        img = findViewById(R.id.img);
+        audioControlView = findViewById(R.id.audioControlView);
 
-    }
+        audioControlView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AudioPlayActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        audioPlayClient = new AudioPlayClient(this);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mMediaBrowser.disconnect();
+        audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                audioControlView.setSessionToken(audioPlayClient.getMediaBrowser().getSessionToken());
+            }
+        });
+
+        audioPlayClient.connect();
     }
 }

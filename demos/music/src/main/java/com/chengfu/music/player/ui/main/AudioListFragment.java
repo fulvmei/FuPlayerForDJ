@@ -1,6 +1,7 @@
 package com.chengfu.music.player.ui.main;
 
 import android.os.Bundle;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chengfu.android.fuplayer.achieve.dj.audio.DataBaseManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
+import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
+import com.chengfu.music.player.MainActivity;
 import com.chengfu.music.player.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AudioListFragment extends Fragment {
@@ -48,15 +52,8 @@ public class AudioListFragment extends Fragment {
         view.findViewById(R.id.playAll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (adapter.getList() == null) {
-                    return;
-                }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DataBaseManager.setCurrentPlayList(requireContext(), adapter.getList(),0);
-                    }
-                }).start();
+                ArrayList<MediaDescriptionCompat> medias = (ArrayList<MediaDescriptionCompat>) ConverterUtil.mediaEntityListToMediaDescriptionList(adapter.getList());
+                MainActivity.audioPlayClient.setPlayList(medias,true);
             }
         });
     }

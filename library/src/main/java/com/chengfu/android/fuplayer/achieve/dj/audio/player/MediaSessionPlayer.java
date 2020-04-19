@@ -1,6 +1,7 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio.player;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -445,7 +446,6 @@ public final class MediaSessionPlayer {
 
         @Override
         public void onCommand(String command, Bundle extras, ResultReceiver cb) {
-            super.onCommand(command, extras, cb);
             FuLog.d(TAG, "onCommand : command=" + command + ",extras=" + extras);
             if (MusicContract.COMMAND_SET_QUEUE_ITEMS.equals(command)) {
                 if (extras != null) {

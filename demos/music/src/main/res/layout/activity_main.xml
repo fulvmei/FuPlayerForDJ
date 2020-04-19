@@ -29,6 +29,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.chengfu.music.player.ui.widget.AppAudioControlView
+        android:id="@+id/audioControlView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
