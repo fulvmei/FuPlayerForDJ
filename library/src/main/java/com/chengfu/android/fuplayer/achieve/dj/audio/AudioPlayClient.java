@@ -11,14 +11,12 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.RecentPlay;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 
@@ -71,6 +69,14 @@ public class AudioPlayClient {
     public void disconnect() {
         if (mediaBrowser.isConnected()) {
             mediaBrowser.disconnect();
+        }
+    }
+
+    public void addToCurrentPlay(MediaDescriptionCompat media) {
+        if (mediaBrowser.isConnected() && mediaController != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
+            mediaController.sendCommand(MusicContract.COMMAND_ADD_TO_CURRENT_PLAY, bundle, null);
         }
     }
 

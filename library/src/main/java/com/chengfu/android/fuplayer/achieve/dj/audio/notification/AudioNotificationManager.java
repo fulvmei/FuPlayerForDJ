@@ -88,9 +88,11 @@ public class AudioNotificationManager {
     private NotificationListener notificationListener;
 
     private final NotificationCompat.Action skipToPreviousAction;
+    private final NotificationCompat.Action skipToPreviousActionDisabled;
     private final NotificationCompat.Action playAction;
     private final NotificationCompat.Action pauseAction;
     private final NotificationCompat.Action skipToNextAction;
+    private final NotificationCompat.Action skipToNextActionDisabled;
 
     private final PendingIntent cancelPendingIntent;
 
@@ -119,21 +121,32 @@ public class AudioNotificationManager {
         notificationManager = NotificationManagerCompat.from(context);
 
         skipToPreviousAction = new NotificationCompat.Action(
-                R.drawable.fu_ic_skip_previous,
+                R.drawable.fu_ic_media_notification_previous,
                 context.getString(R.string.fu_notification_skip_to_previous),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS));
+
+        skipToPreviousActionDisabled = new NotificationCompat.Action(
+                R.drawable.fu_ic_media_notification_previous_disabled,
+                context.getString(R.string.fu_notification_skip_to_previous),
+                null);
+
         playAction = new NotificationCompat.Action(
-                R.drawable.fu_ic_play,
+                R.drawable.fu_ic_media_notification_play,
                 context.getString(R.string.fu_notification_play),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PLAY));
         pauseAction = new NotificationCompat.Action(
-                R.drawable.fu_ic_pause,
+                R.drawable.fu_ic_media_notification_pause,
                 context.getString(R.string.fu_notification_pause),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_PAUSE));
         skipToNextAction = new NotificationCompat.Action(
-                R.drawable.fu_ic_skip_next,
+                R.drawable.fu_ic_media_notification_next,
                 context.getString(R.string.fu_notification_skip_to_next),
                 MediaButtonReceiver.buildMediaButtonPendingIntent(context, PlaybackStateCompat.ACTION_SKIP_TO_NEXT));
+
+        skipToNextActionDisabled = new NotificationCompat.Action(
+                R.drawable.fu_ic_media_notification_next_disabled,
+                context.getString(R.string.fu_notification_skip_to_next),
+                null);
 
         cancelPendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(ACTION_NOTIFICATION_DISMISS), 0);
 
@@ -152,13 +165,21 @@ public class AudioNotificationManager {
         MediaDescriptionCompat description = mediaController.getMetadata() != null ? mediaController.getMetadata().getDescription() : new MediaDescriptionCompat.Builder().build();
         PlaybackStateCompat playbackState = mediaController.getPlaybackState();
 
-        builder.addAction(skipToPreviousAction);
+        if(PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)){
+            builder.addAction(skipToPreviousAction);
+        }else {
+            builder.addAction(skipToPreviousActionDisabled);
+        }
         if (PlaybackStateCompatExt.isPlaying(playbackState)) {
             builder.addAction(pauseAction);
         } else {
             builder.addAction(playAction);
         }
-        builder.addAction(skipToNextAction);
+        if(PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)){
+            builder.addAction(skipToNextAction);
+        }else {
+            builder.addAction(skipToNextActionDisabled);
+        }
 
         androidx.media.app.NotificationCompat.MediaStyle mediaStyle = new FuMediaStyle()
                 .setCancelButtonIntent(cancelPendingIntent)
@@ -277,7 +298,7 @@ public class AudioNotificationManager {
         private boolean registered = false;
         private final IntentFilter intentFilter;
 
-        public NotificationBroadcastReceiver(){
+        public NotificationBroadcastReceiver() {
             intentFilter = new IntentFilter(ACTION_NOTIFICATION_DISMISS);
         }
 

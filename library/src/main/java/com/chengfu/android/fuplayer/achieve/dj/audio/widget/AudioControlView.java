@@ -336,7 +336,12 @@ public class AudioControlView extends FrameLayout {
             setVisibility(pause2, true);
         }
 
-        setViewEnabled(seek, state != null && PlaybackStateCompatExt.isSeekToEnabled(state));
+        if(state != null && PlaybackStateCompatExt.isSeekToEnabled(state)){
+            seek.setVisibility(VISIBLE);
+        }else {
+            seek.setVisibility(INVISIBLE);
+        }
+//        setViewEnabled(seek, state != null && PlaybackStateCompatExt.isSeekToEnabled(state));
 
         updateProgress(state);
 

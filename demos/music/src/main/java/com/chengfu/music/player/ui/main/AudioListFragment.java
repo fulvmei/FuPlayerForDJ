@@ -19,6 +19,7 @@ import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 import com.chengfu.music.player.MainActivity;
 import com.chengfu.music.player.R;
+import com.chengfu.music.player.util.MusicUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +53,8 @@ public class AudioListFragment extends Fragment {
         view.findViewById(R.id.playAll).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<MediaDescriptionCompat> medias = (ArrayList<MediaDescriptionCompat>) ConverterUtil.mediaEntityListToMediaDescriptionList(adapter.getList());
-                MainActivity.audioPlayClient.setPlayList(medias,true);
+                ArrayList<MediaDescriptionCompat> medias = (ArrayList<MediaDescriptionCompat>) adapter.getList();
+                MainActivity.audioPlayClient.setPlayList(medias, true);
             }
         });
     }
@@ -66,12 +67,14 @@ public class AudioListFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        AudioDatabase.getInstance(requireContext()).audioDao().queryAll().observe(this, new Observer<List<MediaEntity>>() {
-            @Override
-            public void onChanged(List<MediaEntity> audioEntities) {
-                adapter.setData(audioEntities);
-            }
-        });
+        adapter.setData(MusicUtil.getTestMedias(6, false));
+
+//        AudioDatabase.getInstance(requireContext()).audioDao().queryAll().observe(this, new Observer<List<MediaEntity>>() {
+//            @Override
+//            public void onChanged(List<MediaEntity> audioEntities) {
+//                adapter.setData(audioEntities);
+//            }
+//        });
 
     }
 }

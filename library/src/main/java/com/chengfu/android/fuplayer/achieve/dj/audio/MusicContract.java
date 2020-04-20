@@ -10,11 +10,17 @@ public class MusicContract {
 
     static final String AUTHORITY = "com.chengfu.android.media.provider.MusicProvider";
 
+    public static final String COMMAND_ADD_TO_CURRENT_PLAY = "command_add_to_current_play";
+
+    public static final String COMMAND_ADD_TO_NEXT_PLAY = "command_add_to_next_play";
+
     public static final String COMMAND_SET_QUEUE_ITEMS = "command_set_queue_items";
 
     public static final String COMMAND_ADD_QUEUE_ITEMS = "command_add_queue_items";
 
     public static final String COMMAND_CLEAR_QUEUE_ITEMS = "command_clear_queue_items";
+
+    public static final String KEY_QUEUE_ITEM = "key_queue_item";
 
     public static final String KEY_QUEUE_ITEMS = "key_queue_items";
 

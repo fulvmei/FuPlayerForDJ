@@ -11,8 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:menu="@menu/menu_main">
+        android:background="@color/colorPrimary">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"

@@ -3,4 +3,8 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="fu_color_audio_progress_bg">#00000000</color>
+    <color name="fu_color_audio_progress_progress">#ff333333</color>
+    <color name="fu_color_audio_progress_progress2">#00000000</color>
 </resources>

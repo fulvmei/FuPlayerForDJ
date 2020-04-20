@@ -14,6 +14,7 @@ import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ import com.google.android.exoplayer2.util.Util;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class MediaSessionPlayer {
@@ -445,6 +447,15 @@ public final class MediaSessionPlayer {
         }
 
         @Override
+        public void onPrepareFromMediaId(String mediaId, Bundle extras) {
+            int initialWindowIndex = QueueListUtil.getPositionByMediaId(queueItemList, mediaId);
+            player.prepare(concatenatingMediaSource);
+            if (initialWindowIndex > 0) {
+                player.seekTo(initialWindowIndex, 0);
+            }
+        }
+
+        @Override
         public void onCommand(String command, Bundle extras, ResultReceiver cb) {
             FuLog.d(TAG, "onCommand : command=" + command + ",extras=" + extras);
             if (MusicContract.COMMAND_SET_QUEUE_ITEMS.equals(command)) {
@@ -483,6 +494,35 @@ public final class MediaSessionPlayer {
                     concatenatingMediaSource.clear();
                 }
                 stop(true);
+            } else if (MusicContract.COMMAND_ADD_TO_CURRENT_PLAY.equals(command)) {
+                if (extras == null) {
+                    return;
+                }
+                extras.setClassLoader(getClass().getClassLoader());
+                MediaDescriptionCompat media = extras.getParcelable(MusicContract.KEY_QUEUE_ITEM);
+                if (media == null) {
+                    return;
+                }
+                int mediaPosition = QueueListUtil.getPositionByMediaId(queueItemList, media.getMediaId());
+                if (mediaPosition > -1) {
+                    onPrepareFromMediaId(media.getMediaId(), null);
+                } else {
+                    if (QueueListUtil.addQueueItem(concatenatingMediaSource, queueItemList, 0, media, dataSourceFactory) > 0) {
+                        mediaSession.setQueue(queueItemList);
+                        onPrepareFromMediaId(media.getMediaId(), null);
+                    }
+                }
+            } else if (MusicContract.COMMAND_ADD_TO_NEXT_PLAY.equals(command)) {
+//                if (extras == null) {
+//                    return;
+//                }
+//                extras.setClassLoader(getClass().getClassLoader());
+//                MediaDescriptionCompat media = extras.getParcelable(MusicContract.KEY_QUEUE_ITEM);
+//                if (media == null) {
+//                    return;
+//                }
+//                PlaybackStateCompat playbackState = mediaSession.getController().getPlaybackState();
+//                int activePosition = QueueListUtil.getPositionById(queueItemList, playbackState.getActiveQueueItemId());
             }
         }
 
@@ -490,7 +530,7 @@ public final class MediaSessionPlayer {
         public void onAddQueueItem(MediaDescriptionCompat description) {
             if (QueueListUtil.addQueueItem(concatenatingMediaSource, queueItemList, description, dataSourceFactory) > 0) {
                 mediaSession.setQueue(queueItemList);
-                if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() != null) {
+                if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() == null) {
                     onPrepare();
                 }
             }
@@ -500,7 +540,7 @@ public final class MediaSessionPlayer {
         public void onAddQueueItem(MediaDescriptionCompat description, int index) {
             if (QueueListUtil.addQueueItem(concatenatingMediaSource, queueItemList, index, description, dataSourceFactory) > 0) {
                 mediaSession.setQueue(queueItemList);
-                if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() != null) {
+                if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() == null) {
                     onPrepare();
                 }
             }
@@ -531,6 +571,7 @@ public final class MediaSessionPlayer {
             int position = QueueListUtil.getPositionByMediaId(queueItemList, mediaId);
             if (position >= 0 && position < player.getCurrentTimeline().getWindowCount()) {
                 player.seekTo(position, 0);
+                player.setPlayWhenReady(true);
             }
         }
 

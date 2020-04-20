@@ -16,6 +16,11 @@ import java.util.List;
 
 public class QueueListUtil {
 
+    public static int addToCurrentPlay(@NonNull ConcatenatingMediaSource mediaSource, @NonNull List<MediaSessionCompat.QueueItem> items, long activeQueueItemId, MediaDescriptionCompat media, @NonNull DataSource.Factory dataSourceFactory) {
+        System.out.println("activeQueueItemId=" + getPositionById(items,activeQueueItemId));
+        return 1;
+    }
+
     public static int addQueueItem(@NonNull ConcatenatingMediaSource mediaSource, @NonNull List<MediaSessionCompat.QueueItem> items, MediaDescriptionCompat media, @NonNull DataSource.Factory dataSourceFactory) {
         return addQueueItem(mediaSource, items, items.size(), media, dataSourceFactory);
     }
@@ -25,11 +30,14 @@ public class QueueListUtil {
                 || media == null) {
             return 0;
         }
-        if (index > items.size() || index < 0) {
+        if (index > items.size()) {
             index = items.size();
         }
+        if (index < 0) {
+            index = 0;
+        }
         MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(media, findMaxItemId(items) + 1);
-        mediaSource.addMediaSource(ExoMediaSourceUtil.buildMediaSource(item.getDescription().getMediaUri(), "", dataSourceFactory, item));
+        mediaSource.addMediaSource(index,ExoMediaSourceUtil.buildMediaSource(item.getDescription().getMediaUri(), "", dataSourceFactory, item));
         items.add(index, item);
         return 1;
     }
@@ -57,8 +65,11 @@ public class QueueListUtil {
                 || medias == null || medias.size() == 0) {
             return 0;
         }
-        if (index > items.size() || index < 0) {
+        if (index > items.size()) {
             index = items.size();
+        }
+        if (index < 0) {
+            index = 0;
         }
         long maxItemId = findMaxItemId(items);
         List<MediaSessionCompat.QueueItem> tempItems = new ArrayList<>();

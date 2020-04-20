@@ -110,4 +110,13 @@ public class AppAudioControlView extends AudioControlView {
                     .into(icon);
         }
     }
+
+    @Override
+    protected void setViewEnabled(View view, boolean enabled) {
+        if (view == null) {
+            return;
+        }
+        view.setEnabled(enabled);
+        view.setAlpha(enabled ? 1f : 0.4f);
+    }
 }
