@@ -1,6 +1,5 @@
 package com.chengfu.music.player;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -12,20 +11,20 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
-import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
-import com.chengfu.music.player.ui.main.CurrentPlayListAdapter;
+import com.chengfu.music.player.ui.player.AudioPlayViewModel;
+import com.chengfu.music.player.ui.player.PlayListAdapter;
+import com.chengfu.music.player.ui.player.PlayListFragment;
 import com.chengfu.music.player.ui.player.RecentListFragment;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
 import com.chengfu.music.player.util.MusicUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
@@ -34,14 +33,17 @@ public class AudioPlayActivity extends AppCompatActivity {
     public static final String TAG = "AudioPlayActivity";
     AudioPlayClient audioPlayClient;
     RecyclerView recyclerView;
-    CurrentPlayListAdapter adapter;
+    PlayListAdapter adapter;
     AppAudioControlView audioControlView;
-//    Toolbar toolbar;
+    //    Toolbar toolbar;
+    AudioPlayViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_play);
+
+        viewModel = ViewModelProviders.of(this).get(AudioPlayViewModel.class);
 
 //        toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -68,13 +70,26 @@ public class AudioPlayActivity extends AppCompatActivity {
 
         audioControlView = findViewById(R.id.audioControlView);
 
-        audioControlView.setContentPaddingTop(100);
+        audioControlView.setContentPaddingTop(ImmersionBar.getStatusBarHeight(this));
 
-        adapter = new CurrentPlayListAdapter();
-
-        adapter.setOnItemClickListener(new CurrentPlayListAdapter.OnItemClickListener() {
+        audioControlView.setActionClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v, MediaSessionCompat.QueueItem item) {
+            public void onClick(View v) {
+                int id = v.getId();
+                if (id == R.id.audio_controller_back) {
+                    finish();
+                } else if (id == R.id.audio_controller_playlist) {
+                    PlayListFragment playListFragment = PlayListFragment.newInstance();
+                    playListFragment.show(getSupportFragmentManager(), "playListFragment");
+                }
+            }
+        });
+
+        adapter = new PlayListAdapter();
+
+        adapter.setOnItemClickListener(new PlayListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, MediaSessionCompat.QueueItem item) {
 //                audioPlayClient.playFromMediaId(item.getDescription().getMediaId());
                 audioPlayClient.playFromItemId(item.getQueueId());
             }
@@ -89,6 +104,8 @@ public class AudioPlayActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean connected) {
                 if (connected) {
+                    viewModel.setActiveQueueItemId(audioPlayClient.getMediaController().getPlaybackState().getActiveQueueItemId());
+                    viewModel.setPlayList(audioPlayClient.getMediaController().getQueue());
                     audioControlView.setSessionToken(audioPlayClient.getMediaBrowser().getSessionToken());
                     adapter.setData(audioPlayClient.getMediaController().getQueue());
                     audioPlayClient.getMediaController().registerCallback(new MediaControllerCompatCallback());
@@ -137,6 +154,7 @@ public class AudioPlayActivity extends AppCompatActivity {
         public void onQueueChanged(List<MediaSessionCompat.QueueItem> queue) {
             super.onQueueChanged(queue);
             adapter.setData(queue);
+            viewModel.setPlayList(queue);
             Log.d(TAG, "onQueueChanged : queue=" + queue);
         }
 
@@ -146,6 +164,7 @@ public class AudioPlayActivity extends AppCompatActivity {
                 return;
             }
             long activeQueueItemId = state.getActiveQueueItemId();
+            viewModel.setActiveQueueItemId(activeQueueItemId);
             adapter.setActiveQueueItemId(activeQueueItemId);
         }
     }

@@ -2,26 +2,18 @@ package com.chengfu.music.player.ui.player;
 
 import android.os.Bundle;
 import android.support.v4.media.MediaDescriptionCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
-import com.chengfu.android.fuplayer.achieve.dj.audio.DataBaseManager;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.CurrentPlayList;
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.MediaEntity;
 import com.chengfu.music.player.R;
-import com.chengfu.music.player.ui.main.AudioListAdapter;
-import com.chengfu.music.player.ui.main.CurrentPlayListAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.List;

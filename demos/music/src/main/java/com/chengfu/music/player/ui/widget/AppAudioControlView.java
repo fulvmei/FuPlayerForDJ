@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,13 @@ public class AppAudioControlView extends AudioControlView {
 
     ImageView background;
     ViewGroup content;
+    ImageButton back;
+    ImageButton menu;
+    ImageButton playlist;
+    ImageButton more;
     int contentPaddingTop;
+
+    public OnClickListener actionClickListener;
 
     public AppAudioControlView(@NonNull Context context) {
         this(context, null);
@@ -38,12 +45,15 @@ public class AppAudioControlView extends AudioControlView {
 
         background = findViewById(R.id.audio_controller_background);
         background.setAlpha(0.85F);
-
         content = findViewById(R.id.audio_controller_content);
+        setContentPaddingTop(contentPaddingTop);
 
-        if (content != null) {
-            content.setPadding(0, contentPaddingTop, 0, 0);
-        }
+        back = findViewById(R.id.audio_controller_back);
+        menu = findViewById(R.id.audio_controller_menu);
+        playlist = findViewById(R.id.audio_controller_playlist);
+        more = findViewById(R.id.audio_controller_more);
+
+        setActionClickListener(actionClickListener);
     }
 
     @Override
@@ -51,7 +61,23 @@ public class AppAudioControlView extends AudioControlView {
         super.onSizeChanged(w, h, oldw, oldh);
 
         if (background != null) {
-            background.getLayoutParams().height=h;
+            background.getLayoutParams().height = h;
+        }
+    }
+
+    public void setActionClickListener(OnClickListener actionClickListener) {
+        this.actionClickListener = actionClickListener;
+        if (back != null) {
+            back.setOnClickListener(actionClickListener);
+        }
+        if (menu != null) {
+            menu.setOnClickListener(actionClickListener);
+        }
+        if (playlist != null) {
+            playlist.setOnClickListener(actionClickListener);
+        }
+        if (more != null) {
+            more.setOnClickListener(actionClickListener);
         }
     }
 

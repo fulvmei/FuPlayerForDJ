@@ -82,7 +82,7 @@ public class RecentPlayListAdapter extends RecyclerView.Adapter<RecentPlayListAd
             img = itemView.findViewById(R.id.img);
             title = itemView.findViewById(R.id.title);
             subTitle = itemView.findViewById(R.id.subTitle);
-            playing = itemView.findViewById(R.id.playing);
+            playing = itemView.findViewById(R.id.playFlag);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
