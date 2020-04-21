@@ -4,14 +4,14 @@
     <item android:id="@android:id/background">
         <shape>
             <corners android:radius="1dp" />
-            <solid android:color="@color/fu_color_audio_progress_bg" />
+            <solid android:color="@color/fu_color_small_audio_progress_bg" />
         </shape>
     </item>
     <item android:id="@android:id/secondaryProgress">
         <clip>
             <shape>
                 <corners android:radius="1dp" />
-                <solid android:color="@color/fu_color_audio_progress_progress2" />
+                <solid android:color="@color/fu_color_small_audio_progress_progress2" />
             </shape>
         </clip>
     </item>
@@ -19,7 +19,7 @@
         <clip>
             <shape>
                 <corners android:radius="1dp" />
-                <solid android:color="@color/fu_color_audio_progress_progress" />
+                <solid android:color="@color/fu_color_small_audio_progress_progress" />
             </shape>
         </clip>
     </item>

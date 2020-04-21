@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="52dp">
+
+    <LinearLayout
+        android:id="@+id/audio_controller"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/audio_controller_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="?attr/controlBackground"
+            android:padding="10dp"
+            android:src="@drawable/media_ic_small_audio_control_close"
+            tools:ignore="ContentDescription,PrivateResource" />
+
+        <ImageView
+            android:id="@id/audio_controller_icon"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@id/audio_controller_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textColor="#ff1a1f24"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@id/audio_controller_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#ffacb2bd"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@id/audio_controller_previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/controlBackground"
+            android:padding="9dp"
+            android:src="@drawable/media_ic_small_audio_control_previous"
+            tools:ignore="ContentDescription,PrivateResource" />
+
+
+        <ImageButton
+            android:id="@id/audio_controller_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/controlBackground"
+            android:padding="9dp"
+            android:src="@drawable/media_ic_small_audio_control_play"
+            tools:ignore="ContentDescription,PrivateResource" />
+
+        <ImageButton
+            android:id="@id/audio_controller_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/controlBackground"
+            android:padding="9dp"
+            android:src="@drawable/media_ic_small_audio_control_pause"
+            tools:ignore="ContentDescription,PrivateResource" />
+
+        <ImageButton
+            android:id="@id/audio_controller_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:background="?attr/controlBackground"
+            android:padding="9dp"
+            android:src="@drawable/media_ic_small_audio_control_next"
+            tools:ignore="ContentDescription,PrivateResource" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_above="@id/audio_controller"
+        android:src="#22000000" />
+
+    <SeekBar
+        android:id="@id/audio_controller_seek"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:maxHeight="1dp"
+        android:minHeight="1dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:progressDrawable="@drawable/media_bg_small_audio_controller_progress"
+        android:thumb="@drawable/media_ic_small_audio_control_thumb" />
+</RelativeLayout>

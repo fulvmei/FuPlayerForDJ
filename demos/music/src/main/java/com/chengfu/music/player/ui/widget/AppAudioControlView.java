@@ -1,10 +1,7 @@
 package com.chengfu.music.player.ui.widget;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,28 +11,19 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
 import com.chengfu.music.player.R;
-import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class AppAudioControlView extends AudioControlView {
 
-    private boolean manualHide;//手动隐藏标识
-
-    private OnNavigateListener onNavigateListener;
-
-    public interface OnNavigateListener {
-        boolean onNavigate(View v, Bundle extras);
-    }
-
-    public OnNavigateListener getOnNavigateListener() {
-        return onNavigateListener;
-    }
-
-    public void setOnNavigateListener(OnNavigateListener onNavigateListener) {
-        this.onNavigateListener = onNavigateListener;
-    }
+    ImageView background;
+    ViewGroup content;
+    int contentPaddingTop;
 
     public AppAudioControlView(@NonNull Context context) {
         this(context, null);
@@ -48,11 +36,34 @@ public class AppAudioControlView extends AudioControlView {
     public AppAudioControlView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        findViewById(R.id.audio_controller_close).setOnClickListener(v -> {
-            if (getController() != null) {
-                getController().sendCommand(MusicContract.COMMAND_CLEAR_QUEUE_ITEMS, null, null);
-            }
-        });
+        background = findViewById(R.id.audio_controller_background);
+        background.setAlpha(0.85F);
+
+        content = findViewById(R.id.audio_controller_content);
+
+        if (content != null) {
+            content.setPadding(0, contentPaddingTop, 0, 0);
+        }
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        if (background != null) {
+            background.getLayoutParams().height=h;
+        }
+    }
+
+    public int getContentPaddingTop() {
+        return contentPaddingTop;
+    }
+
+    public void setContentPaddingTop(int contentPaddingTop) {
+        this.contentPaddingTop = contentPaddingTop;
+        if (content != null) {
+            content.setPadding(0, contentPaddingTop, 0, 0);
+        }
     }
 
     @Override
@@ -61,62 +72,45 @@ public class AppAudioControlView extends AudioControlView {
     }
 
     @Override
-    protected void updateMetadata(MediaMetadataCompat metadata) {
-        super.updateMetadata(metadata);
-
-        if (seek != null) {
-            if (controller == null || controller.getMetadata() == null) {
-                return;
-            }
-            Bundle extras = controller.getMetadata().getBundle();
-        }
-    }
-
-    public void manualShow() {
-        manualHide = false;
-        if (isInShowState(controller != null ? controller.getPlaybackState() : null)) {
-            show();
-        }
-    }
-
-    public void manualHide() {
-        manualHide = true;
-        hide();
-    }
-
-    @Override
-    protected boolean isInShowState(PlaybackStateCompat state) {
-        if (manualHide) {
-            return false;
-        }
-        return state != null && state.getState() != PlaybackStateCompat.STATE_NONE;
-    }
-
-    @Override
     protected void updateIcon(@NonNull ImageView icon, @Nullable MediaDescriptionCompat description) {
+        super.updateIcon(icon, description);
         if (description == null) {
             return;
         }
         if (description.getIconBitmap() != null) {
-            icon.setImageBitmap(description.getIconBitmap());
+            Glide.with(getContext())
+                    .load(description.getIconBitmap())
+                    .dontAnimate()
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 3)))
+                    .into(background);
+
+            Glide.with(getContext())
+                    .load(description.getIconBitmap())
+                    .dontAnimate()
+                    .circleCrop()
+                    .centerCrop()
+                    .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(255, 0)))
+                    .into(icon);
             return;
         }
 
-        String path = description.getIconUri() != null ? description.getIconUri().toString() : "empty";
+        String path = description.getIconUri() != null ? description.getIconUri().toString() : "";
         if (getTag() == null || !getTag().equals(path)) {
             setTag(path);
-            Picasso.get()
+            Glide.with(getContext())
                     .load(path)
+                    .dontAnimate()
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 3)))
+                    .into(background);
+
+            Glide.with(getContext())
+                    .load(path)
+                    .circleCrop()
+                    .centerCrop()
+                    .dontAnimate()
+                    .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(255, 0)))
                     .into(icon);
         }
-    }
 
-    @Override
-    protected void setViewEnabled(View view, boolean enabled) {
-        if (view == null) {
-            return;
-        }
-        view.setEnabled(enabled);
-        view.setAlpha(enabled ? 1f : 0.4f);
     }
 }

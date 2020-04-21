@@ -1,7 +1,7 @@
 package com.chengfu.music.player;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +23,10 @@ import com.chengfu.music.player.ui.main.CurrentPlayListAdapter;
 import com.chengfu.music.player.ui.player.RecentListFragment;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
 import com.chengfu.music.player.util.MusicUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.gyf.barlibrary.BarHide;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 
@@ -30,21 +35,40 @@ public class AudioPlayActivity extends AppCompatActivity {
     AudioPlayClient audioPlayClient;
     RecyclerView recyclerView;
     CurrentPlayListAdapter adapter;
-    AudioControlView audioControlView;
-    Toolbar toolbar;
+    AppAudioControlView audioControlView;
+//    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_play);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+
+//        ImmersionBar.with(this)
+//                .statusBarColorInt(Color.TRANSPARENT)
+//                .navigationBarColorInt(Color.WHITE)
+//                .transparentStatusBar()
+//                .statusBarDarkFont(true, 0.3f)
+//                .fitsSystemWindows(true)
+//                .hideBar(BarHide.FLAG_SHOW_BAR)
+//                .init();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+            popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        });
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
         audioControlView = findViewById(R.id.audioControlView);
+
+        audioControlView.setContentPaddingTop(100);
 
         adapter = new CurrentPlayListAdapter();
 
