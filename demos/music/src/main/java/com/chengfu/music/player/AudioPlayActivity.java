@@ -70,11 +70,13 @@ public class AudioPlayActivity extends AppCompatActivity {
                     playListFragment.setStyle(PlayListFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
                     playListFragment.show(getSupportFragmentManager(), "playListFragment");
                 }else if (id == R.id.audio_controller_more) {
-                    TestFragment fragment=TestFragment.newInstance();
+//                    TestFragment fragment=TestFragment.newInstance();
 //                    fragment.setStyle(TestFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
 //                    PlayListFragment fragment = PlayListFragment.newInstance();
-                    fragment.show(getSupportFragmentManager(),"test");
+//                    fragment.show(getSupportFragmentManager(),"test");
 //                    getSupportFragmentManager().beginTransaction().add(fragment,"test").commit();
+                    PlayListFragment playListFragment = PlayListFragment.newInstance();
+                    getSupportFragmentManager().beginTransaction().add(R.id.f,playListFragment).commit();
                 }
             }
         });

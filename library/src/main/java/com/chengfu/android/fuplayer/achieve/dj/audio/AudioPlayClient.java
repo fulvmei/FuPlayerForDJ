@@ -77,6 +77,7 @@ public class AudioPlayClient {
             Bundle bundle = new Bundle();
             bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
             mediaController.sendCommand(MusicContract.COMMAND_ADD_TO_CURRENT_PLAY, bundle, null);
+            mediaController.getTransportControls().play();
         }
     }
 

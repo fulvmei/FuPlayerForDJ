@@ -23,8 +23,6 @@
     <item name="audio_controller_position" type="id" />
     <item name="audio_controller_duration" type="id" />
     <item name="audio_controller_previous" type="id" />
-    <item name="audio_controller_play2" type="id" />
-    <item name="audio_controller_pause2" type="id" />
     <item name="audio_controller_next" type="id" />
     <item name="audio_controller_shuffle_switch" type="id" />
     <item name="audio_controller_repeat_switch" type="id" />

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,7 +30,7 @@ import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 
-public class PlayListFragment extends BottomFragment {
+public class PlayListFragment extends SuperBottomSheetFragment {
 
     RecyclerView recyclerView;
     PlayListAdapter adapter;
@@ -43,12 +44,23 @@ public class PlayListFragment extends BottomFragment {
         return fragment;
     }
 
-//    @Override
-//    public int getPeekHeight() {
-//        DisplayMetrics outMetrics = new DisplayMetrics();
-//        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-//        return outMetrics.heightPixels * 2/ 3;
-//    }
+    @Override
+    public int getPeekHeight() {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        return outMetrics.heightPixels * 2/ 3;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(getDialog()!=null){
+            FrameLayout sheetContainer= getDialog().findViewById(R.id.super_bottom_sheet);
+            ViewGroup.LayoutParams layoutParams = sheetContainer.getLayoutParams();
+            layoutParams.height=getPeekHeight();
+            sheetContainer.setLayoutParams(layoutParams);
+        }
+    }
 
     @Nullable
     @Override

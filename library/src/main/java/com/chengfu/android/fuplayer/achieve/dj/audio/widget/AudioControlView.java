@@ -54,8 +54,6 @@ public class AudioControlView extends FrameLayout {
     protected ImageButton previous;
     protected ImageButton play;
     protected ImageButton pause;
-    protected ImageButton play2;
-    protected ImageButton pause2;
     protected ImageButton next;
     protected SeekBar seek;
     protected TextView position;
@@ -113,16 +111,6 @@ public class AudioControlView extends FrameLayout {
         pause = findViewById(R.id.audio_controller_pause);
         if (pause != null) {
             pause.setOnClickListener(componentListener);
-        }
-
-        play2 = findViewById(R.id.audio_controller_play2);
-        if (play2 != null) {
-            play2.setOnClickListener(componentListener);
-        }
-
-        pause2 = findViewById(R.id.audio_controller_pause2);
-        if (pause2 != null) {
-            pause2.setOnClickListener(componentListener);
         }
 
         next = findViewById(R.id.audio_controller_next);
@@ -314,31 +302,26 @@ public class AudioControlView extends FrameLayout {
 
         setViewEnabled(next, state != null && PlaybackStateCompatExt.isSkipToNextEnabled(state));
 
-        setViewEnabled(play, state != null && PlaybackStateCompatExt.isPlayEnabled(state));
+//        setViewEnabled(play, state != null && PlaybackStateCompatExt.isPlayEnabled(state));
+//
+//        setViewEnabled(pause, state != null && PlaybackStateCompatExt.isPauseEnabled(state));
+//
+//        setViewEnabled(play2, state != null && PlaybackStateCompatExt.isPlayEnabled(state));
+//
+//        setViewEnabled(pause2, state != null && PlaybackStateCompatExt.isPauseEnabled(state));
 
-        setViewEnabled(pause, state != null && PlaybackStateCompatExt.isPauseEnabled(state));
-
-        setViewEnabled(play2, state != null && PlaybackStateCompatExt.isPlayEnabled(state));
-
-        setViewEnabled(pause2, state != null && PlaybackStateCompatExt.isPauseEnabled(state));
-
-        if (state != null && !PlaybackStateCompatExt.isPlaying(state)) {
+        if (state != null && PlaybackStateCompatExt.isPlaying(state)) {
+            setVisibility(play, false);
+            setVisibility(pause, true);
+        } else {
             setVisibility(play, true);
             setVisibility(pause, false);
 
-            setVisibility(play2, true);
-            setVisibility(pause2, false);
-        } else {
-            setVisibility(play, false);
-            setVisibility(pause, true);
-
-            setVisibility(play2, false);
-            setVisibility(pause2, true);
         }
 
-        if(state != null && PlaybackStateCompatExt.isSeekToEnabled(state)){
+        if (state != null && PlaybackStateCompatExt.isSeekToEnabled(state)) {
             seek.setVisibility(VISIBLE);
-        }else {
+        } else {
             seek.setVisibility(INVISIBLE);
         }
 //        setViewEnabled(seek, state != null && PlaybackStateCompatExt.isSeekToEnabled(state));
@@ -445,9 +428,9 @@ public class AudioControlView extends FrameLayout {
 
         @Override
         public void onClick(View v) {
-            if (v == play || v == play2) {
+            if (v == play ) {
                 play();
-            } else if (v == pause || v == pause2) {
+            } else if (v == pause ) {
                 pause();
             } else if (v == previous) {
                 previous();

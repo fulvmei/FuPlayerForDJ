@@ -72,10 +72,7 @@ public final class MediaSessionPlayer {
                     | PlaybackStateCompat.ACTION_SET_REPEAT_MODE
                     | PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE;
 
-    public static final long BASE_PLAYBACK_ACTIONS = PlaybackStateCompat.ACTION_PLAY_PAUSE
-            | PlaybackStateCompat.ACTION_PLAY
-            | PlaybackStateCompat.ACTION_PAUSE
-            | PlaybackStateCompat.ACTION_STOP
+    public static final long BASE_PLAYBACK_ACTIONS = PlaybackStateCompat.ACTION_STOP
             | PlaybackStateCompat.ACTION_SET_SHUFFLE_MODE
             | PlaybackStateCompat.ACTION_SET_REPEAT_MODE;
 
@@ -295,6 +292,13 @@ public final class MediaSessionPlayer {
         }
 
         long playbackActions = BASE_PLAYBACK_ACTIONS;
+
+        boolean playWhenReady = player.getPlayWhenReady();
+        if (playWhenReady) {
+            playbackActions |= PlaybackStateCompat.ACTION_PAUSE;
+        } else {
+            playbackActions |= PlaybackStateCompat.ACTION_PLAY;
+        }
         if (enableSeeking) {
             playbackActions |= PlaybackStateCompat.ACTION_SEEK_TO;
         }

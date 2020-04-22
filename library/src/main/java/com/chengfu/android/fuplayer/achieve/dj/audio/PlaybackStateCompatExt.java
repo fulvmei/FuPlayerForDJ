@@ -18,8 +18,9 @@ public class PlaybackStateCompatExt {
     public static boolean isPlaying(PlaybackStateCompat playbackState) {
         int state = playbackState.getState();
         long actions = playbackState.getActions();
-        return (state == PlaybackStateCompat.STATE_BUFFERING) ||
-                (state == PlaybackStateCompat.STATE_PLAYING);
+        return (state == PlaybackStateCompat.STATE_BUFFERING ||
+                state == PlaybackStateCompat.STATE_PLAYING) &&
+                ((actions & PlaybackStateCompat.ACTION_PLAY) == 0L);
     }
 
     public static boolean isPlayEnabled(PlaybackStateCompat playbackState) {
