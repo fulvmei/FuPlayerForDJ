@@ -45,4 +45,5 @@ dependencies {
     implementation 'com.gyf.barlibrary:barlibrary:2.3.0'
     implementation 'jp.wasabeef:glide-transformations:4.0.0'
     implementation 'com.github.andrefrsousa:SuperBottomSheet:1.5.0'
+    implementation 'com.github.HeyAlex:BottomDrawer:v1.0.0'
 }

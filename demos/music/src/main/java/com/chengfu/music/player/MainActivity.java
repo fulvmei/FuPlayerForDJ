@@ -1,5 +1,6 @@
 package com.chengfu.music.player;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -8,10 +9,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.music.player.ui.main.SectionsPagerAdapter;
+import com.chengfu.music.player.ui.player.BottomDialog;
 import com.chengfu.music.player.ui.widget.SmallAudioControlView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -31,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
 
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return onOptionsItemSelected(item);
+            }
+        });
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this);
         ViewPager2 viewPager2 = findViewById(R.id.viewPager2);
@@ -63,5 +73,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         audioPlayClient.connect();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        BottomDialog dialog=new BottomDialog(this);
+        dialog.setContentView(R.layout.dialog_bottom_sheet);
+        dialog.show();
+        return super.onOptionsItemSelected(item);
     }
 }

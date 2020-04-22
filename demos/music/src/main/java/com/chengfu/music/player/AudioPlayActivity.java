@@ -22,8 +22,10 @@ import com.chengfu.music.player.ui.player.AudioPlayViewModel;
 import com.chengfu.music.player.ui.player.PlayListAdapter;
 import com.chengfu.music.player.ui.player.PlayListFragment;
 import com.chengfu.music.player.ui.player.RecentListFragment;
+import com.chengfu.music.player.ui.player.TestFragment;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
 import com.chengfu.music.player.util.MusicUtil;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -45,26 +47,6 @@ public class AudioPlayActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(AudioPlayViewModel.class);
 
-//        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-//        ImmersionBar.with(this)
-//                .statusBarColorInt(Color.TRANSPARENT)
-//                .navigationBarColorInt(Color.WHITE)
-//                .transparentStatusBar()
-//                .statusBarDarkFont(true, 0.3f)
-//                .fitsSystemWindows(true)
-//                .hideBar(BarHide.FLAG_SHOW_BAR)
-//                .init();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-            popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
-            popupMenu.show();
-            popupMenu.setOnMenuItemClickListener(this::onOptionsItemSelected);
-        });
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
@@ -78,9 +60,21 @@ public class AudioPlayActivity extends AppCompatActivity {
                 int id = v.getId();
                 if (id == R.id.audio_controller_back) {
                     finish();
+                } else if (id == R.id.audio_controller_menu) {
+                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                    popupMenu.getMenuInflater().inflate(R.menu.menu_main, popupMenu.getMenu());
+                    popupMenu.show();
+                    popupMenu.setOnMenuItemClickListener(item -> onOptionsItemSelected(item));
                 } else if (id == R.id.audio_controller_playlist) {
                     PlayListFragment playListFragment = PlayListFragment.newInstance();
+                    playListFragment.setStyle(PlayListFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
                     playListFragment.show(getSupportFragmentManager(), "playListFragment");
+                }else if (id == R.id.audio_controller_more) {
+                    TestFragment fragment=TestFragment.newInstance();
+//                    fragment.setStyle(TestFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
+//                    PlayListFragment fragment = PlayListFragment.newInstance();
+                    fragment.show(getSupportFragmentManager(),"test");
+//                    getSupportFragmentManager().beginTransaction().add(fragment,"test").commit();
                 }
             }
         });

@@ -13,12 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
 import com.chengfu.music.player.R;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class AppAudioControlView extends AudioControlView {
 
@@ -54,6 +54,11 @@ public class AppAudioControlView extends AudioControlView {
         more = findViewById(R.id.audio_controller_more);
 
         setActionClickListener(actionClickListener);
+    }
+
+    @Override
+    protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
+        return inflater.inflate(R.layout.app_audio_control_view, parent, false);
     }
 
     @Override
@@ -93,11 +98,6 @@ public class AppAudioControlView extends AudioControlView {
     }
 
     @Override
-    protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
-        return inflater.inflate(R.layout.app_audio_control_view, parent, false);
-    }
-
-    @Override
     protected void updateIcon(@NonNull ImageView icon, @Nullable MediaDescriptionCompat description) {
         super.updateIcon(icon, description);
         if (description == null) {
@@ -112,10 +112,7 @@ public class AppAudioControlView extends AudioControlView {
 
             Glide.with(getContext())
                     .load(description.getIconBitmap())
-                    .dontAnimate()
-                    .circleCrop()
-                    .centerCrop()
-                    .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(255, 0)))
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                     .into(icon);
             return;
         }
@@ -131,10 +128,7 @@ public class AppAudioControlView extends AudioControlView {
 
             Glide.with(getContext())
                     .load(path)
-                    .circleCrop()
-                    .centerCrop()
-                    .dontAnimate()
-                    .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(255, 0)))
+                    .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                     .into(icon);
         }
 
