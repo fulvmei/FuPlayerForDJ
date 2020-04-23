@@ -1,6 +1,7 @@
 package com.chengfu.music.player.ui.widget;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
@@ -14,10 +15,22 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
 import com.chengfu.music.player.R;
 import com.squareup.picasso.Picasso;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class SmallAudioControlView extends AudioControlView {
 
@@ -98,17 +111,24 @@ public class SmallAudioControlView extends AudioControlView {
             return;
         }
         if (description.getIconBitmap() != null) {
-            icon.setImageBitmap(description.getIconBitmap());
+            Glide.with(getContext().getApplicationContext())
+                    .load(description.getIconBitmap())
+                    .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(dp2px(6.67f), 0, RoundedCornersTransformation.CornerType.ALL)))
+                    .into(icon);
             return;
         }
 
-        String path = description.getIconUri() != null ? description.getIconUri().toString() : "empty";
+        String path = description.getIconUri() != null ? description.getIconUri().toString() : "";
         if (getTag() == null || !getTag().equals(path)) {
             setTag(path);
-            Picasso.get()
+            RequestOptions requestOptions = RequestOptions
+                    .bitmapTransform(new CenterCropRoundedCornersTransformation(dp2px(6.67f), 0, CenterCropRoundedCornersTransformation.CornerType.ALL));
+            Glide.with(getContext().getApplicationContext())
                     .load(path)
+                    .apply(requestOptions)
                     .into(icon);
         }
+
     }
 
     @Override
@@ -118,5 +138,12 @@ public class SmallAudioControlView extends AudioControlView {
         }
         view.setEnabled(enabled);
         view.setAlpha(enabled ? 1f : 0.4f);
+    }
+
+
+    public int dp2px(float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+
     }
 }

@@ -75,8 +75,8 @@ public class AudioPlayActivity extends AppCompatActivity {
 //                    PlayListFragment fragment = PlayListFragment.newInstance();
 //                    fragment.show(getSupportFragmentManager(),"test");
 //                    getSupportFragmentManager().beginTransaction().add(fragment,"test").commit();
-                    PlayListFragment playListFragment = PlayListFragment.newInstance();
-                    getSupportFragmentManager().beginTransaction().add(R.id.f,playListFragment).commit();
+//                    PlayListFragment playListFragment = PlayListFragment.newInstance();
+//                    getSupportFragmentManager().beginTransaction().add(R.id.f,playListFragment).commit();
                 }
             }
         });

@@ -35,7 +35,7 @@
                 android:padding="10dp"
                 android:src="@drawable/media_ic_back_white_24dp" />
 
-            <TextView
+            <com.chengfu.music.player.ui.widget.MarqueeTextView
                 android:id="@id/audio_controller_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

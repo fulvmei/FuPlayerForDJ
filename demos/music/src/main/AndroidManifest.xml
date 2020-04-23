@@ -31,6 +31,10 @@
         </activity>
 
         <activity
+            android:name=".AlbumActivity"
+            android:theme="@style/AudioPlayTheme" />
+
+        <activity
             android:name=".AudioPlayActivity"
             android:process=":other"
             android:theme="@style/AudioPlayTheme" />

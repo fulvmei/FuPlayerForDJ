@@ -1,5 +1,6 @@
 package com.chengfu.music.player;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,7 +12,11 @@ public class FuSessionActivity extends SessionActivity {
     @Override
     protected void onSessionActivity(Bundle extras) {
         super.onSessionActivity(extras);
-        Log.d("hhh","收到播放器消息 extras=" + extras);
+        Log.d("hhh", "收到播放器消息 extras=" + extras);
+
+        Intent intent = new Intent(this, AudioPlayActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

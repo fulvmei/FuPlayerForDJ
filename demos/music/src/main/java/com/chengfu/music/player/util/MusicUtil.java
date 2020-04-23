@@ -142,7 +142,7 @@ public class MusicUtil {
                 .setTitle("电音House 耳机福利")
                 .setSubtitle("未知来源")
                 .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1108/5821463c8ea94.mp3"))
-                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/0517/573b1240af3da.jpg"))
+                .setIconUri(Uri.parse("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2519389522,3836335851&fm=26&gp=0.jpg"))
                 .build();
 
 
@@ -166,7 +166,7 @@ public class MusicUtil {
 
         ArrayList<MediaDescriptionCompat> temp = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            MediaDescriptionCompat item = musics[i % count];
+            MediaDescriptionCompat item = musics[i % musics.length];
             MediaDescriptionCompat newItem = new MediaDescriptionCompat.Builder()
                     .setMediaId(UUID.randomUUID().toString())
                     .setTitle(item.getTitle())

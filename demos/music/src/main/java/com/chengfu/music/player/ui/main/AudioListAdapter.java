@@ -1,5 +1,6 @@
 package com.chengfu.music.player.ui.main;
 
+import android.content.Intent;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chengfu.android.fuplayer.achieve.dj.audio.DataBaseManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.AudioDatabase;
 import com.chengfu.android.fuplayer.achieve.dj.audio.db.entity.RecentPlayEntity;
+import com.chengfu.music.player.AlbumActivity;
 import com.chengfu.music.player.MainActivity;
 import com.chengfu.music.player.R;
 
@@ -68,12 +70,8 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            AudioDatabase.getInstance(view.getContext()).recentPlayDao().insert(new RecentPlayEntity(list.get(getAdapterPosition()).getMediaId(), 0));
-                        }
-                    }).start();
+                    Intent intent = new Intent(view.getContext(), AlbumActivity.class);
+                    view.getContext().startActivity(intent);
                 }
             });
 

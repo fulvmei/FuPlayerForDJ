@@ -24,10 +24,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestFutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
 import com.chengfu.music.player.R;
@@ -129,15 +131,13 @@ public class AppAudioControlView extends AudioControlView {
 
     @Override
     protected void updateIcon(@NonNull ImageView icon, @Nullable MediaDescriptionCompat description) {
-        super.updateIcon(icon, description);
         if (description == null) {
             return;
         }
         if (description.getIconBitmap() != null) {
             Glide.with(getContext().getApplicationContext())
                     .load(description.getIconBitmap())
-                    .dontAnimate()
-                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 3)))
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 5)))
                     .into(background);
 
             Glide.with(getContext().getApplicationContext())
@@ -150,10 +150,11 @@ public class AppAudioControlView extends AudioControlView {
         String path = description.getIconUri() != null ? description.getIconUri().toString() : "";
         if (getTag() == null || !getTag().equals(path)) {
             setTag(path);
+            DrawableCrossFadeFactory drawableCrossFadeFactory = new DrawableCrossFadeFactory.Builder(500).setCrossFadeEnabled(true).build();
             Glide.with(getContext())
                     .load(path)
-                    .dontAnimate()
-                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 3)))
+                    .placeholder(background.getDrawable())
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 5)))
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -169,9 +170,8 @@ public class AppAudioControlView extends AudioControlView {
                             return false;
                         }
                     })
+                    .transition(DrawableTransitionOptions.with(drawableCrossFadeFactory))
                     .into(background);
-
-
         }
 
     }
@@ -179,9 +179,9 @@ public class AppAudioControlView extends AudioControlView {
     @Override
     protected void updateMetadata(MediaMetadataCompat metadata) {
         super.updateMetadata(metadata);
-        if (rotaAnim!=null){
-            rotaAnim.end();
-        }
+//        if (rotaAnim!=null){
+//            rotaAnim.end();
+//        }
     }
 
     @Override
