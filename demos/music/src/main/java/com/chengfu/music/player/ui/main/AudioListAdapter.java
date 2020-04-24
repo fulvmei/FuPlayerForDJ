@@ -93,7 +93,7 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.popup_song_play) {
-                    MainActivity.audioPlayClient.addToCurrentPlay(media);
+                    MainActivity.audioPlayClient.addItem(media);
                 } else if (id == R.id.popup_song_add_to_playlist) {
 
                 } else if (id == R.id.popup_song_delete) {

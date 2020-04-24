@@ -77,9 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        BottomDialog dialog=new BottomDialog(this);
-        dialog.setContentView(R.layout.dialog_bottom_sheet);
-        dialog.show();
+//        BottomDialog dialog=new BottomDialog(this);
+//        dialog.setContentView(R.layout.dialog_bottom_sheet);
+//        dialog.show();
+        Intent intent=new Intent(this,AudioPlayActivity.class);
+        startActivity(intent);
         return super.onOptionsItemSelected(item);
     }
 }

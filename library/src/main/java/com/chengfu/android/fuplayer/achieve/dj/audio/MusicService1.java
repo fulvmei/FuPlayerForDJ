@@ -2,23 +2,15 @@ package com.chengfu.android.fuplayer.achieve.dj.audio;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,15 +18,11 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
 import com.chengfu.android.fuplayer.achieve.dj.audio.notification.AudioNotificationManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer;
-import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer1;
 import com.chengfu.android.fuplayer.achieve.dj.audio.receiver.BecomingNoisyReceiver;
-import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
 import com.chengfu.android.fuplayer.util.FuLog;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -42,7 +30,7 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner {
+public class MusicService1 extends MediaBrowserServiceCompat implements LifecycleOwner {
     public static final String TAG = "MusicService";
 
     private LifecycleRegistry lifecycle;
@@ -52,7 +40,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
     private BecomingNoisyReceiver becomingNoisyReceiver;
 
-    private MediaSessionPlayer1 mediaSessionPlayer;
+    private MediaSessionPlayer mediaSessionPlayer;
 
     private AudioNotificationManager audioNotificationManager;
 
@@ -82,7 +70,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         audioNotificationManager.setNotificationListener(new NotificationListener());
 
-        mediaSessionPlayer = new MediaSessionPlayer1(this, mediaSession);
+        mediaSessionPlayer = new MediaSessionPlayer(this, mediaSession);
 
         becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
     }
@@ -97,14 +85,12 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
     @Override
     public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         FuLog.d(TAG, "onLoadChildren : parentId=" + parentId);
-//        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
-//        for (MediaSessionCompat.QueueItem item : mediaSessionPlayer.getQueueItemList()) {
-//            MediaBrowserCompat.MediaItem mediaItem = new MediaBrowserCompat.MediaItem(item.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
-//            mediaItems.add(mediaItem);
-//        }
-//        result.sendResult(mediaItems);
-
-        result.sendResult(new ArrayList<>());
+        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
+        for (MediaSessionCompat.QueueItem item : mediaSessionPlayer.getQueueItemList()) {
+            MediaBrowserCompat.MediaItem mediaItem = new MediaBrowserCompat.MediaItem(item.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+            mediaItems.add(mediaItem);
+        }
+        result.sendResult(mediaItems);
     }
 
     @NonNull
@@ -118,7 +104,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         super.onDestroy();
         FuLog.d(TAG, "onDestroy");
         lifecycle.setCurrentState(Lifecycle.State.DESTROYED);
-//        mediaSessionPlayer.release();
+        mediaSessionPlayer.release();
         mediaSession.setActive(false);
         mediaSession.release();
         if (becomingNoisyReceiver != null) {
@@ -136,9 +122,9 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
             Intent sessionIntent = new Intent();
             sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, description != null ? description.getExtras() : null);
-            ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
+            ComponentName componentName = new ComponentName(MusicService1.this, getApplication().getPackageName() + ".FuSessionActivity");
             sessionIntent.setComponent(componentName);
-            return PendingIntent.getActivity(MusicService.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return PendingIntent.getActivity(MusicService1.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         @Nullable
@@ -183,9 +169,9 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
                 ContextCompat.startForegroundService(
                         getApplicationContext(),
-                        new Intent(getApplicationContext(), MusicService.class));
+                        new Intent(getApplicationContext(), MusicService1.class));
 
-                startService(new Intent(getApplicationContext(), MusicService.class));
+                startService(new Intent(getApplicationContext(), MusicService1.class));
                 startForeground(notificationId, notification);
                 isForegroundService = true;
             }
@@ -199,7 +185,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
                 stopForeground(true);
                 isForegroundService = false;
             }
-//            mediaSessionPlayer.release();
+            mediaSessionPlayer.release();
         }
     }
 

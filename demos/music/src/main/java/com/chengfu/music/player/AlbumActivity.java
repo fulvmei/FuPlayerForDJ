@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +50,9 @@ public class AlbumActivity extends AppCompatActivity {
 //                return onOptionsItemSelected(item);
 //            }
 //        });
+
+//  RecyclerView.Adapter
+//        BaseAdapter
 
         recyclerView= findViewById(R.id.recyclerView);
         adapter=new SongListAdapter();

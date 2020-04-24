@@ -106,9 +106,6 @@ public class QueueListUtil {
     }
 
     public static int getPositionByMediaId(@NonNull List<MediaSessionCompat.QueueItem> items, String mediaId) {
-        if (mediaId == null) {
-            return -1;
-        }
         for (int i = 0; i < items.size(); i++) {
             MediaSessionCompat.QueueItem item = items.get(i);
             if (TextUtils.equals(mediaId, item.getDescription().getMediaId())) {

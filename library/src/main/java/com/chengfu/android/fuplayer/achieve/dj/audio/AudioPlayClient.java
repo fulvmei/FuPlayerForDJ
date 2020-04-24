@@ -81,6 +81,16 @@ public class AudioPlayClient {
         }
     }
 
+
+    public void addItem(MediaDescriptionCompat media) {
+        if (mediaBrowser.isConnected() && mediaController != null) {
+//            Bundle bundle = new Bundle();
+//            bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
+            mediaController.addQueueItem(media);
+//            mediaController.getTransportControls().play();
+        }
+    }
+
     public void setPlayListDelay(ArrayList<MediaDescriptionCompat> list, boolean autoPlay) {
         if (mediaBrowser.isConnected() && mediaController != null) {
             setPlayList(list, autoPlay);
