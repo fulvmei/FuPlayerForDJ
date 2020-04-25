@@ -498,7 +498,7 @@ public final class MediaSessionPlayer {
                     concatenatingMediaSource.clear();
                 }
                 stop(true);
-            } else if (MusicContract.COMMAND_ADD_TO_CURRENT_PLAY.equals(command)) {
+            } else if (MusicContract.COMMAND_ADD_TO_TO_FRONT_OF_CURRENT_PLAY.equals(command)) {
                 if (extras == null) {
                     return;
                 }
@@ -516,7 +516,7 @@ public final class MediaSessionPlayer {
                         onPrepareFromMediaId(media.getMediaId(), null);
                     }
                 }
-            } else if (MusicContract.COMMAND_ADD_TO_NEXT_PLAY.equals(command)) {
+            } else if (MusicContract.COMMAND_ADD_AFTER_CURRENT_PLAY.equals(command)) {
 //                if (extras == null) {
 //                    return;
 //                }

@@ -6,8 +6,8 @@
         android:title="@string/menu_play" />
 
     <item
-        android:id="@+id/popup_song_add_to_playlist"
-        android:title="@string/menu_add_to_playlist" />
+        android:id="@+id/menu_add_to_next_play"
+        android:title="@string/menu_add_to_next_play" />
 
     <item
         android:id="@+id/popup_song_delete"

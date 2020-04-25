@@ -13,6 +13,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.chengfu.android.fuplayer.util.FuLog;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AudioControlView extends FrameLayout {
 
@@ -188,7 +190,11 @@ public class AudioControlView extends FrameLayout {
         MediaDescriptionCompat description = metadata != null ? metadata.getDescription() : null;
 
         if (title != null) {
-            title.setText(description != null && description.getTitle() != null ? description.getTitle() : "");
+            CharSequence oldText = title.getText();
+            CharSequence newText = description != null ? description.getTitle() : null;
+            if (!TextUtils.equals(oldText, newText)) {
+                title.setText(newText);
+            }
         }
         if (subtitle != null) {
             subtitle.setText(description != null && description.getSubtitle() != null ? description.getSubtitle() : "");
@@ -428,9 +434,9 @@ public class AudioControlView extends FrameLayout {
 
         @Override
         public void onClick(View v) {
-            if (v == play ) {
+            if (v == play) {
                 play();
-            } else if (v == pause ) {
+            } else if (v == pause) {
                 pause();
             } else if (v == previous) {
                 previous();

@@ -12,6 +12,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -84,6 +86,24 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         mediaSessionPlayer = new MediaSessionPlayer1(this, mediaSession);
 
+        mediaSessionPlayer.setMediaLoadProvider(new MediaSessionPlayer1.MediaLoadProvider() {
+            @Override
+            public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
+                Handler mainHandler=new Handler(getMainLooper()){
+                    @Override
+                    public void handleMessage(Message msg) {
+                        callback.onCompleted(description);
+                    }
+                };
+                mainHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainHandler.sendEmptyMessage(0);
+                    }
+                },3000);
+            }
+        });
+
         becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
     }
 
@@ -97,14 +117,12 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
     @Override
     public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
         FuLog.d(TAG, "onLoadChildren : parentId=" + parentId);
-//        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
-//        for (MediaSessionCompat.QueueItem item : mediaSessionPlayer.getQueueItemList()) {
-//            MediaBrowserCompat.MediaItem mediaItem = new MediaBrowserCompat.MediaItem(item.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
-//            mediaItems.add(mediaItem);
-//        }
-//        result.sendResult(mediaItems);
-
-        result.sendResult(new ArrayList<>());
+        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
+        for (MediaSessionCompat.QueueItem item : mediaSessionPlayer.getQueueItemList()) {
+            MediaBrowserCompat.MediaItem mediaItem = new MediaBrowserCompat.MediaItem(item.getDescription(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+            mediaItems.add(mediaItem);
+        }
+        result.sendResult(mediaItems);
     }
 
     @NonNull
@@ -118,7 +136,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         super.onDestroy();
         FuLog.d(TAG, "onDestroy");
         lifecycle.setCurrentState(Lifecycle.State.DESTROYED);
-//        mediaSessionPlayer.release();
+        mediaSessionPlayer.release();
         mediaSession.setActive(false);
         mediaSession.release();
         if (becomingNoisyReceiver != null) {
@@ -199,7 +217,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
                 stopForeground(true);
                 isForegroundService = false;
             }
-//            mediaSessionPlayer.release();
+            mediaSessionPlayer.release();
         }
     }
 

@@ -76,11 +76,18 @@ public class AudioPlayClient {
         if (mediaBrowser.isConnected() && mediaController != null) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
-            mediaController.sendCommand(MusicContract.COMMAND_ADD_TO_CURRENT_PLAY, bundle, null);
-            mediaController.getTransportControls().play();
+            mediaController.sendCommand(MusicContract.COMMAND_ADD_TO_TO_FRONT_OF_CURRENT_PLAY, bundle, null);
+            mediaController.getTransportControls().playFromMediaId(media.getMediaId(), null);
         }
     }
 
+    public void addToNextPlay(MediaDescriptionCompat media) {
+        if (mediaBrowser.isConnected() && mediaController != null) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
+            mediaController.sendCommand(MusicContract.COMMAND_ADD_AFTER_CURRENT_PLAY, bundle, null);
+        }
+    }
 
     public void addItem(MediaDescriptionCompat media) {
         if (mediaBrowser.isConnected() && mediaController != null) {

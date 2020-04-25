@@ -17,7 +17,6 @@ import java.util.List;
 
 public class RecentPlayListAdapter extends RecyclerView.Adapter<RecentPlayListAdapter.ViewHolder> {
 
-
     private List<MediaDescriptionCompat> list;
     private long activeQueueItemId = MediaSessionCompat.QueueItem.UNKNOWN_ID;
     private OnItemClickListener onItemClickListener;
@@ -55,7 +54,7 @@ public class RecentPlayListAdapter extends RecyclerView.Adapter<RecentPlayListAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MediaDescriptionCompat item = list.get(position);
 
-        holder.img.setImageBitmap(item.getIconBitmap());
+//        holder.img.setImageBitmap(item.getIconBitmap());
         holder.title.setText(item.getTitle());
         holder.subTitle.setText(item.getSubtitle());
 

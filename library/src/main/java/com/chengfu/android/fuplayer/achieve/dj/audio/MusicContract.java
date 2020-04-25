@@ -4,15 +4,15 @@ public class MusicContract {
 
     public static final String ACTION_SESSION_ACTIVITY = "chengfu.intent.action.ACTION_SESSION_ACTIVITY";
 
-    public static final int DEFAULT_QUEUE_ADD_INDEX = -1;
+    public static final int DEFAULT_QUEUE_ADD_INDEX = 0;
 
     public static final int REQUEST_CODE_SESSION_ACTIVITY = 100;
 
     static final String AUTHORITY = "com.chengfu.android.media.provider.MusicProvider";
 
-    public static final String COMMAND_ADD_TO_CURRENT_PLAY = "command_add_to_current_play";
+    public static final String COMMAND_ADD_TO_TO_FRONT_OF_CURRENT_PLAY = "command_add_to_to_front_of_current_play";
 
-    public static final String COMMAND_ADD_TO_NEXT_PLAY = "command_add_to_next_play";
+    public static final String COMMAND_ADD_AFTER_CURRENT_PLAY = "command_add_after_current_play";
 
     public static final String COMMAND_SET_QUEUE_ITEMS = "command_set_queue_items";
 

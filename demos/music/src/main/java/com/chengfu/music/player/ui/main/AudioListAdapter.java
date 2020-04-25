@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.DataBaseManager;
@@ -93,11 +94,11 @@ public class AudioListAdapter extends RecyclerView.Adapter<AudioListAdapter.View
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.popup_song_play) {
-                    MainActivity.audioPlayClient.addItem(media);
-                } else if (id == R.id.popup_song_add_to_playlist) {
-
+                    MainActivity.audioPlayClient.addToCurrentPlay(media);
+                } else if (id == R.id.menu_add_to_next_play) {
+                    MainActivity.audioPlayClient.addToNextPlay(media);
                 } else if (id == R.id.popup_song_delete) {
-
+                    MainActivity.audioPlayClient.getMediaController().removeQueueItem(media);
                 }
                 return true;
             }

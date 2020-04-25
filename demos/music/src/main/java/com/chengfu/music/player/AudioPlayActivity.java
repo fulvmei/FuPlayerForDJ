@@ -77,6 +77,10 @@ public class AudioPlayActivity extends AppCompatActivity {
 //                    getSupportFragmentManager().beginTransaction().add(fragment,"test").commit();
 //                    PlayListFragment playListFragment = PlayListFragment.newInstance();
 //                    getSupportFragmentManager().beginTransaction().add(R.id.f,playListFragment).commit();
+
+                    RecentListFragment fragment = RecentListFragment.newInstance();
+//                    fragment.setStyle(PlayListFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
+                    fragment.show(getSupportFragmentManager(), "RecentListFragment");
                 }
             }
         });

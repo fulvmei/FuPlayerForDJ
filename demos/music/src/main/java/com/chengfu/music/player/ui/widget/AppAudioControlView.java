@@ -151,7 +151,7 @@ public class AppAudioControlView extends AudioControlView {
         if (getTag() == null || !getTag().equals(path)) {
             setTag(path);
             DrawableCrossFadeFactory drawableCrossFadeFactory = new DrawableCrossFadeFactory.Builder(500).setCrossFadeEnabled(true).build();
-            Glide.with(getContext())
+            Glide.with(getContext().getApplicationContext())
                     .load(path)
                     .placeholder(background.getDrawable())
                     .apply(RequestOptions.bitmapTransform(new BlurTransformation(200, 5)))
@@ -163,7 +163,7 @@ public class AppAudioControlView extends AudioControlView {
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            Glide.with(getContext())
+                            Glide.with(getContext().getApplicationContext())
                                     .load(path)
                                     .apply(RequestOptions.bitmapTransform(new CircleCrop()))
                                     .into(icon);
