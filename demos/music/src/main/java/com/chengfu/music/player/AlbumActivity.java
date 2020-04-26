@@ -1,6 +1,7 @@
 package com.chengfu.music.player;
 
 import android.content.Intent;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,11 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
+import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.music.player.ui.album.SongListAdapter;
 import com.chengfu.music.player.ui.main.SectionsPagerAdapter;
 import com.chengfu.music.player.ui.player.BottomDialog;
@@ -32,6 +37,8 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
+
 public class AlbumActivity extends AppCompatActivity {
     public static final String TAG = "AlbumActivity";
 
@@ -41,7 +48,7 @@ public class AlbumActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     SongListAdapter adapter;
-    AppBarLayout appBarLayout;
+    MyAppBarLayout appBarLayout;
     ImageView bgImg;
     ImageView bgImg2;
     Toolbar toolbar;
@@ -59,6 +66,28 @@ public class AlbumActivity extends AppCompatActivity {
         bgImg = findViewById(R.id.bgImg);
         info = findViewById(R.id.info);
         appBarLayout = findViewById(R.id.appBarLayout);
+
+        appBarLayout.setOnSizeChangedListener(new MyAppBarLayout.OnSizeChangedListener() {
+            @Override
+            public void onSizeChanged(int w, int h, int oldw, int oldh) {
+//                ViewGroup.LayoutParams layoutParams = bgImg.getLayoutParams();
+//                layoutParams.height=h;
+//                bgImg.setLayoutParams(layoutParams);
+
+                appBarLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(getApplicationContext())
+                                .load("http://pic2.sc.chinaz.com/files/pic/pic9/202004/zzpic24653.jpg")
+                                .apply(RequestOptions.overrideOf(w,h).centerCrop())
+                                .into(bgImg);
+                    }
+                },100);
+
+//                ViewModelProviders.of().get()
+            }
+        });
+
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -104,7 +133,7 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
 
-        audioPlayClient = new AudioPlayClient(this);
+        audioPlayClient = new AudioPlayClient(this, MusicService.class);
 
         audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
             @Override

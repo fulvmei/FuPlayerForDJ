@@ -37,14 +37,18 @@ public class AudioPlayClient {
 
     private final MutableLiveData<Boolean> connected;
 
-    public AudioPlayClient(@NonNull Context context) {
+    public AudioPlayClient(@NonNull Context context, @NonNull Class<?> service) {
+        this(context, service.getName());
+    }
+
+    public AudioPlayClient(@NonNull Context context, @NonNull String service) {
         this.context = context;
         pendingList = new ArrayList<>();
         connected = new MutableLiveData<>();
 
         connectionCallback = new ConnectionCallback();
         mediaBrowser = new MediaBrowserCompat(context,
-                new ComponentName(context, MusicService.class), connectionCallback, null);
+                new ComponentName(context, service), connectionCallback, null);
     }
 
     public LiveData<Boolean> getConnected() {
@@ -91,10 +95,15 @@ public class AudioPlayClient {
 
     public void addItem(MediaDescriptionCompat media) {
         if (mediaBrowser.isConnected() && mediaController != null) {
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(MusicContract.KEY_QUEUE_ITEM, media);
             mediaController.addQueueItem(media);
-//            mediaController.getTransportControls().play();
+        }
+    }
+
+    public void addItem(MediaDescriptionCompat media,int index) {
+        if (mediaBrowser.isConnected() && mediaController != null) {
+            mediaController.addQueueItem(media,index);
         }
     }
 

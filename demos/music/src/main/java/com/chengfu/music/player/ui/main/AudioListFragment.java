@@ -57,6 +57,8 @@ public class AudioListFragment extends Fragment {
                 MainActivity.audioPlayClient.setPlayList(medias, true);
             }
         });
+        System.out.println("Fragment context 对象  context="+getContext());
+
     }
 
     @Override

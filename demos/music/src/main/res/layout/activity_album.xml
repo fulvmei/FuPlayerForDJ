@@ -16,7 +16,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff0000"
+            android:background="#000000"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
 
@@ -26,9 +26,8 @@
                 android:layout_height="match_parent"
                 android:foreground="#55000000"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img3"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.5" />
+                app:layout_collapseParallaxMultiplier="0.7" />
 
             <RelativeLayout
                 android:id="@+id/content"
@@ -102,7 +101,7 @@
                     android:layout_marginEnd="14dp"
                     android:paddingBottom="42dp"
                     android:text="兰花小馆，搜罗不同城市好吃有爱的故事。一座城池，一个角落，一个特色小店，一份特色好吃的美食，一段独享有爱的故事分享身边听众的情感故事。"
-                    android:textColor="#ffffffff"
+                    android:textColor="#99ffffff"
                     android:textSize="12sp" />
             </RelativeLayout>
 
@@ -128,11 +127,11 @@
                 app:navigationIcon="@drawable/media_ic_back_white_24dp">
 
                 <LinearLayout
-                    android:gravity="center_vertical"
                     android:id="@+id/topTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -157,14 +156,33 @@
 
     </com.chengfu.music.player.ui.widget.MyAppBarLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="-30dp"
         android:background="@drawable/media_bg_song_list"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="8dp"
+            android:text="播放列表"
+            android:elevation="1dp"
+            android:textColor="#ff1a1f24"
+            android:textSize="15sp" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
     <com.chengfu.music.player.ui.widget.SmallAudioControlView
         android:id="@+id/audioControlView"

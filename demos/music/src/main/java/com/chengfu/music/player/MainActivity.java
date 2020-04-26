@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
+import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.music.player.ui.main.SectionsPagerAdapter;
 import com.chengfu.music.player.ui.player.BottomDialog;
 import com.chengfu.music.player.ui.widget.SmallAudioControlView;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        audioPlayClient = new AudioPlayClient(this);
+        audioPlayClient = new AudioPlayClient(this, MusicService.class);
 
         audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
             @Override
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         audioPlayClient.connect();
+
+        System.out.println("11111111111     "+getClass().getCanonicalName());
     }
 
     @Override

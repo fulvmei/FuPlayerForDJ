@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
+import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.music.player.ui.player.AudioPlayViewModel;
 import com.chengfu.music.player.ui.player.PlayListAdapter;
 import com.chengfu.music.player.ui.player.PlayListFragment;
@@ -97,7 +98,7 @@ public class AudioPlayActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        audioPlayClient = new AudioPlayClient(this);
+        audioPlayClient = new AudioPlayClient(this, MusicService.class);
         audioPlayClient.connect();
 
         audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
