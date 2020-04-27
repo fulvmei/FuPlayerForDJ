@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
@@ -40,6 +41,8 @@ public class AudioPlayActivity extends AppCompatActivity {
     AppAudioControlView audioControlView;
     //    Toolbar toolbar;
     AudioPlayViewModel viewModel;
+
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,10 @@ public class AudioPlayActivity extends AppCompatActivity {
                 }
             }
         });
+
+        webView=findViewById(R.id.webView);
+
+        webView.loadUrl("https://www.jianshu.com/p/eec5a397ce79");
     }
 
     @Override
@@ -136,8 +143,9 @@ public class AudioPlayActivity extends AppCompatActivity {
         } else if (id == R.id.add_clear) {
             audioPlayClient.clearPlayList();
         } else if (id == R.id.recent) {
-            RecentListFragment fragment = RecentListFragment.newInstance();
-            fragment.show(getSupportFragmentManager(), "RecentListFragment");
+            webView.loadUrl("http://img1.imgtn.bdimg.com/it/u=3675415932,4054970339&fm=26&gp=0.jpg  ");
+//            RecentListFragment fragment = RecentListFragment.newInstance();
+//            fragment.show(getSupportFragmentManager(), "RecentListFragment");
         }
         return super.onOptionsItemSelected(item);
     }
