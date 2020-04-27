@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        audioPlayClient = new AudioPlayClient(this, MusicService.class);
+        audioPlayClient = new AudioPlayClient(this, AppMusicService.class);
 
         audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
             @Override
@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         audioPlayClient.connect();
-
-        System.out.println("11111111111     "+getClass().getCanonicalName());
     }
 
     @Override

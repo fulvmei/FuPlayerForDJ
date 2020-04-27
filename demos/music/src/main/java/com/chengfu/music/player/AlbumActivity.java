@@ -133,7 +133,7 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
 
-        audioPlayClient = new AudioPlayClient(this, MusicService.class);
+        audioPlayClient = new AudioPlayClient(this, AppMusicService.class);
 
         audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
             @Override

@@ -316,7 +316,7 @@ public class AudioControlView extends FrameLayout {
 //
 //        setViewEnabled(pause2, state != null && PlaybackStateCompatExt.isPauseEnabled(state));
 
-        if (state != null && PlaybackStateCompatExt.isPlaying(state)) {
+        if (state != null && PlaybackStateCompatExt.isPlayEnabled(state)) {
             setVisibility(play, false);
             setVisibility(pause, true);
         } else {

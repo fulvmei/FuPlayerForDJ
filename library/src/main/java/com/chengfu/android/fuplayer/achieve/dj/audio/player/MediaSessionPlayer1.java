@@ -2,12 +2,9 @@ package com.chengfu.android.fuplayer.achieve.dj.audio.player;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.session.MediaSession;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Parcelable;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -15,7 +12,6 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.LongSparseArray;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +20,6 @@ import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.MediaSessionUtil;
-import com.chengfu.android.fuplayer.achieve.dj.audio.util.QueueListUtil;
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
 import com.chengfu.android.fuplayer.util.FuLog;
@@ -36,21 +31,13 @@ import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ShuffleOrder;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.RepeatModeUtil;
 import com.google.android.exoplayer2.util.Util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public final class MediaSessionPlayer1 {
     public static final String TAG = "MediaSessionPlayer";
@@ -396,19 +383,19 @@ public final class MediaSessionPlayer1 {
                     mMediaSessionCallback.onSkipToNext();
                 }
             }
-            mMediaSessionCallback.setState(mapPlaybackState(mPlayer.getPlaybackState()));
+            mMediaSessionCallback.setState(mapPlaybackState(mPlayer.getPlaybackState()), mPlayer.getPlayWhenReady());
         }
 
         @Override
         public void onIsPlayingChanged(boolean isPlaying) {
             FuLog.d(TAG, "onIsPlayingChanged : isPlaying=" + isPlaying);
-            mMediaSessionCallback.setState(mapPlaybackState(mPlayer.getPlaybackState()));
+            invalidateMediaSessionPlaybackState();
         }
 
         @Override
         public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             FuLog.d(TAG, "onPlaybackParametersChanged : playbackParameters=" + playbackParameters);
-            mMediaSessionCallback.setState(mapPlaybackState(mPlayer.getPlaybackState()));
+            invalidateMediaSessionPlaybackState();
         }
     }
 
@@ -425,6 +412,7 @@ public final class MediaSessionPlayer1 {
         @PlaybackStateCompat.State
         int mState = PlaybackStateCompat.STATE_NONE;
         boolean mPendingPrepare;
+        boolean mPlayWhenReady;
 
         @Override
         public void onCommand(String command, Bundle extras, ResultReceiver cb) {
@@ -567,11 +555,14 @@ public final class MediaSessionPlayer1 {
         }
 
 
-        public void setState(@PlaybackStateCompat.State int state) {
-            if (mState == state) {
+        public void setState(@PlaybackStateCompat.State int state, boolean playWhenReady) {
+            if (mState == state && mPlayWhenReady == playWhenReady) {
+                mState = state;
+                mPlayWhenReady = playWhenReady;
                 return;
             }
             mState = state;
+            mPlayWhenReady = playWhenReady;
 
             invalidateMediaSessionMetadata();
             invalidateMediaSessionPlaybackState();
@@ -590,20 +581,30 @@ public final class MediaSessionPlayer1 {
             if (mActiveQueueItem == null) {
                 return;
             }
-           onStop();
+            onStop();
             if (mMediaLoadProvider != null) {
                 mPendingPrepare = true;
-                setState(PlaybackStateCompat.STATE_BUFFERING);
-                mMediaLoadProvider.onLoadMedia(mActiveQueueItem.getDescription(), new MediaLoadCallback(mActiveQueueItem.getDescription()) {
+                setState(PlaybackStateCompat.STATE_BUFFERING, mPlayer.getPlayWhenReady());
+                mMediaLoadProvider.onLoadMedia(mActiveQueueItem.getDescription(), new MediaLoadCallback(mActiveQueueItem) {
                     @Override
                     public void onCompleted(MediaDescriptionCompat description) {
-                        prepare(description);
-                        mPendingPrepare = false;
+                        if (Objects.equals(mActiveQueueItem, item)) {
+                            mPendingPrepare = false;
+                            MediaSessionCompat.QueueItem newItem = new MediaSessionCompat.QueueItem(description, mActiveQueueItem.getQueueId());
+                            mQueueItemList.set(mQueueItemList.indexOf(mActiveQueueItem), newItem);
+                            mActiveQueueItem = newItem;
+                            invalidateMediaSessionMetadata();
+                            mMediaSession.setQueue(mQueueItemList);
+                            prepare(description);
+                        }
                     }
 
                     @Override
                     public void onFailure() {
-                        mPendingPrepare = false;
+                        if (Objects.equals(mActiveQueueItem, item)) {
+                            mPendingPrepare = false;
+                            setState(PlaybackStateCompat.STATE_ERROR, mPlayer.getPlayWhenReady());
+                        }
                     }
                 });
                 return;
@@ -622,14 +623,16 @@ public final class MediaSessionPlayer1 {
 
         @Override
         public void onPlay() {
-            if (mPlayer.getPlaybackState() == FuPlayer.STATE_IDLE) {
-                if (mPlayer.getPlaybackError() != null) {
-                    mPlayer.retry();
-                } else {
+            switch (mState) {
+                case PlaybackStateCompat.STATE_NONE:
                     onPrepare();
-                }
-            } else if (mPlayer.getPlaybackState() == FuPlayer.STATE_ENDED) {
-                mPlayer.seekTo(0);
+                    break;
+                case PlaybackStateCompat.STATE_ERROR:
+                    mPlayer.retry();
+                    break;
+                case PlaybackStateCompat.STATE_STOPPED:
+                    mPlayer.seekTo(0);
+                    break;
             }
             mPlayer.setPlayWhenReady(true);
         }
@@ -675,7 +678,7 @@ public final class MediaSessionPlayer1 {
                 newIndex = newIndex != C.INDEX_UNSET ? newIndex : mShuffleOrder.getFirstIndex();
                 mActiveQueueItem = mQueueItemList.get(newIndex);
 
-                setState(PlaybackStateCompat.STATE_SKIPPING_TO_NEXT);
+                setState(PlaybackStateCompat.STATE_SKIPPING_TO_NEXT, mPlayer.getPlayWhenReady());
                 onPrepare();
             }
         }
@@ -686,7 +689,7 @@ public final class MediaSessionPlayer1 {
             if (index >= 0) {
                 mActiveQueueItem = mQueueItemList.get(index);
 
-                setState(PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM);
+                setState(PlaybackStateCompat.STATE_SKIPPING_TO_QUEUE_ITEM, mPlayer.getPlayWhenReady());
                 onPrepare();
             }
         }
@@ -713,7 +716,7 @@ public final class MediaSessionPlayer1 {
                 newIndex = newIndex != C.INDEX_UNSET ? newIndex : mShuffleOrder.getLastIndex();
                 mActiveQueueItem = mQueueItemList.get(newIndex);
 
-                setState(PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS);
+                setState(PlaybackStateCompat.STATE_SKIPPING_TO_PREVIOUS, mPlayer.getPlayWhenReady());
 
                 onPrepare();
             }
@@ -742,8 +745,10 @@ public final class MediaSessionPlayer1 {
 
         @Override
         public void onStop() {
-            setState(PlaybackStateCompat.STATE_NONE);
-            mPlayer.stop(true);
+            if (mPlayer.getPlaybackState() != FuPlayer.STATE_IDLE) {
+                setState(PlaybackStateCompat.STATE_NONE, mPlayer.getPlayWhenReady());
+                mPlayer.stop(true);
+            }
         }
 
         @Override
@@ -777,19 +782,15 @@ public final class MediaSessionPlayer1 {
     }
 
     public class MediaLoadCallback {
-        private final MediaDescriptionCompat description;
+        public final MediaSessionCompat.QueueItem item;
 
-        private MediaLoadCallback(MediaDescriptionCompat description) {
-            this.description = description;
+        private MediaLoadCallback(MediaSessionCompat.QueueItem item) {
+            this.item = item;
         }
 
 
         public void onCompleted(final MediaDescriptionCompat description) {
-            if (description != null) {
-//                if(mMediaSessionCallback.mActiveQueueItem){
-//
-//                }
-            }
+
         }
 
         public void onFailure() {

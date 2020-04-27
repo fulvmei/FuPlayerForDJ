@@ -16,29 +16,18 @@ public class PlaybackStateCompatExt {
 
 
     public static boolean isPlaying(PlaybackStateCompat playbackState) {
-
         int state = playbackState.getState();
-        long actions = playbackState.getActions();
-        return (state == PlaybackStateCompat.STATE_BUFFERING ||
-                state == PlaybackStateCompat.STATE_PLAYING) &&
-                ((actions & PlaybackStateCompat.ACTION_PLAY) == 0L);
+        return state == PlaybackStateCompat.STATE_PLAYING;
     }
 
     public static boolean isPlayEnabled(PlaybackStateCompat playbackState) {
-        int state = playbackState.getState();
         long actions = playbackState.getActions();
-        return ((actions & PlaybackStateCompat.ACTION_PLAY) != 0L) ||
-                ((actions & PlaybackStateCompat.ACTION_PLAY_PAUSE) != 0L) &&
-                        (state == PlaybackStateCompat.STATE_PAUSED);
+        return ((actions & PlaybackStateCompat.ACTION_PLAY) == 0L);
     }
 
     public static boolean isPauseEnabled(PlaybackStateCompat playbackState) {
-        int state = playbackState.getState();
         long actions = playbackState.getActions();
-        return ((actions & PlaybackStateCompat.ACTION_PAUSE) != 0L) ||
-                (((actions & PlaybackStateCompat.ACTION_PLAY_PAUSE) != 0L) &&
-                        (state == PlaybackStateCompat.STATE_BUFFERING ||
-                                state == PlaybackStateCompat.STATE_PLAYING));
+        return ((actions & PlaybackStateCompat.ACTION_PAUSE) == 0L);
     }
 
     public static boolean isSkipToNextEnabled(PlaybackStateCompat playbackState) {

@@ -44,7 +44,7 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner {
+public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner, MediaSessionPlayer1.MediaLoadProvider {
     public static final String TAG = "MusicService";
 
     private LifecycleRegistry lifecycle;
@@ -86,23 +86,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         mediaSessionPlayer = new MediaSessionPlayer1(this, mediaSession);
 
-        mediaSessionPlayer.setMediaLoadProvider(new MediaSessionPlayer1.MediaLoadProvider() {
-            @Override
-            public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
-                Handler mainHandler=new Handler(getMainLooper()){
-                    @Override
-                    public void handleMessage(Message msg) {
-                        callback.onCompleted(description);
-                    }
-                };
-                mainHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainHandler.sendEmptyMessage(0);
-                    }
-                },3000);
-            }
-        });
+        mediaSessionPlayer.setMediaLoadProvider(this);
 
         becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
     }
@@ -143,6 +127,11 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
             becomingNoisyReceiver.unregister();
         }
         audioNotificationManager.onDestroy();
+    }
+
+    @Override
+    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
+        callback.onCompleted(description);
     }
 
     class NotificationListener implements AudioNotificationManager.NotificationListener {

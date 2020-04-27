@@ -170,7 +170,7 @@ public class AudioNotificationManager {
         }else {
             builder.addAction(skipToPreviousActionDisabled);
         }
-        if (PlaybackStateCompatExt.isPlaying(playbackState)) {
+        if (PlaybackStateCompatExt.isPlayEnabled(playbackState)) {
             builder.addAction(pauseAction);
         } else {
             builder.addAction(playAction);

@@ -98,7 +98,7 @@ public class AudioPlayActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        audioPlayClient = new AudioPlayClient(this, MusicService.class);
+        audioPlayClient = new AudioPlayClient(this, AppMusicService.class);
         audioPlayClient.connect();
 
         audioPlayClient.getConnected().observe(this, new Observer<Boolean>() {
