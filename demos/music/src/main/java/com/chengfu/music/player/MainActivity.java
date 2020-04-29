@@ -9,14 +9,11 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
-import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
 import com.chengfu.music.player.ui.main.SectionsPagerAdapter;
-import com.chengfu.music.player.ui.player.BottomDialog;
 import com.chengfu.music.player.ui.widget.SmallAudioControlView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
