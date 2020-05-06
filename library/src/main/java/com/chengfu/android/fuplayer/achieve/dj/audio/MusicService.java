@@ -47,6 +47,7 @@ import java.util.List;
 public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner, MediaSessionPlayer1.MediaLoadProvider {
     public static final String TAG = "MusicService";
 
+    private MusicService service = this;
     private LifecycleRegistry lifecycle;
     private boolean isForegroundService;
 
@@ -91,6 +92,12 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
     }
 
+    @NonNull
+    @Override
+    public Lifecycle getLifecycle() {
+        return lifecycle;
+    }
+
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
@@ -109,10 +116,45 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         result.sendResult(mediaItems);
     }
 
-    @NonNull
+    public PendingIntent createCurrentContentIntent(MediaDescriptionCompat description) {
+        return null;
+    }
+
+    public Bitmap getCurrentLargeIcon(MediaDescriptionCompat description, AudioNotificationManager.BitmapCallback callback) {
+        if (description == null) {
+            return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+        }
+        if (description.getIconBitmap() != null) {
+            return description.getIconBitmap();
+        }
+        if (description.getIconUri() == null) {
+            return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+        }
+        Picasso.get().load(description.getIconUri())
+                .centerCrop()
+                .resize(336, 336)
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        callback.onBitmap(bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                        callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
+                    }
+                });
+        return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+    }
+
     @Override
-    public Lifecycle getLifecycle() {
-        return lifecycle;
+    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
+        callback.onCompleted(description);
     }
 
     @Override
@@ -129,10 +171,6 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         audioNotificationManager.onDestroy();
     }
 
-    @Override
-    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
-        callback.onCompleted(description);
-    }
 
     class NotificationListener implements AudioNotificationManager.NotificationListener {
 
@@ -140,46 +178,13 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         @Override
         public PendingIntent createCurrentContentIntent(MediaDescriptionCompat description) {
             FuLog.d(TAG, "createCurrentContentIntent  description=" + description);
-            Intent sessionIntent = new Intent();
-            sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, description != null ? description.getExtras() : null);
-            ComponentName componentName = new ComponentName(MusicService.this, getApplication().getPackageName() + ".FuSessionActivity");
-            sessionIntent.setComponent(componentName);
-            return PendingIntent.getActivity(MusicService.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            return service.createCurrentContentIntent(description);
         }
 
         @Nullable
         @Override
         public Bitmap getCurrentLargeIcon(MediaDescriptionCompat description, AudioNotificationManager.BitmapCallback callback) {
-            if (description == null) {
-                return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
-            }
-            if (description.getIconBitmap() != null) {
-                return description.getIconBitmap();
-            }
-            if (description.getIconUri() == null) {
-                return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
-            }
-            Picasso.get().load(description.getIconUri())
-                    .centerCrop()
-                    .resize(336, 336)
-                    .into(new Target() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                            callback.onBitmap(bitmap);
-                        }
-
-                        @Override
-                        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-                            callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
-                        }
-
-                        @Override
-                        public void onPrepareLoad(Drawable placeHolderDrawable) {
-                            callback.onBitmap(BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon));
-                        }
-                    });
-            return BitmapFactory.decodeResource(getResources(), getApplicationInfo().icon);
+            return service.getCurrentLargeIcon(description, callback);
         }
 
         @Override
@@ -190,9 +195,8 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
                 ContextCompat.startForegroundService(
                         getApplicationContext(),
-                        new Intent(getApplicationContext(), MusicService.class));
-
-                startService(new Intent(getApplicationContext(), MusicService.class));
+                        new Intent(getApplicationContext(), service.getClass()));
+                startService(new Intent(getApplicationContext(), service.getClass()));
                 startForeground(notificationId, notification);
                 isForegroundService = true;
             }
