@@ -32,7 +32,7 @@ public class AppMusicService extends MusicService {
                 MediaDescriptionCompat d = new MediaDescriptionCompat.Builder()
                         .setMediaId(description.getMediaId())
                         .setMediaUri(description.getMediaUri())
-                        .setTitle("1111111" + description.getTitle())
+                        .setTitle(description.getTitle())
                         .setSubtitle(description.getSubtitle())
                         .setDescription(description.getDescription())
                         .setIconUri(description.getIconUri())
@@ -48,6 +48,6 @@ public class AppMusicService extends MusicService {
             public void run() {
                 mainHandler.sendEmptyMessage(0);
             }
-        }, 3000);
+        }, 10);
     }
 }

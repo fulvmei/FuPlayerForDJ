@@ -55,9 +55,10 @@ public class AudioListFragment extends Fragment {
             public void onClick(View view) {
                 ArrayList<MediaDescriptionCompat> medias = (ArrayList<MediaDescriptionCompat>) adapter.getList();
                 MainActivity.audioPlayClient.setPlayList(medias, true);
+                adapter.getList().addAll(MusicUtil.getTestMedias(1, false));
+                adapter.notifyDataSetChanged();
             }
         });
-        System.out.println("Fragment context 对象  context="+getContext());
 
     }
 
