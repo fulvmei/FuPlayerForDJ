@@ -496,17 +496,22 @@ public final class MediaSessionPlayer1 {
                 }
                 return;
             }
-            if (clear) {
-                mQueueItemList.clear();
-            }
+
             long maxId = MediaSessionUtil.maxId(mQueueItemList);
             List<MediaSessionCompat.QueueItem> items = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
-                if (MediaSessionUtil.search(mQueueItemList, list.get(i)) < 0) {
+                int searchIndex=MediaSessionUtil.search(mQueueItemList, list.get(i));
+                if ( searchIndex< 0) {
                     MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(list.get(i), maxId + i + 1);
                     items.add(item);
+                }else {
+                    items.add(mQueueItemList.get(searchIndex));
                 }
             }
+            if (clear) {
+                mQueueItemList.clear();
+            }
+            mQueueItemList.removeAll(items);
             mQueueItemList.addAll(index, items);
             updateQueueItemList();
         }
