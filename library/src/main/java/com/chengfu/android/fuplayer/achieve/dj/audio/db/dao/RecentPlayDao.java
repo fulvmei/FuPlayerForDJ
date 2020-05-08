@@ -52,4 +52,8 @@ public interface RecentPlayDao {
     @Transaction
     @Query("Select * From RecentPlayEntity ORDER BY modifiedTime DESC")
     LiveData<List<RecentPlay>> getRecentPlayList();
+
+    @Transaction
+    @Query("Select * From RecentPlayEntity ORDER BY modifiedTime DESC LIMIT :limit")
+    LiveData<List<RecentPlay>> getRecentPlayList(int limit);
 }

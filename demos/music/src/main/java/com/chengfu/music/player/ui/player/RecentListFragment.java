@@ -63,7 +63,7 @@ public class RecentListFragment extends BottomSheetDialogFragment {
 
         recyclerView.setAdapter(adapter);
 
-        AudioPlayClient.getRecentList(requireContext()).observe(this, new Observer<List<MediaDescriptionCompat>>() {
+        AudioPlayClient.getRecentList(requireContext(),5).observe(this, new Observer<List<MediaDescriptionCompat>>() {
             @Override
             public void onChanged(List<MediaDescriptionCompat> medias) {
                 adapter.setData(medias);

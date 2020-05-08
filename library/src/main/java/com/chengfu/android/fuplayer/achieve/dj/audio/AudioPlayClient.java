@@ -198,6 +198,17 @@ public class AudioPlayClient {
         });
     }
 
+    public static LiveData<List<MediaDescriptionCompat>> getRecentList(@NonNull Context context,int limit) {
+        LiveData<List<RecentPlay>> recentPlayList = AudioDatabase.getInstance(context).recentPlayDao().getRecentPlayList(limit);
+        return Transformations.map(recentPlayList, input -> {
+            List<MediaDescriptionCompat> medias = new ArrayList<>();
+            for (RecentPlay item : input) {
+                medias.add(ConverterUtil.mediaEntityToMediaDescription(item.audio));
+            }
+            return medias;
+        });
+    }
+
     private class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback {
         @Override
         public void onConnected() {
