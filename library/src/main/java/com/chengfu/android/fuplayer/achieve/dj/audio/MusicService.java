@@ -17,6 +17,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -116,7 +117,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         result.sendResult(mediaItems);
     }
 
-    public PendingIntent createCurrentContentIntent(MediaDescriptionCompat description) {
+    public PendingIntent createCurrentContentIntent(MediaMetadataCompat metadata) {
         return null;
     }
 
@@ -176,9 +177,9 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         @Nullable
         @Override
-        public PendingIntent createCurrentContentIntent(MediaDescriptionCompat description) {
-            FuLog.d(TAG, "createCurrentContentIntent  description=" + description);
-            return service.createCurrentContentIntent(description);
+        public PendingIntent createCurrentContentIntent(MediaMetadataCompat metadata) {
+            FuLog.d(TAG, "createCurrentContentIntent  metadata=" + metadata);
+            return service.createCurrentContentIntent(metadata);
         }
 
         @Nullable

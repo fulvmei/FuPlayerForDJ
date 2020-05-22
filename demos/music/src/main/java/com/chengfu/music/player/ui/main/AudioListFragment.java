@@ -2,6 +2,7 @@ package com.chengfu.music.player.ui.main;
 
 import android.os.Bundle;
 import android.support.v4.media.MediaDescriptionCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,6 @@ public class AudioListFragment extends Fragment {
             public void onClick(View view) {
                 ArrayList<MediaDescriptionCompat> medias = (ArrayList<MediaDescriptionCompat>) adapter.getList();
                 MainActivity.audioPlayClient.setPlayList(medias, true);
-                adapter.getList().addAll(MusicUtil.getTestMedias(1, false));
-                adapter.notifyDataSetChanged();
             }
         });
 

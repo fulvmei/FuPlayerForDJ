@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.NonNull;
@@ -117,14 +118,15 @@ public class MusicService1 extends MediaBrowserServiceCompat implements Lifecycl
 
         @Nullable
         @Override
-        public PendingIntent createCurrentContentIntent(MediaDescriptionCompat description) {
-            FuLog.d(TAG, "createCurrentContentIntent  description=" + description);
+        public PendingIntent createCurrentContentIntent(MediaMetadataCompat metadata) {
+            FuLog.d(TAG, "createCurrentContentIntent  metadata=" + metadata);
             Intent sessionIntent = new Intent();
             sessionIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, description != null ? description.getExtras() : null);
+            sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata != null ? metadata.getBundle() : null);
             ComponentName componentName = new ComponentName(MusicService1.this, getApplication().getPackageName() + ".FuSessionActivity");
             sessionIntent.setComponent(componentName);
             return PendingIntent.getActivity(MusicService1.this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         }
 
         @Nullable

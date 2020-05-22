@@ -12,11 +12,10 @@ public class FuSessionActivity extends SessionActivity {
     @Override
     protected void onSessionActivity(Bundle extras) {
         super.onSessionActivity(extras);
-        Log.d("hhh", "收到播放器消息 extras=" + extras);
+        Log.d("hhh", "收到播放器消息 extras=" + extras.getSerializable("video"));
 
         Intent intent = new Intent(this, AudioPlayActivity.class);
         startActivity(intent);
         finish();
     }
-
 }

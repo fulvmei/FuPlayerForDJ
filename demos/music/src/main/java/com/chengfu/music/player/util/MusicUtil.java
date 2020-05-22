@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -112,6 +113,7 @@ public class MusicUtil {
         return new Bitmap[]{bitmap1, bitmap2, bitmap3};
     }
 
+
     public static ArrayList<MediaDescriptionCompat> getTestMedias(int count, boolean shuffle) {
         MediaDescriptionCompat music0 = new MediaDescriptionCompat.Builder()
                 .setMediaId("0")
@@ -166,6 +168,9 @@ public class MusicUtil {
 
         ArrayList<MediaDescriptionCompat> temp = new ArrayList<>();
         for (int i = 0; i < count; i++) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("video", new Video());
+            bundle.putString("str", "字符串" + i);
             MediaDescriptionCompat item = musics[i % musics.length];
             MediaDescriptionCompat newItem = new MediaDescriptionCompat.Builder()
                     .setMediaId(UUID.randomUUID().toString())
@@ -173,6 +178,7 @@ public class MusicUtil {
                     .setSubtitle(item.getSubtitle())
                     .setMediaUri(item.getMediaUri())
                     .setIconUri(item.getIconUri())
+                    .setExtras(bundle)
                     .build();
             temp.add(newItem);
         }

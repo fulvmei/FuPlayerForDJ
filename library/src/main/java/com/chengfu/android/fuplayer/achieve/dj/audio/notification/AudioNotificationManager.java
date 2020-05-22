@@ -37,7 +37,7 @@ public class AudioNotificationManager {
 
     public interface NotificationListener {
         @Nullable
-        PendingIntent createCurrentContentIntent(MediaDescriptionCompat description);
+        PendingIntent createCurrentContentIntent(MediaMetadataCompat metadata);
 
         @Nullable
         Bitmap getCurrentLargeIcon(MediaDescriptionCompat description, BitmapCallback callback);
@@ -99,6 +99,8 @@ public class AudioNotificationManager {
     private boolean isNotificationStarted;
     private int currentNotificationTag;
 
+//    private MediaMetadataCompat currentMetadata = new MediaMetadataCompat.Builder().build();
+//    private PlaybackStateCompat currentState = new PlaybackStateCompat.Builder().build();
 
     public AudioNotificationManager(Context context, @NonNull MediaSessionCompat.Token sessionToken) {
         this.context = context;
@@ -162,12 +164,12 @@ public class AudioNotificationManager {
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOW_PLAYING_CHANNEL);
 
-        MediaDescriptionCompat description = mediaController.getMetadata() != null ? mediaController.getMetadata().getDescription() : new MediaDescriptionCompat.Builder().build();
+        MediaMetadataCompat metadata = mediaController.getMetadata();
+        MediaDescriptionCompat description = metadata != null ? metadata.getDescription() : new MediaDescriptionCompat.Builder().build();
         PlaybackStateCompat playbackState = mediaController.getPlaybackState();
-
-        if(PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)){
+        if (PlaybackStateCompatExt.isSkipToPreviousEnabled(playbackState)) {
             builder.addAction(skipToPreviousAction);
-        }else {
+        } else {
             builder.addAction(skipToPreviousActionDisabled);
         }
         if (PlaybackStateCompatExt.isPlayEnabled(playbackState)) {
@@ -175,9 +177,9 @@ public class AudioNotificationManager {
         } else {
             builder.addAction(playAction);
         }
-        if(PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)){
+        if (PlaybackStateCompatExt.isSkipToNextEnabled(playbackState)) {
             builder.addAction(skipToNextAction);
-        }else {
+        } else {
             builder.addAction(skipToNextActionDisabled);
         }
 
@@ -206,7 +208,7 @@ public class AudioNotificationManager {
         builder.setLargeIcon(largeIcon);
 
         if (notificationListener != null) {
-            builder.setContentIntent(notificationListener.createCurrentContentIntent(description));
+            builder.setContentIntent(notificationListener.createCurrentContentIntent(metadata));
         }
         return builder;
     }
@@ -217,7 +219,7 @@ public class AudioNotificationManager {
 
     private Notification updateNotification(Bitmap largeIcon) {
         NotificationCompat.Builder builder = getNotificationBuilder(largeIcon);
-        int updatedState = mediaController.getPlaybackState() != null ?
+        int updatedState =mediaController.getPlaybackState() != null ?
                 mediaController.getPlaybackState().getState() : PlaybackStateCompat.STATE_NONE;
         if (updatedState == PlaybackStateCompat.STATE_NONE) {
             stopNotification(/* dismissedByUser= */ false);
@@ -274,15 +276,20 @@ public class AudioNotificationManager {
     }
 
     private class MediaControllerCallback extends MediaControllerCompat.Callback {
+
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
-            Log.d("ttt", "onMetadataChanged metadata=" + metadata);
+//            Log.d("ttt", "onMetadataChanged metadata=" + metadata.getBundle());
+//            Log.d("ttt", "1111 metadata=" + mediaController.getMetadata().getBundle());
+//            currentMetadata = metadata;
             updateNotification();
         }
 
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
-            Log.d("ttt", "onPlaybackStateChanged state=" + state);
+//            Log.d("ttt", "onPlaybackStateChanged state=" + state.getState());
+//            Log.d("ttt", "1111111111 state=" + mediaController.getPlaybackState().getState());
+//            currentState = mediaController.getPlaybackState();
             updateNotification();
         }
 

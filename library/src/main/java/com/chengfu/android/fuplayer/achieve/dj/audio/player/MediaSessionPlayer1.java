@@ -12,6 +12,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,7 @@ import com.google.android.exoplayer2.source.ShuffleOrder;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -154,9 +156,6 @@ public final class MediaSessionPlayer1 {
     private void invalidateMediaSessionMetadata() {
         boolean isPlayingAd = mPlayer.isPlayingAd();
         long duration = mPlayer.isCurrentWindowDynamic() || mPlayer.getDuration() == C.TIME_UNSET || mPlayer.getDuration() <= 0 ? -1 : mPlayer.getDuration();
-
-//        MediaSessionCompat.QueueItem tag = (mPlayer.getCurrentTag() instanceof MediaSessionCompat.QueueItem) ?
-//                (MediaSessionCompat.QueueItem) mPlayer.getCurrentTag() : null;
         MediaSessionCompat.QueueItem tag = mMediaSessionCallback.mActiveQueueItem;
         if (mMetadataInfo.duration != duration
                 || mMetadataInfo.isPlayingAd != isPlayingAd
@@ -500,11 +499,11 @@ public final class MediaSessionPlayer1 {
             long maxId = MediaSessionUtil.maxId(mQueueItemList);
             List<MediaSessionCompat.QueueItem> items = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
-                int searchIndex=MediaSessionUtil.search(mQueueItemList, list.get(i));
-                if ( searchIndex< 0) {
+                int searchIndex = MediaSessionUtil.search(mQueueItemList, list.get(i));
+                if (searchIndex < 0) {
                     MediaSessionCompat.QueueItem item = new MediaSessionCompat.QueueItem(list.get(i), maxId + i + 1);
                     items.add(item);
-                }else {
+                } else {
                     items.add(mQueueItemList.get(searchIndex));
                 }
             }
@@ -555,10 +554,8 @@ public final class MediaSessionPlayer1 {
                 mActiveQueueItem = mQueueItemList.get(0);
                 onPrepare();
             }
-
             invalidateMediaSessionPlaybackState();
         }
-
 
         public void setState(@PlaybackStateCompat.State int state, boolean playWhenReady) {
             if (mState == state && mPlayWhenReady == playWhenReady) {
@@ -750,10 +747,8 @@ public final class MediaSessionPlayer1 {
 
         @Override
         public void onStop() {
-            if (mPlayer.getPlaybackState() != FuPlayer.STATE_IDLE) {
-                setState(PlaybackStateCompat.STATE_NONE, mPlayer.getPlayWhenReady());
-                mPlayer.stop(true);
-            }
+            setState(PlaybackStateCompat.STATE_NONE, mPlayer.getPlayWhenReady());
+            mPlayer.stop(true);
         }
 
         @Override
