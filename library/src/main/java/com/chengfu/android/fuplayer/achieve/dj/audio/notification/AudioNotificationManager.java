@@ -99,9 +99,6 @@ public class AudioNotificationManager {
     private boolean isNotificationStarted;
     private int currentNotificationTag;
 
-//    private MediaMetadataCompat currentMetadata = new MediaMetadataCompat.Builder().build();
-//    private PlaybackStateCompat currentState = new PlaybackStateCompat.Builder().build();
-
     public AudioNotificationManager(Context context, @NonNull MediaSessionCompat.Token sessionToken) {
         this.context = context;
         this.sessionToken = sessionToken;
@@ -279,17 +276,11 @@ public class AudioNotificationManager {
 
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
-//            Log.d("ttt", "onMetadataChanged metadata=" + metadata.getBundle());
-//            Log.d("ttt", "1111 metadata=" + mediaController.getMetadata().getBundle());
-//            currentMetadata = metadata;
             updateNotification();
         }
 
         @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
-//            Log.d("ttt", "onPlaybackStateChanged state=" + state.getState());
-//            Log.d("ttt", "1111111111 state=" + mediaController.getPlaybackState().getState());
-//            currentState = mediaController.getPlaybackState();
             updateNotification();
         }
 

@@ -5,9 +5,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
@@ -28,6 +31,12 @@ public class AppMusicService extends MusicService {
 
     @Override
     public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
+
+        if (true){
+            callback.onCompleted(description);
+            return;
+        }
+
         Handler mainHandler = new Handler(getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
@@ -51,6 +60,12 @@ public class AppMusicService extends MusicService {
             public void run() {
                 mainHandler.sendEmptyMessage(0);
             }
-        }, 30);
+        }, 20);
+    }
+
+    @Override
+    public void onLoadItem(String itemId, @NonNull Result<MediaBrowserCompat.MediaItem> result) {
+        super.onLoadItem(itemId, result);
+        Log.e("eee","onLoadItem itemId="+itemId);
     }
 }

@@ -36,7 +36,6 @@
 
         <activity
             android:name=".AudioPlayActivity"
-            android:process=":other"
             android:theme="@style/AudioPlayTheme" />
 
         <activity android:name=".FuSessionActivity">
@@ -54,6 +53,7 @@
 
         <service
             android:name=".AppMusicService"
+            android:process=":music"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
