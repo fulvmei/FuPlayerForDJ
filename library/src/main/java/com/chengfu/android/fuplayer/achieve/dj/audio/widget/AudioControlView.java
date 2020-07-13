@@ -15,6 +15,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.chengfu.android.fuplayer.achieve.dj.R;
+import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer1;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.TimingOff;
 import com.chengfu.android.fuplayer.util.FuLog;
 
 import java.util.Formatter;
@@ -64,6 +68,8 @@ public class AudioControlView extends FrameLayout {
     protected ImageButton repeat;
 
     protected long duration_ms;
+
+    protected TimingOff timingOff;
 
     protected OnVisibilityChangeListener onVisibilityChangeListener;
 
@@ -174,6 +180,10 @@ public class AudioControlView extends FrameLayout {
         updateAll();
     }
 
+    public TimingOff getTimingOff() {
+        return timingOff;
+    }
+
     public MediaControllerCompat getController() {
         return controller;
     }
@@ -184,6 +194,10 @@ public class AudioControlView extends FrameLayout {
 
         updateMetadata(controller != null ? controller.getMetadata() : null);
         updatePlaybackState(controller != null ? controller.getPlaybackState() : null);
+
+        Bundle extras = controller != null ? controller.getExtras() : null;
+        timingOff= extras != null ? (TimingOff) extras.getSerializable(MusicContract.KEY_TIMING_OFF) : TimingOff.defaultTimingOff();
+        updateTimingOff(timingOff);
     }
 
     protected void updateMetadata(MediaMetadataCompat metadata) {
@@ -212,6 +226,19 @@ public class AudioControlView extends FrameLayout {
         if (duration != null) {
             duration.setText(stringForTime(duration_ms));
         }
+    }
+
+    public void setTimingOff(TimingOff timingOff) {
+        if (controller == null) {
+            return;
+        }
+        Bundle params = new Bundle();
+        params.putSerializable(MusicContract.KEY_TIMING_OFF, timingOff);
+        controller.sendCommand(MusicContract.COMMAND_SET_TIMING_OFF_MODE, params, null);
+    }
+
+    protected void updateTimingOff(TimingOff timingOff) {
+
     }
 
     protected void updateShuffle(int shuffleMode) {
@@ -539,6 +566,8 @@ public class AudioControlView extends FrameLayout {
         public void onExtrasChanged(Bundle extras) {
             super.onExtrasChanged(extras);
             FuLog.d(TAG, "onExtrasChanged : extras=" + extras);
+            timingOff = extras != null ? (TimingOff) extras.getSerializable(MusicContract.KEY_TIMING_OFF) : TimingOff.defaultTimingOff();
+            updateTimingOff(timingOff);
         }
 
         @Override

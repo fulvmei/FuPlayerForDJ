@@ -13,22 +13,18 @@ import android.webkit.WebView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
-import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.TimingOff;
 import com.chengfu.music.player.ui.player.AudioPlayViewModel;
 import com.chengfu.music.player.ui.player.PlayListAdapter;
 import com.chengfu.music.player.ui.player.PlayListFragment;
-import com.chengfu.music.player.ui.player.RecentListFragment;
-import com.chengfu.music.player.ui.player.TestFragment;
+import com.chengfu.music.player.ui.player.TimingOffListFragment;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
 import com.chengfu.music.player.util.MusicUtil;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
@@ -74,17 +70,21 @@ public class AudioPlayActivity extends AppCompatActivity {
                     playListFragment.setStyle(PlayListFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
                     playListFragment.show(getSupportFragmentManager(), "playListFragment");
                 }else if (id == R.id.audio_controller_more) {
-//                    TestFragment fragment=TestFragment.newInstance();
-//                    fragment.setStyle(TestFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
-//                    PlayListFragment fragment = PlayListFragment.newInstance();
-//                    fragment.show(getSupportFragmentManager(),"test");
-//                    getSupportFragmentManager().beginTransaction().add(fragment,"test").commit();
-//                    PlayListFragment playListFragment = PlayListFragment.newInstance();
-//                    getSupportFragmentManager().beginTransaction().add(R.id.f,playListFragment).commit();
-
-                    RecentListFragment fragment = RecentListFragment.newInstance();
-//                    fragment.setStyle(PlayListFragment.STYLE_NORMAL,R.style.BottomDialogTheme);
+//                    RecentListFragment fragment = RecentListFragment.newInstance();
+//                    fragment.show(getSupportFragmentManager(), "RecentListFragment");
+                    System.out.println("audio_controller_more  timingOff="+audioControlView.getTimingOff());
+                    TimingOffListFragment fragment = TimingOffListFragment.newInstance(audioControlView.getTimingOff());
+                    fragment.setOnConfirmListener(new TimingOffListFragment.OnConfirmListener() {
+                        @Override
+                        public void onConfirm(TimingOff timingOff) {
+                            System.out.println("onConfirm  timingOff="+timingOff);
+                            if (timingOff!=null){
+                                audioControlView.setTimingOff(timingOff);
+                            }
+                        }
+                    });
                     fragment.show(getSupportFragmentManager(), "RecentListFragment");
+
                 }
             }
         });

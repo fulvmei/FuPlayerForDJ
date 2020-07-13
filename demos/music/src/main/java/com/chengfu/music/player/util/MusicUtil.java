@@ -125,10 +125,10 @@ public class MusicUtil {
 
         MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
                 .setMediaId("1")
-                .setTitle("爱过的人我已不再拥有，错过的人是否可回首 . （治愈女声）")
-                .setSubtitle("未知来源")
-                .setMediaUri(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1104/581b63392f6cb.mp3"))
-                .setIconUri(Uri.parse("http://mpic.spriteapp.cn/crop/566x360/picture/2016/1104/581b633864635.jpg"))
+                .setTitle("神吐槽 | 什么都懂")
+                .setSubtitle("雷畅")
+                .setMediaUri(Uri.parse("https://wsvod.gzstv.com/uploads/media/lvyoub/lvyougb/20200703stc.mp3"))
+                .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/audio/images/2020/07/03/t_cFQHXrQDMxCe_150x150_exT5XhbJ_2x.jpg"))
                 .build();
 
         MediaDescriptionCompat music2 = new MediaDescriptionCompat.Builder()

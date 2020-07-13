@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
@@ -12,7 +13,6 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -95,6 +95,8 @@ public final class MediaSessionPlayer1 {
     private int rewindMs;
     private int fastForwardMs;
 
+    private TimingOff currentTimingOff = TimingOff.defaultTimingOff();
+    private CountDownTimer countDownTimer;
 
     public MediaSessionPlayer1(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
         mContext = context;
@@ -117,6 +119,7 @@ public final class MediaSessionPlayer1 {
         mMediaSession.setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
         mMediaSession.setMetadata(METADATA_EMPTY);
         mMediaSession.setPlaybackState(INITIAL_PLAYBACK_STATE);
+        invalidateMediaSessionExtras();
 
         mPlayer = new FuExoPlayerFactory(mContext).create();
         mPlayer.addListener(mPlayerEventListener);
@@ -360,6 +363,42 @@ public final class MediaSessionPlayer1 {
         AudioPlayClient.addToRecentList(mContext, media);
     }
 
+    private void invalidateMediaSessionExtras() {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(MusicContract.KEY_TIMING_OFF, currentTimingOff);
+        mMediaSession.setExtras(bundle);
+
+        updateTimingOff();
+    }
+
+    private void updateTimingOff() {
+        closeCountDownTimer();
+        if (currentTimingOff.getMode() == TimingOff.TIMING_OFF_MODE_TIME) {
+            if (currentTimingOff.getSecond() != 0) {
+                countDownTimer = new CountDownTimer(currentTimingOff.getSecond() * 1000, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        release();
+                    }
+                };
+                countDownTimer.start();
+            }
+        }
+
+    }
+
+    private void closeCountDownTimer() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+    }
+
     public void release() {
         mMediaSessionCallback.addQueueItems(null, 0, true);
     }
@@ -375,6 +414,10 @@ public final class MediaSessionPlayer1 {
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             FuLog.d(TAG, "onPlayerStateChanged : playWhenReady=" + playWhenReady + ",playbackState=" + playbackState);
             if (playbackState == FuPlayer.STATE_ENDED) {
+                if (currentTimingOff.getMode() == TimingOff.TIMING_OFF_MODE_ONE) {
+                    release();
+                    return;
+                }
                 if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
                     mMediaSessionCallback.onPlay();
                 } else {
@@ -469,6 +512,16 @@ public final class MediaSessionPlayer1 {
                     }
 
                 }
+            } else if (MusicContract.COMMAND_SET_TIMING_OFF_MODE.equals(command)) {
+                if (extras == null) {
+                    return;
+                }
+                extras.setClassLoader(getClass().getClassLoader());
+                TimingOff timingOff = (TimingOff) extras.getSerializable(MusicContract.KEY_TIMING_OFF);
+                if (!TimingOff.areItemsTheSame(currentTimingOff, timingOff)) {
+                    currentTimingOff = timingOff;
+                    invalidateMediaSessionExtras();
+                }
             }
         }
 
@@ -485,7 +538,7 @@ public final class MediaSessionPlayer1 {
             addQueueItems(Collections.singletonList(description), index, false);
         }
 
-        private void addQueueItems(List<MediaDescriptionCompat> list, int index, boolean clear) {
+        public void addQueueItems(List<MediaDescriptionCompat> list, int index, boolean clear) {
             if (list == null || list.isEmpty()
                     || index < 0 || index > mQueueItemList.size()) {
                 if (clear && !mQueueItemList.isEmpty()) {

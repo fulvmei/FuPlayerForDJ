@@ -50,6 +50,9 @@ public class AppAudioControlView extends AudioControlView {
 
     ObjectAnimator rotaAnim;
 
+//    int timingOffMode;
+//    int timingOffSecond;
+
     public AppAudioControlView(@NonNull Context context) {
         this(context, null);
     }
@@ -117,6 +120,20 @@ public class AppAudioControlView extends AudioControlView {
             more.setOnClickListener(actionClickListener);
         }
     }
+
+//    public int getTimingOffMode() {
+//        return timingOffMode;
+//    }
+//
+//    public int getTimingOffSecond() {
+//        return timingOffSecond;
+//    }
+//
+//    @Override
+//    protected void updateTimingOff(int timingOffMode, int timingOffSecond) {
+//        this.timingOffMode=timingOffMode;
+//        this.timingOffSecond=timingOffSecond;
+//    }
 
     public int getContentPaddingTop() {
         return contentPaddingTop;

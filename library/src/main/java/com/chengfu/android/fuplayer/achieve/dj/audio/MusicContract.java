@@ -20,6 +20,12 @@ public class MusicContract {
 
     public static final String COMMAND_CLEAR_QUEUE_ITEMS = "command_clear_queue_items";
 
+    public static final String COMMAND_SET_TIMING_OFF_MODE = "command_set_timing_off_mode";
+
+    public static final String KEY_TIMING_OFF = "key_timing_off";
+
+    public static final String KEY_TIMING_OFF_MODE = "key_timing_off_mode";
+
     public static final String KEY_QUEUE_ITEM = "key_queue_item";
 
     public static final String KEY_QUEUE_ITEMS = "key_queue_items";
