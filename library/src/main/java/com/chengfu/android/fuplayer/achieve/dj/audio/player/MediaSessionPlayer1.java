@@ -404,6 +404,9 @@ public final class MediaSessionPlayer1 {
     public void release() {
         mMediaSessionCallback.addQueueItems(null, 0, true);
         mMediaSession.sendSessionEvent(MusicContract.EVENT_CLOSED, null);
+        currentTimingOff = TimingOff.defaultTimingOff();
+        invalidateMediaSessionExtras();
+        closeCountDownTimer();
     }
 
     private class PlayerEventListener implements FuPlayer.EventListener {
@@ -480,6 +483,7 @@ public final class MediaSessionPlayer1 {
                 }
             } else if (MusicContract.COMMAND_CLEAR_QUEUE_ITEMS.equals(command)) {
                 addQueueItems(null, 0, true);
+                closeCountDownTimer();
             } else if (MusicContract.COMMAND_ADD_TO_TO_FRONT_OF_CURRENT_PLAY.equals(command)) {
                 if (extras == null) {
                     return;
