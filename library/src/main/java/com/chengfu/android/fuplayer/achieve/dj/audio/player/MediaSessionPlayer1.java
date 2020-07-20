@@ -120,6 +120,7 @@ public final class MediaSessionPlayer1 {
         mMediaSession.setMetadata(METADATA_EMPTY);
         mMediaSession.setPlaybackState(INITIAL_PLAYBACK_STATE);
         invalidateMediaSessionExtras();
+        updateTimingOff();
 
         mPlayer = new FuExoPlayerFactory(mContext).create();
         mPlayer.addListener(mPlayerEventListener);
@@ -367,8 +368,6 @@ public final class MediaSessionPlayer1 {
         Bundle bundle = new Bundle();
         bundle.putSerializable(MusicContract.KEY_TIMING_OFF, currentTimingOff);
         mMediaSession.setExtras(bundle);
-
-        updateTimingOff();
     }
 
     private void updateTimingOff() {
@@ -378,11 +377,14 @@ public final class MediaSessionPlayer1 {
                 countDownTimer = new CountDownTimer(currentTimingOff.getSecond() * 1000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
-
+                        currentTimingOff.setFinishedSecond((int) (millisUntilFinished / 1000));
+                        invalidateMediaSessionExtras();
                     }
 
                     @Override
                     public void onFinish() {
+                        currentTimingOff = TimingOff.defaultTimingOff();
+                        invalidateMediaSessionExtras();
                         release();
                     }
                 };
@@ -401,6 +403,7 @@ public final class MediaSessionPlayer1 {
 
     public void release() {
         mMediaSessionCallback.addQueueItems(null, 0, true);
+        mMediaSession.sendSessionEvent(MusicContract.EVENT_CLOSED, null);
     }
 
     private class PlayerEventListener implements FuPlayer.EventListener {
@@ -521,6 +524,7 @@ public final class MediaSessionPlayer1 {
                 if (!TimingOff.areItemsTheSame(currentTimingOff, timingOff)) {
                     currentTimingOff = timingOff;
                     invalidateMediaSessionExtras();
+                    updateTimingOff();
                 }
             }
         }

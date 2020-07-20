@@ -10,6 +10,8 @@ public class TimingOff implements Serializable {
     private int mode;
     private int second;
     private boolean checked;
+    private int finishedSecond;
+    private String tag;
 
 
     public static TimingOff defaultTimingOff() {
@@ -51,6 +53,22 @@ public class TimingOff implements Serializable {
 
     public void setChecked(boolean checked) {
         this.checked = checked;
+    }
+
+    public int getFinishedSecond() {
+        return finishedSecond;
+    }
+
+    public void setFinishedSecond(int finishedSecond) {
+        this.finishedSecond = finishedSecond;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     @Override

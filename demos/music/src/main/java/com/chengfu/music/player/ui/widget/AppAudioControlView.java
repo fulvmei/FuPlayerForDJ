@@ -16,6 +16,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +32,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.TimingOff;
 import com.chengfu.android.fuplayer.achieve.dj.audio.widget.AudioControlView;
 import com.chengfu.music.player.R;
 
@@ -49,6 +51,7 @@ public class AppAudioControlView extends AudioControlView {
     OnClickListener actionClickListener;
 
     ObjectAnimator rotaAnim;
+    TextView finishedTime;
 
 //    int timingOffMode;
 //    int timingOffSecond;
@@ -73,6 +76,7 @@ public class AppAudioControlView extends AudioControlView {
         menu = findViewById(R.id.audio_controller_menu);
         playlist = findViewById(R.id.audio_controller_playlist);
         more = findViewById(R.id.audio_controller_more);
+        finishedTime= findViewById(R.id.audio_controller_finished_time);
 
         setActionClickListener(actionClickListener);
 
@@ -217,5 +221,14 @@ public class AppAudioControlView extends AudioControlView {
         } else {
             rotaAnim.pause();
         }
+    }
+
+    @Override
+    protected void updateTimingOff(TimingOff timingOff) {
+        super.updateTimingOff(timingOff);
+        if(timingOff==null||finishedTime==null){
+            return;
+        }
+        finishedTime.setText(timingOff.getFinishedSecond()+"秒后关闭");
     }
 }

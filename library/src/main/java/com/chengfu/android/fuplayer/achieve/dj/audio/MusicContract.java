@@ -24,8 +24,6 @@ public class MusicContract {
 
     public static final String KEY_TIMING_OFF = "key_timing_off";
 
-    public static final String KEY_TIMING_OFF_MODE = "key_timing_off_mode";
-
     public static final String KEY_QUEUE_ITEM = "key_queue_item";
 
     public static final String KEY_QUEUE_ITEMS = "key_queue_items";
@@ -41,4 +39,6 @@ public class MusicContract {
     public static final String KEY_MEDIA_EXTRA_ID = "key_media_extra_id";
 
     public static final String KEY_MEDIA_EXTRA_CTYPE = "key_media_extra_ctype";
+
+    public static final String EVENT_CLOSED = "event_closed";
 }

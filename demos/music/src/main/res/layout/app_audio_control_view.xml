@@ -226,6 +226,12 @@
                 android:padding="10dp"
                 android:src="@drawable/media_ic_audio_control_more"
                 tools:ignore="ContentDescription,PrivateResource" />
+
+            <TextView
+                android:id="@+id/audio_controller_finished_time"
+                android:textColor="#FFFFFF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
     </LinearLayout>

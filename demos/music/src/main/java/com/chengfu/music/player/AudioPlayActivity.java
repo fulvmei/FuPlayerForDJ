@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.player.TimingOff;
+import com.chengfu.android.fuplayer.util.FuLog;
 import com.chengfu.music.player.ui.player.AudioPlayViewModel;
 import com.chengfu.music.player.ui.player.PlayListAdapter;
 import com.chengfu.music.player.ui.player.PlayListFragment;
@@ -44,6 +45,8 @@ public class AudioPlayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_play);
+
+        FuLog.DEBUG=true;
 
         viewModel = ViewModelProviders.of(this).get(AudioPlayViewModel.class);
 
