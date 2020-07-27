@@ -15,7 +15,6 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,14 +28,12 @@ import android.widget.TextView;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
-import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer1;
 import com.chengfu.android.fuplayer.achieve.dj.audio.player.TimingOff;
 import com.chengfu.android.fuplayer.util.FuLog;
 
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class AudioControlView extends FrameLayout {
 
@@ -196,7 +193,15 @@ public class AudioControlView extends FrameLayout {
         updatePlaybackState(controller != null ? controller.getPlaybackState() : null);
 
         Bundle extras = controller != null ? controller.getExtras() : null;
-        timingOff= extras != null ? (TimingOff) extras.getSerializable(MusicContract.KEY_TIMING_OFF) : TimingOff.defaultTimingOff();
+        if (extras != null) {
+//            extras.setClassLoader(TimingOff.class.getClassLoader());
+//            timingOff = extras.getParcelable(MusicContract.KEY_TIMING_OFF);
+            timingOff =TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
+        }
+        if (timingOff == null) {
+            timingOff = TimingOff.defaultTimingOff();
+        }
+
         updateTimingOff(timingOff);
     }
 
@@ -233,7 +238,9 @@ public class AudioControlView extends FrameLayout {
             return;
         }
         Bundle params = new Bundle();
-        params.putSerializable(MusicContract.KEY_TIMING_OFF, timingOff);
+//        params.setClassLoader(TimingOff.class.getClassLoader());
+//        params.putParcelable(MusicContract.KEY_TIMING_OFF, timingOff);
+        params.putString(MusicContract.KEY_TIMING_OFF, TimingOff.toJson(timingOff));
         controller.sendCommand(MusicContract.COMMAND_SET_TIMING_OFF_MODE, params, null);
     }
 
@@ -566,7 +573,14 @@ public class AudioControlView extends FrameLayout {
         public void onExtrasChanged(Bundle extras) {
             super.onExtrasChanged(extras);
             FuLog.d(TAG, "onExtrasChanged : extras=" + extras);
-            timingOff = extras != null ? (TimingOff) extras.getSerializable(MusicContract.KEY_TIMING_OFF) : TimingOff.defaultTimingOff();
+            if (extras != null) {
+//                extras.setClassLoader(TimingOff.class.getClassLoader());
+//                timingOff = extras.getParcelable(MusicContract.KEY_TIMING_OFF);
+                timingOff = TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
+            }
+            if (timingOff == null) {
+                timingOff = TimingOff.defaultTimingOff();
+            }
             updateTimingOff(timingOff);
         }
 

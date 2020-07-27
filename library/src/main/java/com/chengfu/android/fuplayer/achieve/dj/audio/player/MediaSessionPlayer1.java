@@ -34,6 +34,8 @@ import com.google.android.exoplayer2.source.ShuffleOrder;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -366,7 +368,9 @@ public final class MediaSessionPlayer1 {
 
     private void invalidateMediaSessionExtras() {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(MusicContract.KEY_TIMING_OFF, currentTimingOff);
+//        bundle.setClassLoader(TimingOff.class.getClassLoader());
+//        bundle.putParcelable(MusicContract.KEY_TIMING_OFF, currentTimingOff);
+        bundle.putString(MusicContract.KEY_TIMING_OFF, TimingOff.toJson(currentTimingOff));
         mMediaSession.setExtras(bundle);
     }
 
@@ -523,13 +527,10 @@ public final class MediaSessionPlayer1 {
                 if (extras == null) {
                     return;
                 }
-                extras.setClassLoader(getClass().getClassLoader());
-                TimingOff timingOff = (TimingOff) extras.getSerializable(MusicContract.KEY_TIMING_OFF);
-                if (!TimingOff.areItemsTheSame(currentTimingOff, timingOff)) {
-                    currentTimingOff = timingOff;
-                    invalidateMediaSessionExtras();
-                    updateTimingOff();
-                }
+//                extras.setClassLoader(TimingOff.class.getClassLoader());
+                currentTimingOff =TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
+                invalidateMediaSessionExtras();
+                updateTimingOff();
             }
         }
 

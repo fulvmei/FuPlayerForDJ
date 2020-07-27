@@ -26,7 +26,7 @@ public class TimingOffListFragment extends BottomSheetDialogFragment {
 
     public static TimingOffListFragment newInstance(TimingOff timingOff) {
         Bundle args = new Bundle();
-        args.putSerializable("timingOff", timingOff);
+        args.putParcelable("timingOff", timingOff);
         TimingOffListFragment fragment = new TimingOffListFragment();
         fragment.setArguments(args);
         return fragment;
@@ -67,7 +67,7 @@ public class TimingOffListFragment extends BottomSheetDialogFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        timingOff = (TimingOff) getArguments().getSerializable("timingOff");
+        timingOff = (TimingOff) getArguments().getParcelable("timingOff");
 
         adapter = new TimingOffAdapter();
 

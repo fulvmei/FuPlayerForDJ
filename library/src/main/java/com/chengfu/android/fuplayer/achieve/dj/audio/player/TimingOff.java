@@ -1,8 +1,13 @@
 package com.chengfu.android.fuplayer.achieve.dj.audio.player;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class TimingOff implements Serializable {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class TimingOff implements Parcelable {
+
     public static final int TIMING_OFF_MODE_OFF = 0;
     public static final int TIMING_OFF_MODE_ONE = 1;
     public static final int TIMING_OFF_MODE_TIME = 2;
@@ -13,6 +18,73 @@ public class TimingOff implements Serializable {
     private int finishedSecond;
     private String tag;
 
+
+    protected TimingOff(Parcel in) {
+        mode = in.readInt();
+        second = in.readInt();
+        checked = in.readByte() != 0;
+        finishedSecond = in.readInt();
+        tag = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mode);
+        dest.writeInt(second);
+        dest.writeByte((byte) (checked ? 1 : 0));
+        dest.writeInt(finishedSecond);
+        dest.writeString(tag);
+    }
+
+    public static final Creator<TimingOff> CREATOR = new Creator<TimingOff>() {
+        @Override
+        public TimingOff createFromParcel(Parcel in) {
+            return new TimingOff(in);
+        }
+
+        @Override
+        public TimingOff[] newArray(int size) {
+            return new TimingOff[size];
+        }
+    };
+
+    public static String toJson(TimingOff timingOff) {
+        JSONObject jo = new JSONObject();
+        if (timingOff == null) {
+            return jo.toString();
+        }
+        try {
+            jo.put("mode", timingOff.mode);
+            jo.put("second", timingOff.second);
+            jo.put("checked", timingOff.checked);
+            jo.put("finishedSecond", timingOff.finishedSecond);
+            jo.put("tag", timingOff.tag);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jo.toString();
+    }
+
+    public static TimingOff fromJson(String json) {
+        TimingOff timingOff = TimingOff.defaultTimingOff();
+        try {
+            JSONObject jo = new JSONObject(json);
+            timingOff.setMode(jo.optInt("mode"));
+            timingOff.setSecond(jo.optInt("second"));
+            timingOff.setChecked(jo.optBoolean("checked"));
+            timingOff.setFinishedSecond(jo.optInt("finishedSecond"));
+            timingOff.setTag(jo.optString("tag"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return timingOff;
+    }
 
     public static TimingOff defaultTimingOff() {
         return new TimingOff(TIMING_OFF_MODE_OFF, 0, false);
@@ -79,4 +151,5 @@ public class TimingOff implements Serializable {
                 ", checked=" + checked +
                 '}';
     }
+
 }
