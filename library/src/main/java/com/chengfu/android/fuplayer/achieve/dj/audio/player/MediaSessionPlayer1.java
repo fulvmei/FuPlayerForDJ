@@ -100,7 +100,7 @@ public final class MediaSessionPlayer1 {
     private TimingOff currentTimingOff = TimingOff.defaultTimingOff();
     private CountDownTimer countDownTimer;
 
-    public MediaSessionPlayer1(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
+    public MediaSessionPlayer1(@NonNull Context context, @NonNull MediaSessionCompat mediaSession,@NonNull FuPlayer player) {
         mContext = context;
         mMediaSession = mediaSession;
 
@@ -124,15 +124,8 @@ public final class MediaSessionPlayer1 {
         invalidateMediaSessionExtras();
         updateTimingOff();
 
-        mPlayer = new FuExoPlayerFactory(mContext).create();
+        mPlayer =player;
         mPlayer.addListener(mPlayerEventListener);
-        AudioAttributes attributes = new AudioAttributes.Builder()
-                .setContentType(C.CONTENT_TYPE_MUSIC)
-                .setUsage(C.USAGE_MEDIA)
-                .build();
-        if (mPlayer.getAudioComponent() != null) {
-            mPlayer.getAudioComponent().setAudioAttributes(attributes, true);
-        }
     }
 
     @NonNull

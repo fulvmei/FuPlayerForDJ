@@ -2,26 +2,15 @@ package com.chengfu.android.fuplayer.achieve.dj.audio;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.RemoteException;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,16 +18,16 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.lifecycle.Observer;
 import androidx.media.MediaBrowserServiceCompat;
 
-import com.chengfu.android.fuplayer.achieve.dj.audio.db.vo.CurrentPlay;
+import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.notification.AudioNotificationManager;
-import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer1;
 import com.chengfu.android.fuplayer.achieve.dj.audio.receiver.BecomingNoisyReceiver;
-import com.chengfu.android.fuplayer.achieve.dj.audio.util.ConverterUtil;
+import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 import com.chengfu.android.fuplayer.util.FuLog;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -86,11 +75,23 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         audioNotificationManager.setNotificationListener(new NotificationListener());
 
-        mediaSessionPlayer = new MediaSessionPlayer1(this, mediaSession);
+        mediaSessionPlayer = new MediaSessionPlayer1(this, mediaSession, createPlayer());
 
         mediaSessionPlayer.setMediaLoadProvider(this);
 
         becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
+    }
+
+    protected FuPlayer createPlayer() {
+        FuPlayer player = new FuExoPlayerFactory(this).create();
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setContentType(C.CONTENT_TYPE_MUSIC)
+                .setUsage(C.USAGE_MEDIA)
+                .build();
+        if (player.getAudioComponent() != null) {
+            player.getAudioComponent().setAudioAttributes(attributes, true);
+        }
+        return player;
     }
 
     @NonNull
