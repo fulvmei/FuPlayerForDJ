@@ -125,7 +125,7 @@ public final class MediaSessionPlayer {
         //init mediaSession
         this.mediaSession = mediaSession;
         mediaSessionCallback = new MediaSessionCallback();
-        mediaSession.setCallback(mediaSessionCallback, new Handler(Util.getLooper()));
+        mediaSession.setCallback(mediaSessionCallback, new Handler());
         mediaSession.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
         mediaSession.setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
         mediaSession.setMetadata(METADATA_EMPTY);

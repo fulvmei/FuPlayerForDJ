@@ -109,12 +109,12 @@ public class AudioNotificationManager {
 
         mediaControllerCallback = new MediaControllerCallback();
         MediaControllerCompat tempMediaController = null;
-        try {
+//        try {
             tempMediaController = new MediaControllerCompat(context, sessionToken);
             tempMediaController.registerCallback(mediaControllerCallback);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
         mediaController = tempMediaController;
 
         notificationManager = NotificationManagerCompat.from(context);

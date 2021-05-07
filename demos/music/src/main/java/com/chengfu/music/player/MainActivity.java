@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.media.MediaBrowserCompat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 

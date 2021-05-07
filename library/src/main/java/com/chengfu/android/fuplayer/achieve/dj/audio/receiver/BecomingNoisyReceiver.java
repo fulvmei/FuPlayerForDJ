@@ -22,11 +22,11 @@ public class BecomingNoisyReceiver extends BroadcastReceiver {
         this.sessionToken = sessionToken;
 
         noisyIntentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        try {
+//        try {
             controller = new MediaControllerCompat(context, sessionToken);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+//        } catch (RemoteException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void register() {

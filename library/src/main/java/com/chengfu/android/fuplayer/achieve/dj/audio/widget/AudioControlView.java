@@ -165,11 +165,11 @@ public class AudioControlView extends FrameLayout {
         if (sessionToken == null) {
             controller = null;
         } else {
-            try {
+//            try {
                 controller = new MediaControllerCompat(context, sessionToken);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
         }
         if (controller != null) {
             controller.registerCallback(componentListener);

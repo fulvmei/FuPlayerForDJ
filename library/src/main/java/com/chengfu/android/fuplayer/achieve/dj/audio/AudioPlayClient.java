@@ -213,7 +213,7 @@ public class AudioPlayClient {
     private class ConnectionCallback extends MediaBrowserCompat.ConnectionCallback {
         @Override
         public void onConnected() {
-            try {
+//            try {
                 mediaController = new MediaControllerCompat(context, mediaBrowser.getSessionToken());
                 connected.postValue(true);
                 if (pendingList.size() > 0) {
@@ -222,9 +222,9 @@ public class AudioPlayClient {
                 if (!TextUtils.isEmpty(pendingPlayMediaId)) {
                     playFromMediaId(pendingPlayMediaId);
                 }
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
         }
 
         @Override

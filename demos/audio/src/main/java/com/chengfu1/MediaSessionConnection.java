@@ -66,13 +66,13 @@ public class MediaSessionConnection {
     private class MediaBrowserConnectionCallback extends MediaBrowserCompat.ConnectionCallback {
         @Override
         public void onConnected() {
-            try {
+//            try {
                 mediaController = new MediaControllerCompat(context, mediaBrowser.getSessionToken());
                 mediaController.registerCallback(new MediaControllerCallback());
                 isConnected.postValue(true);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
 
         }
 

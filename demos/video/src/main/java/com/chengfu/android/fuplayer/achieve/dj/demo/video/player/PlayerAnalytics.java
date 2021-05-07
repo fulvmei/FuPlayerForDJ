@@ -25,10 +25,10 @@ public class PlayerAnalytics implements AnalyticsListener {
         Timber.d("audioAttributes=" + audioAttributes);
     }
 
-    @Override
-    public void onAudioSessionId(EventTime eventTime, int audioSessionId) {
-
-    }
+//    @Override
+//    public void onAudioSessionId(EventTime eventTime, int audioSessionId) {
+//
+//    }
 
     @Override
     public void onAudioUnderrun(EventTime eventTime, int bufferSize, long bufferSizeMs, long elapsedSinceLastFeedMs) {
@@ -60,10 +60,10 @@ public class PlayerAnalytics implements AnalyticsListener {
 
     }
 
-    @Override
-    public void onDownstreamFormatChanged(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
-
-    }
+//    @Override
+//    public void onDownstreamFormatChanged(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+//
+//    }
 
     @Override
     public void onDrmKeysLoaded(EventTime eventTime) {
@@ -100,40 +100,40 @@ public class PlayerAnalytics implements AnalyticsListener {
 
     }
 
-    @Override
-    public void onLoadCanceled(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
-
-    }
-
-    @Override
-    public void onLoadCompleted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
-
-    }
-
-    @Override
-    public void onLoadError(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
-
-    }
+//    @Override
+//    public void onLoadCanceled(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+//
+//    }
+//
+//    @Override
+//    public void onLoadCompleted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+//
+//    }
+//
+//    @Override
+//    public void onLoadError(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData, IOException error, boolean wasCanceled) {
+//
+//    }
 
     @Override
     public void onLoadingChanged(EventTime eventTime, boolean isLoading) {
 
     }
 
-    @Override
-    public void onLoadStarted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
-        Timber.d("onLoadStarted loadEventInfo=" + loadEventInfo+",mediaLoadData="+mediaLoadData);
-    }
-
-    @Override
-    public void onMediaPeriodCreated(EventTime eventTime) {
-
-    }
-
-    @Override
-    public void onMediaPeriodReleased(EventTime eventTime) {
-
-    }
+//    @Override
+//    public void onLoadStarted(EventTime eventTime, MediaSourceEventListener.LoadEventInfo loadEventInfo, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+//        Timber.d("onLoadStarted loadEventInfo=" + loadEventInfo+",mediaLoadData="+mediaLoadData);
+//    }
+//
+//    @Override
+//    public void onMediaPeriodCreated(EventTime eventTime) {
+//
+//    }
+//
+//    @Override
+//    public void onMediaPeriodReleased(EventTime eventTime) {
+//
+//    }
 
     @Override
     public void onMetadata(EventTime eventTime, Metadata metadata) {
@@ -160,10 +160,10 @@ public class PlayerAnalytics implements AnalyticsListener {
         Timber.d("onPositionDiscontinuity ： eventTime=" + eventTime.realtimeMs);
     }
 
-    @Override
-    public void onReadingStarted(EventTime eventTime) {
-
-    }
+//    @Override
+//    public void onReadingStarted(EventTime eventTime) {
+//
+//    }
 
     @Override
     public void onRenderedFirstFrame(EventTime eventTime, @Nullable Surface surface) {
@@ -205,10 +205,10 @@ public class PlayerAnalytics implements AnalyticsListener {
 
     }
 
-    @Override
-    public void onUpstreamDiscarded(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
-
-    }
+//    @Override
+//    public void onUpstreamDiscarded(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
+//
+//    }
 
     @Override
     public void onVideoSizeChanged(EventTime eventTime, int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {

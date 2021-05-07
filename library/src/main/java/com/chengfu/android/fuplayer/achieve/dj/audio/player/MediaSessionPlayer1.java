@@ -13,6 +13,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -116,7 +117,7 @@ public final class MediaSessionPlayer1 {
 
 
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS);
-        mMediaSession.setCallback(mMediaSessionCallback, new Handler(Util.getLooper()));
+        mMediaSession.setCallback(mMediaSessionCallback,null);
         mMediaSession.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
         mMediaSession.setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
         mMediaSession.setMetadata(METADATA_EMPTY);
