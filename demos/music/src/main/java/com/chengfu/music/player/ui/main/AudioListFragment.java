@@ -110,7 +110,7 @@ public class AudioListFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
-        adapter.setData(MusicUtil.getTestMedias(6, false));
+        adapter.setData(MusicUtil.getTestMedias(6, true));
 
 //        AudioDatabase.getInstance(requireContext()).audioDao().queryAll().observe(this, new Observer<List<MediaEntity>>() {
 //            @Override

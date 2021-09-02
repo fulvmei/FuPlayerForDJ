@@ -101,7 +101,7 @@ public final class MediaSessionPlayer1 {
     private TimingOff currentTimingOff = TimingOff.defaultTimingOff();
     private CountDownTimer countDownTimer;
 
-    public MediaSessionPlayer1(@NonNull Context context, @NonNull MediaSessionCompat mediaSession,@NonNull FuPlayer player) {
+    public MediaSessionPlayer1(@NonNull Context context, @NonNull MediaSessionCompat mediaSession, @NonNull FuPlayer player) {
         mContext = context;
         mMediaSession = mediaSession;
 
@@ -117,7 +117,7 @@ public final class MediaSessionPlayer1 {
 
 
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_QUEUE_COMMANDS);
-        mMediaSession.setCallback(mMediaSessionCallback,null);
+        mMediaSession.setCallback(mMediaSessionCallback, null);
         mMediaSession.setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
         mMediaSession.setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
         mMediaSession.setMetadata(METADATA_EMPTY);
@@ -125,7 +125,7 @@ public final class MediaSessionPlayer1 {
         invalidateMediaSessionExtras();
         updateTimingOff();
 
-        mPlayer =player;
+        mPlayer = player;
         mPlayer.addListener(mPlayerEventListener);
     }
 
@@ -424,6 +424,9 @@ public final class MediaSessionPlayer1 {
                 }
                 if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
                     mMediaSessionCallback.onPlay();
+                } else if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_NONE
+                        && !mMediaSessionCallback.hasNext()) {
+                    mMediaSessionCallback.onPause();
                 } else {
                     mMediaSessionCallback.onSkipToNext();
                 }
@@ -522,7 +525,7 @@ public final class MediaSessionPlayer1 {
                     return;
                 }
 //                extras.setClassLoader(TimingOff.class.getClassLoader());
-                currentTimingOff =TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
+                currentTimingOff = TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
                 invalidateMediaSessionExtras();
                 updateTimingOff();
             }

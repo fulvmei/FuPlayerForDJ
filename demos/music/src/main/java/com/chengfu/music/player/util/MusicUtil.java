@@ -116,19 +116,19 @@ public class MusicUtil {
 
     public static ArrayList<MediaDescriptionCompat> getTestMedias(int count, boolean shuffle) {
         MediaDescriptionCompat music0 = new MediaDescriptionCompat.Builder()
-                .setMediaId("0")
-                .setTitle("贵州交通广播")
-                .setSubtitle("未知来源")
-                .setMediaUri(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"))
-                .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
-                .build();
-
-        MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
                 .setMediaId("1")
                 .setTitle("神吐槽 | 什么都懂")
                 .setSubtitle("雷畅")
                 .setMediaUri(Uri.parse("https://wsvod.gzstv.com/uploads/media/lvyoub/lvyougb/20200703stc.mp3"))
                 .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/audio/images/2020/07/03/t_cFQHXrQDMxCe_150x150_exT5XhbJ_2x.jpg"))
+                .build();
+
+        MediaDescriptionCompat music1 = new MediaDescriptionCompat.Builder()
+                .setMediaId("0")
+                .setTitle("贵州交通广播")
+                .setSubtitle("未知来源")
+                .setMediaUri(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"))
+                .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
                 .build();
 
         MediaDescriptionCompat music2 = new MediaDescriptionCompat.Builder()
@@ -165,7 +165,6 @@ public class MusicUtil {
                 .build();
 
         MediaDescriptionCompat[] musics = new MediaDescriptionCompat[]{music0, music1, music2, music3, music4, music5};
-
         ArrayList<MediaDescriptionCompat> temp = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Bundle bundle = new Bundle();
