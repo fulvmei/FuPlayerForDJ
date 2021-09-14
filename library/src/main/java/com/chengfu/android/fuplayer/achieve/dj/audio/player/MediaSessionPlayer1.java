@@ -424,12 +424,9 @@ public final class MediaSessionPlayer1 {
                 }
                 if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
                     mMediaSessionCallback.onPlay();
-                }
-//                else if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_NONE
-//                        && !mMediaSessionCallback.hasNext()) {
-//                    mMediaSessionCallback.onPause();
-//                }
-                else if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_ALL) {
+                } else if (!mMediaSessionCallback.hasNext()) {
+                    mMediaSessionCallback.onPause();
+                } else {
                     mMediaSessionCallback.onSkipToNext();
                 }
             }

@@ -120,6 +120,8 @@ public class DJVideoControlView extends DefaultControlView {
         touchMarginTop = getResources().getDimension(R.dimen.default_touch_margin_top);
         touchMarginRight = getResources().getDimension(R.dimen.default_touch_margin_right);
         touchMarginBottom = getResources().getDimension(R.dimen.default_touch_margin_bottom);
+
+        setProgressAdapter(new DJProgressAdapter());
     }
 
     @Override
