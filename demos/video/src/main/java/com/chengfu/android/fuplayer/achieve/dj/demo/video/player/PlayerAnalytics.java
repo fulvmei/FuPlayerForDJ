@@ -5,6 +5,7 @@ import android.view.Surface;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.audio.AudioAttributes;
@@ -146,7 +147,7 @@ public class PlayerAnalytics implements AnalyticsListener {
     }
 
     @Override
-    public void onPlayerError(EventTime eventTime, ExoPlaybackException error) {
+    public void onPlayerError(EventTime eventTime, PlaybackException error) {
         Timber.d("onPlayerError ： error=%s", error);
     }
 
@@ -165,8 +166,9 @@ public class PlayerAnalytics implements AnalyticsListener {
 //
 //    }
 
+
     @Override
-    public void onRenderedFirstFrame(EventTime eventTime, @Nullable Surface surface) {
+    public void onRenderedFirstFrame(EventTime eventTime, Object output, long renderTimeMs) {
         Timber.d("onRenderedFirstFrame ： eventTime=" + eventTime.realtimeMs);
     }
 

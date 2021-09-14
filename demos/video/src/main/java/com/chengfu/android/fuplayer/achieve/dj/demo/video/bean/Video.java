@@ -2,6 +2,7 @@ package com.chengfu.android.fuplayer.achieve.dj.demo.video.bean;
 
 import com.chengfu.android.fuplayer.achieve.dj.demo.video.APP;
 import com.chengfu.android.fuplayer.achieve.dj.demo.video.util.MediaSourceUtil;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.MediaSource;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class Video implements Serializable {
     private String type;
     private String tag;
 
-    private MediaSource mediaSource;
+    private MediaItem mediaSource;
 
     public Video() {
 
@@ -25,7 +26,7 @@ public class Video implements Serializable {
         this.path = path;
         this.type = type;
         this.tag = tag;
-        mediaSource = MediaSourceUtil.getMediaSource(APP.application, path);
+        mediaSource =MediaItem.fromUri(path);
     }
 
     public Video(String name, String path, String image, String type, String tag) {
@@ -34,7 +35,7 @@ public class Video implements Serializable {
         this.image = image;
         this.type = type;
         this.tag = tag;
-        mediaSource = MediaSourceUtil.getMediaSource(APP.application, path);
+        mediaSource =MediaItem.fromUri(path);
     }
 
     public void setName(String name) {
@@ -47,7 +48,7 @@ public class Video implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
-        mediaSource = MediaSourceUtil.getMediaSource(APP.application, path);
+        mediaSource =MediaItem.fromUri(path);
     }
 
     public String getPath() {
@@ -78,7 +79,7 @@ public class Video implements Serializable {
         return tag;
     }
 
-    public MediaSource getMediaSource() {
+    public MediaItem getMediaSource() {
         return mediaSource;
     }
 }

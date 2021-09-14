@@ -219,7 +219,7 @@ public class FuPlayerManager implements StateView {
             mScreenRotation.resume();
         }
         if (mPlayer != null && mPlayer.getPlaybackState() == Player.STATE_IDLE
-                && mPlayer.getPlaybackError() == null) {
+                && mPlayer.getPlayerError() == null) {
             mPlayer.retry();
         }
     }

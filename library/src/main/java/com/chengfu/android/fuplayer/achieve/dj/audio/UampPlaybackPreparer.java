@@ -12,6 +12,7 @@ import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
 import com.chengfu.android.fuplayer.ext.mediasession.MediaSessionConnector;
 import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.ControlDispatcher;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 
@@ -56,7 +57,9 @@ public class UampPlaybackPreparer implements MediaSessionConnector.PlaybackPrepa
             return;
         }
 
-        MediaDescriptionCompat currentMedia = (MediaDescriptionCompat) exoPlayer.getCurrentTag();
+        MediaItem currentMediaItem = exoPlayer.getCurrentMediaItem();
+
+        MediaDescriptionCompat currentMedia = currentMediaItem != null ? (MediaDescriptionCompat) currentMediaItem.playbackProperties.tag : null;
 
         if (currentMedia != null
                 && currentMedia.getMediaId() != null
@@ -68,7 +71,7 @@ public class UampPlaybackPreparer implements MediaSessionConnector.PlaybackPrepa
         ConcatenatingMediaSource mediaSource = new ConcatenatingMediaSource();
 
         for (MediaDescriptionCompat media : musicSource.getMediaList(parentId)) {
-            mediaSource.addMediaSource(ExoMediaSourceUtil.buildMediaSource(media.getMediaUri(), null, dataSourceFactory,media));
+            mediaSource.addMediaSource(ExoMediaSourceUtil.buildMediaSource(media.getMediaUri(), null, dataSourceFactory, media));
         }
         // Since the playlist was probably based on some ordering (such as tracks
         // on an album), find which window index to play first so that the song the

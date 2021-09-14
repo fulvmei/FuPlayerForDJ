@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.view.OrientationEventListener;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.video.VideoListener;
 
@@ -92,16 +93,10 @@ public class ScreenRotationHelper {
         }
         if (this.player != null) {
             this.player.removeListener(playerEventListener);
-            if (this.player.getVideoComponent() != null) {
-                this.player.getVideoComponent().removeVideoListener(playerEventListener);
-            }
         }
         this.player = player;
         if (player != null) {
             player.addListener(playerEventListener);
-            if (this.player.getVideoComponent() != null) {
-                this.player.getVideoComponent().addVideoListener(playerEventListener);
-            }
         }
         videoWidth = 0;
         videoHeight = 0;
@@ -226,7 +221,7 @@ public class ScreenRotationHelper {
             return true;
         }
         if (player.getPlaybackState() == Player.STATE_IDLE
-                && player.getPlaybackError() != null
+                && player.getPlayerError() != null
                 && enableInPlayerStateError) {
             return true;
         }
@@ -242,7 +237,7 @@ public class ScreenRotationHelper {
         }
 
         @Override
-        public void onPlayerError(ExoPlaybackException error) {
+        public void onPlayerError(PlaybackException error) {
             switchOrientationState();
         }
 

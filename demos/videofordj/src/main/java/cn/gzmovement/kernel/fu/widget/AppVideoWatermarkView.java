@@ -20,6 +20,7 @@ import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.R;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.VideoIcon;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class AppVideoWatermarkView extends BaseStateView {
@@ -183,7 +184,7 @@ public class AppVideoWatermarkView extends BaseStateView {
     private final class ComponentListener implements FuPlayer.EventListener, VideoListener {
 
         @Override
-        public void onPlayerError(ExoPlaybackException error) {
+        public void onPlayerError(PlaybackException error) {
             updateVisibility();
         }
 

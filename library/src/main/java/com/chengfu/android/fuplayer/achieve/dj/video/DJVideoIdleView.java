@@ -94,7 +94,7 @@ public class DJVideoIdleView extends BaseStateView {
         if (player == null) {
             return true;
         }
-        if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlaybackError() == null) {
+        if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlayerError() == null) {
             return true;
         }
         return false;
@@ -128,7 +128,7 @@ public class DJVideoIdleView extends BaseStateView {
         }
 
         @Override
-        public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
+        public void onTimelineChanged(Timeline timeline, int reason) {
             updateVisibility();
         }
     }

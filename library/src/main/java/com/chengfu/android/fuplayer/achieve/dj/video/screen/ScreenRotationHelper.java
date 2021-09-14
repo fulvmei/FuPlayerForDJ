@@ -7,6 +7,7 @@ import android.provider.Settings;
 
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.video.VideoListener;
 
@@ -69,16 +70,10 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         }
         if (this.player != null) {
             this.player.removeListener(componentListener);
-            if (this.player.getVideoComponent() != null) {
-                this.player.getVideoComponent().removeVideoListener(componentListener);
-            }
         }
         this.player = player;
         if (player != null) {
             player.addListener(componentListener);
-            if (this.player.getVideoComponent() != null) {
-                this.player.getVideoComponent().addVideoListener(componentListener);
-            }
         }
         videoRate = 0.0f;
         switchOrientationState();
@@ -99,7 +94,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
             return true;
         }
         if (player.getPlaybackState() == Player.STATE_IDLE
-                && player.getPlaybackError() != null
+                && player.getPlayerError() != null
                 && !disableInPlayerStateError) {
             return true;
         }
@@ -280,8 +275,8 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         }
 
         @Override
-        public void onPlayerError(ExoPlaybackException error) {
-//            videoRate = 0f;
+        public void onPlayerError(PlaybackException error) {
+            //            videoRate = 0f;
             switchOrientationState();
         }
 

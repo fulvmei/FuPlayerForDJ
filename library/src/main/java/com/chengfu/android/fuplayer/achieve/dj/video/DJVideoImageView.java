@@ -13,6 +13,7 @@ import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class DJVideoImageView extends BaseStateView {
@@ -117,7 +118,7 @@ public class DJVideoImageView extends BaseStateView {
         }
         switch (player.getPlaybackState()) {
             case FuPlayer.STATE_IDLE:
-                if (player.getPlaybackError() != null) {
+                if (player.getPlayerError() != null) {
                     if (showInError || !hasFirstFrame) {
                         return true;
                     } else {
@@ -147,7 +148,7 @@ public class DJVideoImageView extends BaseStateView {
     private final class ComponentListener implements FuPlayer.EventListener, VideoListener {
 
         @Override
-        public void onPlayerError(ExoPlaybackException error) {
+        public void onPlayerError(PlaybackException error) {
             updateVisibility();
         }
 

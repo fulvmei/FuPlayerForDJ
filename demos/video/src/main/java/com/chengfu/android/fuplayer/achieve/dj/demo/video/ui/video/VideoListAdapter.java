@@ -32,7 +32,6 @@ import com.chengfu.android.fuplayer.achieve.dj.video.util.NetworkUtil;
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
@@ -133,7 +132,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
 
-        SimpleExoPlayer simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(recyclerView.getContext());
+        SimpleExoPlayer simpleExoPlayer =new SimpleExoPlayer.Builder(recyclerView.getContext()).build();
         simpleExoPlayer.addAnalyticsListener(new PlayerAnalytics());
         player = new FuPlayerManager(activity, new FuExoPlayerFactory(recyclerView.getContext()));
 

@@ -36,14 +36,14 @@ dependencies {
 //    api 'com.chengfu.android.fuplayer:extension-exo:' + fuplayer
 //    api 'com.chengfu.android.fuplayer:extension-mediasession:' + fuplayer
 
-//    api 'com.github.fulvmei.FuPlayer:fuplayer:1.2.6'
-    api 'com.github.fulvmei.FuPlayer:core:1.2.7'
-    api 'com.github.fulvmei.FuPlayer:ui:1.2.7'
-    api 'com.github.fulvmei.FuPlayer:exo:1.2.7'
-    api 'com.github.fulvmei.FuPlayer:mediasession:1.2.7'
+//    api 'com.github.fulvmei.FuPlayer:fuplayer:1.2.7'
+    api 'com.github.fulvmei.FuPlayer:core:' + fuplayer
+    api 'com.github.fulvmei.FuPlayer:ui:' + fuplayer
+    api 'com.github.fulvmei.FuPlayer:exo:' + fuplayer
+    api 'com.github.fulvmei.FuPlayer:mediasession:' + fuplayer
     api 'com.squareup.picasso:picasso:' + picasso
-    api 'androidx.room:room-runtime:2.2.6'
-    annotationProcessor 'androidx.room:room-compiler:2.2.6'
+    api 'androidx.room:room-runtime:' + room
+    annotationProcessor 'androidx.room:room-compiler:' + room
 }
 
 //ext {

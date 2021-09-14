@@ -1,8 +1,10 @@
 package com.chengfu.android.fuplayer.achieve.dj.demo.video.player;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,8 @@ import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
 import com.chengfu.android.fuplayer.ui.StateView;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
@@ -192,8 +196,9 @@ public class FuPlayerManager implements StateView {
         }
     }
 
-    public void prepare(MediaSource mediaSource) {
-        mPlayer.prepare(mediaSource, true, true);
+    public void prepare(MediaItem mediaSource) {
+        mPlayer.setMediaItem(mediaSource,true);
+        mPlayer.prepare();
         mPlayer.setPlayWhenReady(true);
 
         onResume();
@@ -217,7 +222,7 @@ public class FuPlayerManager implements StateView {
             mScreenRotation.resume();
         }
         if (mPlayer != null && mPlayer.getPlaybackState() == Player.STATE_IDLE
-                && mPlayer.getPlaybackError() == null) {
+                && mPlayer.getPlayerError() == null) {
             mPlayer.retry();
         }
     }
@@ -269,7 +274,7 @@ public class FuPlayerManager implements StateView {
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            Log.e("qwer","onPlayerStateChanged : playWhenReady=" + playWhenReady + ",playbackState=" + playbackState);
+            Log.e("qwer", "onPlayerStateChanged : playWhenReady=" + playWhenReady + ",playbackState=" + playbackState);
             if (playbackState == Player.STATE_READY) {
                 mMediaSession.setActive(true);
             } else {
@@ -278,18 +283,18 @@ public class FuPlayerManager implements StateView {
         }
 
         @Override
-        public void onPlayerError(ExoPlaybackException error) {
-            Log.e("qwer","onPlayerError : playWhenReady=" + error + ",playbackState=" + error);
+        public void onPlayerError(PlaybackException error) {
+            Log.e("qwer", "onPlayerError : playWhenReady=" + error + ",playbackState=" + error);
         }
 
         @Override
         public void onPositionDiscontinuity(int reason) {
-            Log.e("qwer","onPositionDiscontinuity ");
+            Log.e("qwer", "onPositionDiscontinuity ");
         }
 
         @Override
-        public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
-            Log.e("qwer","onTimelineChanged : timeline="+timeline+",manifest="+manifest+",reason="+reason);
+        public void onTimelineChanged(Timeline timeline, int reason) {
+            Log.e("qwer", "onTimelineChanged : timeline=" + timeline + ",reason=" + reason);
         }
 
         @Override

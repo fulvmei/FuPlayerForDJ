@@ -91,6 +91,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         if (player.getAudioComponent() != null) {
             player.getAudioComponent().setAudioAttributes(attributes, true);
         }
+        player.setPauseAtEndOfMediaItems(true);
         return player;
     }
 

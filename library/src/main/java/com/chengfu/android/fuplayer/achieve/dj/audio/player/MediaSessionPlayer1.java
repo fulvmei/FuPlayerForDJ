@@ -246,7 +246,7 @@ public final class MediaSessionPlayer1 {
             case FuPlayer.STATE_ENDED:
                 return PlaybackStateCompat.STATE_STOPPED;
             default:
-                if (mPlayer.getPlaybackError() != null) {
+                if (mPlayer.getPlayerError() != null) {
                     return PlaybackStateCompat.STATE_ERROR;
                 } else if (mMediaSessionCallback.mPendingPrepare) {
                     return PlaybackStateCompat.STATE_BUFFERING;
@@ -424,10 +424,12 @@ public final class MediaSessionPlayer1 {
                 }
                 if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_ONE) {
                     mMediaSessionCallback.onPlay();
-                } else if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_NONE
-                        && !mMediaSessionCallback.hasNext()) {
-                    mMediaSessionCallback.onPause();
-                } else {
+                }
+//                else if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_NONE
+//                        && !mMediaSessionCallback.hasNext()) {
+//                    mMediaSessionCallback.onPause();
+//                }
+                else if (mMediaSessionCallback.mCurrentRepeatMode == PlaybackStateCompat.REPEAT_MODE_ALL) {
                     mMediaSessionCallback.onSkipToNext();
                 }
             }

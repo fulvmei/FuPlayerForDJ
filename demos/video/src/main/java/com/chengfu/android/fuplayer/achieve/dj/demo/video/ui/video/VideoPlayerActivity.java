@@ -27,6 +27,7 @@ import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
 
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
+import com.google.android.exoplayer2.MediaItem;
 import com.gyf.barlibrary.BarHide;
 import com.gyf.barlibrary.ImmersionBar;
 
@@ -89,7 +90,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
                     controlView.setTitle(video.getName());
 
-                    player.prepare(MediaSourceUtil.getMediaSource(VideoPlayerActivity.this, video.getPath()));
+                    player.prepare(MediaItem.fromUri(video.getPath()));
 //                    initializePlayer();
                 }
             }
