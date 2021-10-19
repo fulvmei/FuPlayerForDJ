@@ -10,6 +10,7 @@ import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.video.VideoListener;
+import com.google.android.exoplayer2.video.VideoSize;
 
 public final class ScreenRotationHelper implements DJVideoControlView.Rotation, OrientationEventObserver.OnOrientationChangedListener {
 
@@ -264,24 +265,26 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         }
     }
 
-    private final class ComponentListener implements Player.EventListener, VideoListener {
+    private final class ComponentListener implements Player.Listener {
+        @Override
+        public void onPlaybackStateChanged(int playbackState) {
+            switchOrientationState();
+        }
 
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//            if (playbackState == Player.STATE_IDLE) {
-//                videoRate = 0f;
-//            }
+        public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
             switchOrientationState();
         }
 
         @Override
         public void onPlayerError(PlaybackException error) {
-            //            videoRate = 0f;
             switchOrientationState();
         }
 
         @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        public void onVideoSizeChanged(VideoSize videoSize) {
+            int width = videoSize != null ? videoSize.width : 0;
+            int height = videoSize != null ? videoSize.height : 0;
             videoRate = width != 0 ? (float) height / width : 0f;
         }
     }
