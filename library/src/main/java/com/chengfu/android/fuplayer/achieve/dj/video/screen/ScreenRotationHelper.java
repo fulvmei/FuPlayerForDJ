@@ -6,10 +6,8 @@ import android.content.res.Configuration;
 import android.provider.Settings;
 
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.video.VideoListener;
 import com.google.android.exoplayer2.video.VideoSize;
 
 public final class ScreenRotationHelper implements DJVideoControlView.Rotation, OrientationEventObserver.OnOrientationChangedListener {
