@@ -34,6 +34,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
     private boolean portraitFullScreen;
 
     private float videoRate;
+    private boolean userPortrait;
 
     @AutoRotation
     private int autoRotationMode = AUTO_ROTATION_MODE_NONE;
@@ -79,7 +80,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
     }
 
     private boolean isInPortraitFullScreenState() {
-        return enablePortraitFullScreen && videoRate > DEFAULT_RATE;
+        return enablePortraitFullScreen && (userPortrait || (videoRate > DEFAULT_RATE));
     }
 
     private boolean isInEnableState() {
@@ -223,6 +224,14 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
 
     public boolean isToggleToPortraitInDisable() {
         return toggleToPortraitInDisable;
+    }
+
+    public boolean isUserPortrait() {
+        return userPortrait;
+    }
+
+    public void setUserPortrait(boolean userPortrait) {
+        this.userPortrait = userPortrait;
     }
 
     @Override
