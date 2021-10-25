@@ -253,6 +253,10 @@ public class AppVideoPlayView extends FrameLayout {
 
         player.prepare(mediaSource);
         player.setPlayWhenReady(true);
+
+        if (playerView!=null){
+            playerView.onResume();
+        }
     }
 
     public FuPlayer getPlayer() {

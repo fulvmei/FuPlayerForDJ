@@ -68,6 +68,7 @@ public class DJVideoControlView extends DefaultControlView {
 
     protected Gesture gestureHelper;
     protected GestureDetector gestureDetector;
+    protected boolean disabledGesture;
     protected long oldPosition;
     protected long newPosition;
     protected long duration;
@@ -328,6 +329,14 @@ public class DJVideoControlView extends DefaultControlView {
         updateBottomProgressView();
     }
 
+    public boolean isDisabledGesture() {
+        return disabledGesture;
+    }
+
+    public void setDisabledGesture(boolean disabledGesture) {
+        this.disabledGesture = disabledGesture;
+    }
+
     public boolean isFitDisplayCutout() {
         return fitDisplayCutout;
     }
@@ -526,6 +535,9 @@ public class DJVideoControlView extends DefaultControlView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if (disabledGesture) {
+            return super.onTouchEvent(ev);
+        }
         if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
             gestureHelper.onUp(ev);
         }
@@ -538,6 +550,9 @@ public class DJVideoControlView extends DefaultControlView {
 
     @Override
     public boolean onTrackballEvent(MotionEvent ev) {
+        if (disabledGesture) {
+            return super.onTrackballEvent(ev);
+        }
         if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL) {
             gestureHelper.onUp(ev);
         }
