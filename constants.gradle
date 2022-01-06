@@ -1,6 +1,6 @@
 project.ext {
-    releaseVersion = '2.2.5'
-    releaseVersionCode = 36
+    releaseVersion = '2.2.7'
+    releaseVersionCode = 38
 
     minSdkVersion = 21
     targetSdkVersion = 30
@@ -12,6 +12,6 @@ project.ext {
     picasso='2.71828'
     lifecycle='2.1.0'
     exolayerVersion = '2.15.0'
-    fuplayer='1.2.8-alpha01'
+    fuplayer='1.2.9'
 }
 
