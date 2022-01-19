@@ -440,7 +440,7 @@ public final class MediaSessionPlayer1 {
         }
 
         @Override
-        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+        public void onPlaybackParametersChanged(@NonNull PlaybackParameters playbackParameters) {
             FuLog.d(TAG, "onPlaybackParametersChanged : playbackParameters=" + playbackParameters);
             invalidateMediaSessionPlaybackState();
         }
@@ -836,6 +836,10 @@ public final class MediaSessionPlayer1 {
             invalidateMediaSessionPlaybackState();
         }
 
+        @Override
+        public void onSetPlaybackSpeed(float speed) {
+            mPlayer.setPlaybackSpeed(speed);
+        }
     }
 
     public class MediaLoadCallback {
