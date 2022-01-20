@@ -29,6 +29,7 @@ import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.PlaybackStateCompatExt;
 import com.chengfu.android.fuplayer.achieve.dj.audio.player.TimingOff;
+import com.chengfu.android.fuplayer.ui.DefaultControlView;
 import com.chengfu.android.fuplayer.util.FuLog;
 
 import java.util.Formatter;
@@ -41,7 +42,8 @@ public class AudioControlView extends FrameLayout {
 
     private static final String TAG = "MusicPlayView";
 
-    protected final ComponentListener componentListener;
+    protected final ActionHandler actionHandler;
+    protected final ControllerEventsHandler controllerEventsHandler;
     protected Context context;
     protected MediaSessionCompat.Token sessionToken;
     protected MediaControllerCompat controller;
@@ -86,7 +88,8 @@ public class AudioControlView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         this.context = context;
 
-        componentListener = new ComponentListener();
+        actionHandler = initActionHandler();
+        controllerEventsHandler = initControllerEventsHandler();
 
         formatBuilder = new StringBuilder();
         formatter = new Formatter(formatBuilder, Locale.getDefault());
@@ -105,27 +108,27 @@ public class AudioControlView extends FrameLayout {
 
         previous = findViewById(R.id.audio_controller_previous);
         if (previous != null) {
-            previous.setOnClickListener(componentListener);
+            previous.setOnClickListener(actionHandler);
         }
 
         play = findViewById(R.id.audio_controller_play);
         if (play != null) {
-            play.setOnClickListener(componentListener);
+            play.setOnClickListener(actionHandler);
         }
 
         pause = findViewById(R.id.audio_controller_pause);
         if (pause != null) {
-            pause.setOnClickListener(componentListener);
+            pause.setOnClickListener(actionHandler);
         }
 
         next = findViewById(R.id.audio_controller_next);
         if (next != null) {
-            next.setOnClickListener(componentListener);
+            next.setOnClickListener(actionHandler);
         }
 
         seek = findViewById(R.id.audio_controller_seek);
         if (seek != null) {
-            seek.setOnSeekBarChangeListener(componentListener);
+            seek.setOnSeekBarChangeListener(actionHandler);
         }
 
         position = findViewById(R.id.audio_controller_position);
@@ -134,15 +137,23 @@ public class AudioControlView extends FrameLayout {
 
         shuffle = findViewById(R.id.audio_controller_shuffle_switch);
         if (shuffle != null) {
-            shuffle.setOnClickListener(componentListener);
+            shuffle.setOnClickListener(actionHandler);
         }
 
         repeat = findViewById(R.id.audio_controller_repeat_switch);
         if (repeat != null) {
-            repeat.setOnClickListener(componentListener);
+            repeat.setOnClickListener(actionHandler);
         }
 
         updateAll();
+    }
+
+    protected ActionHandler initActionHandler() {
+        return new ActionHandler();
+    }
+
+    protected ControllerEventsHandler initControllerEventsHandler() {
+        return new ControllerEventsHandler();
     }
 
     public OnVisibilityChangeListener getOnVisibilityChangeListener() {
@@ -166,13 +177,13 @@ public class AudioControlView extends FrameLayout {
             controller = null;
         } else {
 //            try {
-                controller = new MediaControllerCompat(context, sessionToken);
+            controller = new MediaControllerCompat(context, sessionToken);
 //            } catch (RemoteException e) {
 //                e.printStackTrace();
 //            }
         }
         if (controller != null) {
-            controller.registerCallback(componentListener);
+            controller.registerCallback(controllerEventsHandler);
         }
         updateAll();
     }
@@ -196,7 +207,7 @@ public class AudioControlView extends FrameLayout {
         if (extras != null) {
 //            extras.setClassLoader(TimingOff.class.getClassLoader());
 //            timingOff = extras.getParcelable(MusicContract.KEY_TIMING_OFF);
-            timingOff =TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
+            timingOff = TimingOff.fromJson(extras.getString(MusicContract.KEY_TIMING_OFF));
         }
         if (timingOff == null) {
             timingOff = TimingOff.defaultTimingOff();
@@ -331,7 +342,7 @@ public class AudioControlView extends FrameLayout {
                 progressAnimator.setDuration(timeToEnd);
 
                 progressAnimator.setInterpolator(new LinearInterpolator());
-                progressAnimator.addUpdateListener(componentListener);
+                progressAnimator.addUpdateListener(actionHandler);
                 progressAnimator.start();
             }
         }
@@ -463,8 +474,8 @@ public class AudioControlView extends FrameLayout {
         }
     }
 
-    private final class ComponentListener extends MediaControllerCompat.Callback implements OnClickListener, SeekBar.OnSeekBarChangeListener, ValueAnimator.AnimatorUpdateListener {
-        private boolean isTracking = false;
+    protected class ActionHandler implements OnClickListener, SeekBar.OnSeekBarChangeListener, ValueAnimator.AnimatorUpdateListener {
+        protected boolean isTracking = false;
 
         @Override
         public void onClick(View v) {
@@ -532,7 +543,9 @@ public class AudioControlView extends FrameLayout {
                 position.setText(stringForTime(animatedIntValue));
             }
         }
+    }
 
+    protected class ControllerEventsHandler extends MediaControllerCompat.Callback {
         @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             FuLog.d(TAG, "onMetadataChanged metadata=" + metadata);
