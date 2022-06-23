@@ -220,7 +220,12 @@ public class DJVideoControlView extends DefaultControlView {
         }
         Activity activity = (Activity) getContext();
         postDelayed(() -> {
-            DisplayCutout displayCutout = activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout();
+            DisplayCutout displayCutout = (null != activity
+                    && null != activity.getWindow()
+                    && null != activity.getWindow().getDecorView()
+                    && null != activity.getWindow().getDecorView().getRootWindowInsets()) ?
+                    activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout()
+                    : null;
             List<Rect> rects = displayCutout != null ? displayCutout.getBoundingRects() : null;
             if (rects == null || rects.size() == 0) {
                 return;
