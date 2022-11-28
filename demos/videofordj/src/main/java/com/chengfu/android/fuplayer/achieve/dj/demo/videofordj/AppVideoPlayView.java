@@ -281,7 +281,7 @@ public class AppVideoPlayView extends FrameLayout {
 
             MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mediaSession);
 
-            mediaSessionConnector.setMediaButtonEventHandler((player1, controlDispatcher, mediaButtonEvent) -> {
+            mediaSessionConnector.setMediaButtonEventHandler((player1, mediaButtonEvent) -> {
                 KeyEvent keyEvent = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
                 int keyCode = keyEvent.getKeyCode();
                 if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_HEADSETHOOK) {
@@ -453,7 +453,7 @@ public class AppVideoPlayView extends FrameLayout {
         player.release();
     }
 
-    private final class ComponentListener implements StateView.VisibilityChangeListener, Player.EventListener, DJVideoControlView.OnScreenClickListener, DJVideoControlView.OnBackClickListener {
+    private final class ComponentListener implements StateView.VisibilityChangeListener, Player.Listener, DJVideoControlView.OnScreenClickListener, DJVideoControlView.OnBackClickListener {
 
         @Override
         public void onVisibilityChange(StateView stateView, boolean visibility) {

@@ -49,7 +49,7 @@ public class FuPlayerManager implements StateView {
 
         MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
 
-        mediaSessionConnector.setMediaButtonEventHandler((player, controlDispatcher, mediaButtonEvent) -> {
+        mediaSessionConnector.setMediaButtonEventHandler((player, mediaButtonEvent) -> {
             KeyEvent keyEvent = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
             int keyCode = keyEvent.getKeyCode();
             if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_HEADSETHOOK) {
@@ -256,7 +256,7 @@ public class FuPlayerManager implements StateView {
         mPlayer.release();
     }
 
-    private final class ComponentListener implements VisibilityChangeListener, Player.EventListener, DJVideoControlView.OnScreenClickListener, DJVideoControlView.OnBackClickListener {
+    private final class ComponentListener implements VisibilityChangeListener, Player.Listener, DJVideoControlView.OnScreenClickListener, DJVideoControlView.OnBackClickListener {
 
         @Override
         public void onVisibilityChange(StateView stateView, boolean visibility) {

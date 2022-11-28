@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.Video;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.VideoIcon;
-import com.gyf.barlibrary.BarHide;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
 
 public class VodPlayActivity extends AppCompatActivity implements IPlayActivity {
 

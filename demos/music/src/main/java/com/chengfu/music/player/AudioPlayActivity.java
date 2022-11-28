@@ -26,7 +26,7 @@ import com.chengfu.music.player.ui.player.PlayListFragment;
 import com.chengfu.music.player.ui.player.TimingOffListFragment;
 import com.chengfu.music.player.ui.widget.AppAudioControlView;
 import com.chengfu.music.player.util.MusicUtil;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.List;
 

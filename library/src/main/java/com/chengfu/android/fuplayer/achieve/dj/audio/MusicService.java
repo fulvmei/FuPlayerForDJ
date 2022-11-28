@@ -22,11 +22,13 @@ import androidx.media.MediaBrowserServiceCompat;
 
 import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.notification.AudioNotificationManager;
-import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer1;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.receiver.BecomingNoisyReceiver;
 import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -34,7 +36,7 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner, MediaSessionPlayer1.MediaLoadProvider {
+public class MusicService extends MediaBrowserServiceCompat implements LifecycleOwner, MediaSessionPlayer.MediaLoadProvider {
     public static final String TAG = "MusicService";
 
     private MusicService service = this;
@@ -45,7 +47,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
     private BecomingNoisyReceiver becomingNoisyReceiver;
 
-    private MediaSessionPlayer1 mediaSessionPlayer;
+    private MediaSessionPlayer mediaSessionPlayer;
 
     private AudioNotificationManager audioNotificationManager;
 
@@ -75,7 +77,7 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
 
         audioNotificationManager.setNotificationListener(new NotificationListener());
 
-        mediaSessionPlayer = new MediaSessionPlayer1(this, mediaSession, createPlayer());
+        mediaSessionPlayer = new MediaSessionPlayer(this, mediaSession, createPlayer());
 
         mediaSessionPlayer.setMediaLoadProvider(this);
 
@@ -85,12 +87,10 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
     protected FuPlayer createPlayer() {
         FuPlayer player = new FuExoPlayerFactory(this).create();
         AudioAttributes attributes = new AudioAttributes.Builder()
-                .setContentType(C.CONTENT_TYPE_MUSIC)
+                .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                 .setUsage(C.USAGE_MEDIA)
                 .build();
-        if (player.getAudioComponent() != null) {
-            player.getAudioComponent().setAudioAttributes(attributes, true);
-        }
+        player.setAudioAttributes(attributes, true);
         player.setPauseAtEndOfMediaItems(true);
         return player;
     }
@@ -156,8 +156,13 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
     }
 
     @Override
-    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
+    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer.MediaLoadCallback callback) {
         callback.onCompleted(description);
+    }
+
+    @Override
+    public void onPrepare(Player player, MediaDescriptionCompat description) {
+
     }
 
     @Override

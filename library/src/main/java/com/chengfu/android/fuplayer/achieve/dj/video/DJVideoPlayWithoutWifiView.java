@@ -11,6 +11,7 @@ import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.video.util.NetworkUtil;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Player;
 
 public class DJVideoPlayWithoutWifiView extends BaseStateView {
 
@@ -112,15 +113,9 @@ public class DJVideoPlayWithoutWifiView extends BaseStateView {
     }
 
 
-    private final class ComponentListener implements ExoPlayer.EventListener {
-
+    private final class ComponentListener implements Player.Listener {
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-//            maybeShow();
-        }
-
-        @Override
-        public void onLoadingChanged(boolean isLoading) {
+        public void onIsLoadingChanged(boolean isLoading) {
             maybeShow();
         }
     }

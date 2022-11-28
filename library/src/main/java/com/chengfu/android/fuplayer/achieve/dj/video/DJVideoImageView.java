@@ -12,9 +12,9 @@ import android.widget.ImageView;
 import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.video.VideoListener;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.video.VideoSize;
 
 public class DJVideoImageView extends BaseStateView {
 
@@ -62,9 +62,6 @@ public class DJVideoImageView extends BaseStateView {
         updateVisibility();
 
         player.addListener(componentListener);
-        if (player.getVideoComponent() != null) {
-            player.getVideoComponent().addVideoListener(componentListener);
-        }
     }
 
     @Override
@@ -73,9 +70,6 @@ public class DJVideoImageView extends BaseStateView {
         updateVisibility();
 
         player.removeListener(componentListener);
-        if (player.getVideoComponent() != null) {
-            player.getVideoComponent().removeVideoListener(componentListener);
-        }
     }
 
     protected View onCreateView(LayoutInflater inflater, ViewGroup parent) {
@@ -126,8 +120,6 @@ public class DJVideoImageView extends BaseStateView {
                     }
                 }
                 return true;
-            case FuPlayer.STATE_READY:
-                return false;
             case FuPlayer.STATE_BUFFERING:
                 if (!hasFirstFrame) {
                     return true;
@@ -136,16 +128,13 @@ public class DJVideoImageView extends BaseStateView {
             case FuPlayer.STATE_ENDED:
                 if (showInEnded) {
                     return true;
-                } else if (!hasFirstFrame) {
-                    return true;
-                }
-                return false;
+                } else return !hasFirstFrame;
             default:
                 return false;
         }
     }
 
-    private final class ComponentListener implements FuPlayer.EventListener, VideoListener {
+    private final class ComponentListener implements Player.Listener {
 
         @Override
         public void onPlayerError(PlaybackException error) {
@@ -158,7 +147,7 @@ public class DJVideoImageView extends BaseStateView {
         }
 
         @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        public void onVideoSizeChanged(VideoSize videoSize) {
             hasFirstFrame = false;
             updateVisibility();
         }

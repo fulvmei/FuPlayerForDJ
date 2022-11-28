@@ -127,7 +127,7 @@ public class MusicUtil {
                 .setMediaId("0")
                 .setTitle("贵州交通广播")
                 .setSubtitle("未知来源")
-                .setMediaUri(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"))
+                .setMediaUri(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/xinwen.m3u8"))
                 .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/images/2016/01/20/2ejVhB_USWMM_KsKg09p.jpg"))
                 .build();
 

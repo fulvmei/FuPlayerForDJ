@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicService;
-import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer1;
+import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer;
 
 public class AppMusicService extends MusicService {
 
@@ -30,7 +30,7 @@ public class AppMusicService extends MusicService {
 
 
     @Override
-    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer1.MediaLoadCallback callback) {
+    public void onLoadMedia(MediaDescriptionCompat description, MediaSessionPlayer.MediaLoadCallback callback) {
 
         if (true){
             callback.onCompleted(description);

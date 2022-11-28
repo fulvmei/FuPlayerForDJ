@@ -51,7 +51,13 @@ public class DataConverter {
         parcel.unmarshall(value, 0, value.length);
         parcel.setDataPosition(0);
 
-        return Uri.CREATOR.createFromParcel(parcel);
+        Uri uri=null;
+        try {
+            uri=Uri.CREATOR.createFromParcel(parcel);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return uri;
     }
 
     @TypeConverter

@@ -14,19 +14,13 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.andrefrsousa.superbottomsheet.SuperBottomSheetFragment;
-import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.music.player.R;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 

@@ -19,9 +19,11 @@ import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.R;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.VideoIcon;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
-import com.google.android.exoplayer2.ExoPlaybackException;
+//import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
-import com.google.android.exoplayer2.video.VideoListener;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.video.VideoSize;
+//import com.google.android.exoplayer2.video.VideoListener;
 
 public class AppVideoWatermarkView extends BaseStateView {
 
@@ -165,9 +167,9 @@ public class AppVideoWatermarkView extends BaseStateView {
         updateVisibility();
 
         player.addListener(componentListener);
-        if (player.getVideoComponent() != null) {
-            player.getVideoComponent().addVideoListener(componentListener);
-        }
+//        if (player.getVideoComponent() != null) {
+//            player.getVideoComponent().addVideoListener(componentListener);
+//        }
     }
 
     @Override
@@ -176,12 +178,12 @@ public class AppVideoWatermarkView extends BaseStateView {
         updateVisibility();
 
         player.removeListener(componentListener);
-        if (player.getVideoComponent() != null) {
-            player.getVideoComponent().removeVideoListener(componentListener);
-        }
+//        if (player.getVideoComponent() != null) {
+//            player.getVideoComponent().removeVideoListener(componentListener);
+//        }
     }
 
-    private final class ComponentListener implements FuPlayer.EventListener, VideoListener {
+    private final class ComponentListener implements Player.Listener {
 
         @Override
         public void onPlayerError(PlaybackException error) {
@@ -194,7 +196,7 @@ public class AppVideoWatermarkView extends BaseStateView {
         }
 
         @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+        public void onVideoSizeChanged(VideoSize videoSize) {
             hasFirstFrame = false;
             updateVisibility();
         }

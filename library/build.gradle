@@ -32,23 +32,11 @@ android {
 dependencies {
     api 'com.google.android.exoplayer:extension-mediasession:' + exolayerVersion
     api 'androidx.lifecycle:lifecycle-extensions:' + lifecycle
-//    api 'com.chengfu.android.fuplayer:fuplayer:' + fuplayer
-//    api 'com.chengfu.android.fuplayer:extension-exo:' + fuplayer
-//    api 'com.chengfu.android.fuplayer:extension-mediasession:' + fuplayer
-
-//    api 'com.github.fulvmei.FuPlayer:fuplayer:1.2.7'
     api 'com.github.fulvmei.FuPlayer:core:' + fuplayer
     api 'com.github.fulvmei.FuPlayer:ui:' + fuplayer
     api 'com.github.fulvmei.FuPlayer:exo:' + fuplayer
-    api 'com.github.fulvmei.FuPlayer:mediasession:' + fuplayer
+//    api 'com.github.fulvmei.FuPlayer:mediasession:' + fuplayer
     api 'com.squareup.picasso:picasso:' + picasso
     api 'androidx.room:room-runtime:' + room
     annotationProcessor 'androidx.room:room-compiler:' + room
 }
-
-//ext {
-//    releaseArtifact = 'achieve-dj'
-//    releaseDescription = 'The FuPlayer achieve library'
-//}
-
-//apply from: '../publish.gradle'
