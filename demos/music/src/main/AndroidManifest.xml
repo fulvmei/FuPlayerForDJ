@@ -22,7 +22,8 @@
         tools:ignore="UnusedAttribute">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,14 +39,16 @@
             android:name=".AudioPlayActivity"
             android:theme="@style/AudioPlayTheme" />
 
-        <activity android:name=".FuSessionActivity">
+        <activity android:name=".FuSessionActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="chengfu.intent.action.ACTION_SESSION_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <receiver android:name="androidx.media.session.MediaButtonReceiver">
+        <receiver android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>

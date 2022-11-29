@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         player = new SimpleExoPlayer.Builder(/* context= */ this, new DefaultRenderersFactory(this))
                 .build();
 //        player.setPlayWhenReady(true);
-        player.addListener(new Player.EventListener() {
+        player.addListener(new Player.Listener() {
 //            @Override
 //            public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
 //                Log.e("onTimelineChanged", "onTimelineChanged timeline=" + timeline.isEmpty());

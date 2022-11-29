@@ -25,7 +25,7 @@ public class AppMusicService extends MusicService {
         sessionIntent.putExtra(MusicContract.KEY_MEDIA_DESCRIPTION_EXTRAS, metadata != null ? metadata.getBundle() : null);
         ComponentName componentName = new ComponentName(this, getApplication().getPackageName() + ".FuSessionActivity");
         sessionIntent.setComponent(componentName);
-        return PendingIntent.getActivity(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(this, MusicContract.REQUEST_CODE_SESSION_ACTIVITY, sessionIntent, PendingIntent.FLAG_IMMUTABLE);
     }
 
 

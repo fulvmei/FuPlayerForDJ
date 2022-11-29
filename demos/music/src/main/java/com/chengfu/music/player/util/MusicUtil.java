@@ -119,7 +119,7 @@ public class MusicUtil {
                 .setMediaId("1")
                 .setTitle("神吐槽 | 什么都懂")
                 .setSubtitle("雷畅")
-                .setMediaUri(Uri.parse("https://wsvod.gzstv.com/uploads/media/lvyoub/lvyougb/20200703stc.mp3"))
+                .setMediaUri(Uri.parse("https://sel.gzstv.com/recordings/z1.icvkuzqj.dushi/1616972412_1616979612.m3u8"))
                 .setIconUri(Uri.parse("https://mstatic.gzstv.com/media/streams/audio/images/2020/07/03/t_cFQHXrQDMxCe_150x150_exT5XhbJ_2x.jpg"))
                 .build();
 

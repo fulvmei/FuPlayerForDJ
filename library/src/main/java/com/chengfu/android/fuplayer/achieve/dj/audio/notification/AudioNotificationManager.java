@@ -147,7 +147,7 @@ public class AudioNotificationManager {
                 context.getString(R.string.fu_notification_skip_to_next),
                 null);
 
-        cancelPendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(ACTION_NOTIFICATION_DISMISS), 0);
+        cancelPendingIntent = PendingIntent.getBroadcast(context, 0, new Intent(ACTION_NOTIFICATION_DISMISS), PendingIntent.FLAG_IMMUTABLE);
 
     }
 
