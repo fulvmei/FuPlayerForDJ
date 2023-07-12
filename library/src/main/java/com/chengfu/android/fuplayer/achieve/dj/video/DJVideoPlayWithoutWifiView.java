@@ -6,11 +6,9 @@ import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.achieve.dj.video.util.NetworkUtil;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
 
 public class DJVideoPlayWithoutWifiView extends BaseStateView {
@@ -44,7 +42,7 @@ public class DJVideoPlayWithoutWifiView extends BaseStateView {
 
         findViewById(R.id.btnPlayWithoutWifi).setOnClickListener(v -> {
             allowPlayInNoWifi = true;
-            player.retry();
+            player.prepare();
             hide();
             if (onAllowPlayInNoWifiChangeListener != null) {
                 onAllowPlayInNoWifiChangeListener.onAllowPlayInNoWifiChange(allowPlayInNoWifi);
@@ -101,13 +99,13 @@ public class DJVideoPlayWithoutWifiView extends BaseStateView {
     }
 
     @Override
-    protected void onAttachedToPlayer(@NonNull FuPlayer player) {
+    protected void onAttachedToPlayer(@NonNull Player player) {
         player.addListener(componentListener);
         maybeShow();
     }
 
     @Override
-    protected void onDetachedFromPlayer(@NonNull FuPlayer player) {
+    protected void onDetachedFromPlayer(@NonNull Player player) {
         player.removeListener(componentListener);
         hide();
     }

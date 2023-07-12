@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.google.android.exoplayer2.PlaybackException;
@@ -53,8 +52,8 @@ public class DJVideoImageView extends BaseStateView {
     }
 
     @Override
-    protected void onAttachedToPlayer(@NonNull FuPlayer player) {
-        if (player.getPlaybackState() == FuPlayer.STATE_READY && player.getPlayWhenReady()) {
+    protected void onAttachedToPlayer(@NonNull Player player) {
+        if (player.getPlaybackState() == Player.STATE_READY && player.getPlayWhenReady()) {
             hasFirstFrame = true;
         } else {
             hasFirstFrame = false;
@@ -65,7 +64,7 @@ public class DJVideoImageView extends BaseStateView {
     }
 
     @Override
-    protected void onDetachedFromPlayer(@NonNull FuPlayer player) {
+    protected void onDetachedFromPlayer(@NonNull Player player) {
         hasFirstFrame = false;
         updateVisibility();
 
@@ -111,7 +110,7 @@ public class DJVideoImageView extends BaseStateView {
             return true;
         }
         switch (player.getPlaybackState()) {
-            case FuPlayer.STATE_IDLE:
+            case Player.STATE_IDLE:
                 if (player.getPlayerError() != null) {
                     if (showInError || !hasFirstFrame) {
                         return true;
@@ -120,12 +119,12 @@ public class DJVideoImageView extends BaseStateView {
                     }
                 }
                 return true;
-            case FuPlayer.STATE_BUFFERING:
+            case Player.STATE_BUFFERING:
                 if (!hasFirstFrame) {
                     return true;
                 }
                 return false;
-            case FuPlayer.STATE_ENDED:
+            case Player.STATE_ENDED:
                 if (showInEnded) {
                     return true;
                 } else return !hasFirstFrame;
@@ -142,7 +141,12 @@ public class DJVideoImageView extends BaseStateView {
         }
 
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        public void onPlayWhenReadyChanged(boolean playWhenReady, int reason) {
+            updateVisibility();
+        }
+
+        @Override
+        public void onPlaybackStateChanged(int playbackState) {
             updateVisibility();
         }
 

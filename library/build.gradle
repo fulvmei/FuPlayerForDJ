@@ -34,11 +34,6 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-extensions:' + lifecycle
     api 'com.github.fulvmei.FuPlayer:core:' + fuplayer
     api 'com.github.fulvmei.FuPlayer:ui:' + fuplayer
-//    api 'com.github.fulvmei.FuPlayer:all:' + fuplayer
-//    api 'com.github.fulvmei.FuPlayer:ui:dev-SNAPSHOT'
-//    api 'com.github.fulvmei.FuPlayer:ui:2.0.0-alpha01'
-//    api 'com.github.fulvmei.FuPlayer:core:dev-SNAPSHOT'
-//    api 'com.github.fulvmei.FuPlayer:ui:dev-SNAPSHOT'
     api 'com.squareup.picasso:picasso:' + picasso
     api 'androidx.room:room-runtime:' + room
     annotationProcessor 'androidx.room:room-compiler:' + room

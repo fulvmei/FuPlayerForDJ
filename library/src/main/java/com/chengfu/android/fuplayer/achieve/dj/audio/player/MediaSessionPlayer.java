@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.ResultReceiver;
 import android.os.SystemClock;
 import android.support.v4.media.MediaDescriptionCompat;
@@ -13,30 +12,20 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.AudioPlayClient;
 import com.chengfu.android.fuplayer.achieve.dj.audio.MusicContract;
 import com.chengfu.android.fuplayer.achieve.dj.audio.util.MediaSessionUtil;
-import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
-import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
 import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.audio.AudioAttributes;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ShuffleOrder;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,7 +84,7 @@ public final class MediaSessionPlayer {
     private final PlaybackStateInfo mPlaybackStateInfo;
 
     @NonNull
-    private final FuPlayer mPlayer;
+    private final Player mPlayer;
 
     private long enabledPlaybackActions;
     private int rewindMs;
@@ -104,7 +93,7 @@ public final class MediaSessionPlayer {
     private TimingOff currentTimingOff = TimingOff.defaultTimingOff();
     private CountDownTimer countDownTimer;
 
-    public MediaSessionPlayer(@NonNull Context context, @NonNull MediaSessionCompat mediaSession, @NonNull FuPlayer player) {
+    public MediaSessionPlayer(@NonNull Context context, @NonNull MediaSessionCompat mediaSession, @NonNull Player player) {
         mContext = context;
         mMediaSession = mediaSession;
 
@@ -143,7 +132,7 @@ public final class MediaSessionPlayer {
     }
 
     @NonNull
-    public FuPlayer getPlayer() {
+    public Player getPlayer() {
         return mPlayer;
     }
 
@@ -242,11 +231,11 @@ public final class MediaSessionPlayer {
 
     private int mapPlaybackState(@Player.State int state) {
         switch (state) {
-            case FuPlayer.STATE_BUFFERING:
+            case Player.STATE_BUFFERING:
                 return PlaybackStateCompat.STATE_BUFFERING;
-            case FuPlayer.STATE_READY:
+            case Player.STATE_READY:
                 return mPlayer.getPlayWhenReady() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED;
-            case FuPlayer.STATE_ENDED:
+            case Player.STATE_ENDED:
                 return PlaybackStateCompat.STATE_STOPPED;
             default:
                 if (mPlayer.getPlayerError() != null) {
@@ -410,7 +399,7 @@ public final class MediaSessionPlayer {
         closeCountDownTimer();
     }
 
-    private class PlayerEventListener implements FuPlayer.Listener {
+    private class PlayerEventListener implements Player.Listener {
         @Override
         public void onTimelineChanged(Timeline timeline, int reason) {
             FuLog.d(TAG, "onTimelineChanged : timeline=" + timeline + ",reason=" + reason);
@@ -425,7 +414,7 @@ public final class MediaSessionPlayer {
         @Override
         public void onPlaybackStateChanged(int playbackState) {
             FuLog.d(TAG, "onPlayerStateChanged : playbackState=" + playbackState);
-            if (playbackState == FuPlayer.STATE_ENDED) {
+            if (playbackState == Player.STATE_ENDED) {
                 if (currentTimingOff.getMode() == TimingOff.TIMING_OFF_MODE_ONE) {
                     release();
                     return;

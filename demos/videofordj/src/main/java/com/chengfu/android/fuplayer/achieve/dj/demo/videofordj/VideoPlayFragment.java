@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.Video;
-import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Player;
 
 import java.util.Objects;
 
@@ -80,7 +79,7 @@ public class VideoPlayFragment extends VideoPlayFragmentApi {
 
         video = Objects.requireNonNull(getArguments() != null ? (Video) getArguments().getSerializable(EXTRA_KEY_VIDEO) : null);
 
-        FuPlayer player = new FuExoPlayerFactory(requireContext()).create();
+        Player player = new ExoPlayer.Builder(requireActivity()).build();
 
         appVideoPlayView.setPlayer(player);
 

@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.Video;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoBufferingView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
@@ -27,10 +26,10 @@ import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoImageView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayErrorView;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayWithoutWifiView;
 import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper;
-import com.chengfu.android.fuplayer.ext.exo.util.ExoMediaSourceUtil;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
 import com.chengfu.android.fuplayer.ui.StateView;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -59,7 +58,7 @@ public class AppVideoPlayView extends FrameLayout {
     private VIPStateView vipStateView;
     private LiveStateView liveStateView;
 
-    private FuPlayer player;
+    private Player player;
     private boolean fullScreen;
     private ScreenRotationHelper screenRotation;
 
@@ -138,7 +137,7 @@ public class AppVideoPlayView extends FrameLayout {
                 return;
             }
             if (player != null) {
-                player.retry();
+                player.prepare();
             }
         });
 
@@ -246,12 +245,8 @@ public class AppVideoPlayView extends FrameLayout {
         if (player == null) {
             return;
         }
-        Uri uri = Uri.parse(video.getStream_url());
-        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter.Builder(getContext()).build();
-        DataSource.Factory factory = new DefaultDataSourceFactory(getContext(), Util.getUserAgent(getContext(), getContext().getPackageName()));
-        MediaSource mediaSource = ExoMediaSourceUtil.buildMediaSource(uri, null, factory, defaultBandwidthMeter);
-
-        player.prepare(mediaSource);
+        player.setMediaItem(MediaItem.fromUri(url));
+        player.prepare();
         player.setPlayWhenReady(true);
 
         if (playerView!=null){
@@ -259,11 +254,11 @@ public class AppVideoPlayView extends FrameLayout {
         }
     }
 
-    public FuPlayer getPlayer() {
+    public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(FuPlayer player) {
+    public void setPlayer(Player player) {
         if (this.player == player) {
             return;
         }
@@ -469,7 +464,7 @@ public class AppVideoPlayView extends FrameLayout {
         }
 
         @Override
-        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        public void onPlaybackStateChanged(int playbackState) {
             if (playbackState == Player.STATE_READY) {
                 mediaSession.setActive(true);
             } else {

@@ -1,5 +1,26 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
 include ':demos:video'
 include ':demos:audio'
 include ':demos:videofordj'
 include ':library'
 include ':demos:music'
+
+def rootDir = file(".")
+if (!gradle.ext.has('projectSettingsDir')) {
+    gradle.ext.projectSettingsDir = rootDir.getCanonicalPath()
+}

@@ -15,15 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.R;
 import com.chengfu.android.fuplayer.achieve.dj.demo.videofordj.been.VideoIcon;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
-//import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.video.VideoSize;
-//import com.google.android.exoplayer2.video.VideoListener;
 
 public class AppVideoWatermarkView extends BaseStateView {
 
@@ -144,10 +141,10 @@ public class AppVideoWatermarkView extends BaseStateView {
             return false;
         }
         switch (player.getPlaybackState()) {
-            case FuPlayer.STATE_READY:
+            case Player.STATE_READY:
                 return true;
-            case FuPlayer.STATE_BUFFERING:
-            case FuPlayer.STATE_ENDED:
+            case Player.STATE_BUFFERING:
+            case Player.STATE_ENDED:
                 if (hasFirstFrame) {
                     return true;
                 }
@@ -158,8 +155,8 @@ public class AppVideoWatermarkView extends BaseStateView {
     }
 
     @Override
-    protected void onAttachedToPlayer(@NonNull FuPlayer player) {
-        if (player.getPlaybackState() == FuPlayer.STATE_READY && player.getPlayWhenReady()) {
+    protected void onAttachedToPlayer(@NonNull Player player) {
+        if (player.getPlaybackState() == Player.STATE_READY && player.getPlayWhenReady()) {
             hasFirstFrame = true;
         } else {
             hasFirstFrame = false;
@@ -173,7 +170,7 @@ public class AppVideoWatermarkView extends BaseStateView {
     }
 
     @Override
-    protected void onDetachedFromPlayer(@NonNull FuPlayer player) {
+    protected void onDetachedFromPlayer(@NonNull Player player) {
         hasFirstFrame = false;
         updateVisibility();
 

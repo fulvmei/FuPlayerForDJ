@@ -20,14 +20,12 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.media.MediaBrowserServiceCompat;
 
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.notification.AudioNotificationManager;
 import com.chengfu.android.fuplayer.achieve.dj.audio.player.MediaSessionPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.audio.receiver.BecomingNoisyReceiver;
-import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 import com.chengfu.android.fuplayer.util.FuLog;
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.squareup.picasso.Picasso;
@@ -84,15 +82,14 @@ public class MusicService extends MediaBrowserServiceCompat implements Lifecycle
         becomingNoisyReceiver = new BecomingNoisyReceiver(this, mediaSession.getSessionToken());
     }
 
-    protected FuPlayer createPlayer() {
-        FuPlayer player = new FuExoPlayerFactory(this).create();
+    protected Player createPlayer() {
         AudioAttributes attributes = new AudioAttributes.Builder()
                 .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                 .setUsage(C.USAGE_MEDIA)
                 .build();
-        player.setAudioAttributes(attributes, true);
-        player.setPauseAtEndOfMediaItems(true);
-        return player;
+        return new ExoPlayer.Builder(this)
+                .setPauseAtEndOfMediaItems(true)
+                .setAudioAttributes(attributes,true).build();
     }
 
     @NonNull

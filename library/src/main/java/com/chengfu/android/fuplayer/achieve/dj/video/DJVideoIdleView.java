@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chengfu.android.fuplayer.FuPlayer;
 import com.chengfu.android.fuplayer.achieve.dj.R;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
 import com.google.android.exoplayer2.Player;
@@ -95,7 +94,7 @@ public class DJVideoIdleView extends BaseStateView {
         if (player == null) {
             return true;
         }
-        if (player.getPlaybackState() == FuPlayer.STATE_IDLE && player.getPlayerError() == null) {
+        if (player.getPlaybackState() == Player.STATE_IDLE && player.getPlayerError() == null) {
             return true;
         }
         return false;
@@ -110,19 +109,19 @@ public class DJVideoIdleView extends BaseStateView {
     }
 
     @Override
-    protected void onAttachedToPlayer(@NonNull FuPlayer player) {
+    protected void onAttachedToPlayer(@NonNull Player player) {
         updateVisibility();
 
         player.addListener(componentListener);
     }
 
     @Override
-    protected void onDetachedFromPlayer(@NonNull FuPlayer player) {
+    protected void onDetachedFromPlayer(@NonNull Player player) {
         updateVisibility();
         player.removeListener(componentListener);
     }
 
-    private final class ComponentListener implements FuPlayer.Listener {
+    private final class ComponentListener implements Player.Listener {
 
         @Override
         public void onPlaybackStateChanged(int playbackState) {

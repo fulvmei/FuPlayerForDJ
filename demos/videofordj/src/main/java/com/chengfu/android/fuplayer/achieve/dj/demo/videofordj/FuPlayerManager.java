@@ -8,8 +8,6 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.chengfu.android.fuplayer.FuPlayer;
-import com.chengfu.android.fuplayer.PlayerFactory;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
 import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
@@ -30,26 +28,24 @@ public class FuPlayerManager implements StateView {
     private Context mContext;
     private final ComponentListener mComponentListener;
     private MediaSessionCompat mMediaSession;
-    private PlayerFactory mPlayerFactory;
-    private FuPlayer mPlayer;
+    private Player mPlayer;
     private FuPlayerView mPlayerView;
     private DJVideoControlView mVideoControlView;
     private ScreenRotationHelper mScreenRotation;
     private CopyOnWriteArraySet<BaseStateView> mStateViews = new CopyOnWriteArraySet<>();
 
-    public FuPlayerManager(@NonNull Context context, @NonNull PlayerFactory playerFactory) {
+    public FuPlayerManager(@NonNull Context context, @NonNull Player player) {
         this.mContext = context;
-        this.mPlayerFactory = playerFactory;
         mComponentListener = new ComponentListener();
 
-        mPlayer = mPlayerFactory.create();
+        mPlayer = player;
 
         mMediaSession = new MediaSessionCompat(mContext, TAG);
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
         MediaSessionConnector mediaSessionConnector = new MediaSessionConnector(mMediaSession);
 
-        mediaSessionConnector.setMediaButtonEventHandler((player, mediaButtonEvent) -> {
+        mediaSessionConnector.setMediaButtonEventHandler((player1, mediaButtonEvent) -> {
             KeyEvent keyEvent = mediaButtonEvent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
             int keyCode = keyEvent.getKeyCode();
             if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE || keyCode == KeyEvent.KEYCODE_HEADSETHOOK) {
@@ -63,12 +59,12 @@ public class FuPlayerManager implements StateView {
     }
 
     @Override
-    public FuPlayer getPlayer() {
+    public Player getPlayer() {
         return mPlayer;
     }
 
     @Override
-    public void setPlayer(FuPlayer player) {
+    public void setPlayer(Player player) {
 
     }
 
@@ -194,13 +190,6 @@ public class FuPlayerManager implements StateView {
         }
     }
 
-    public void prepare(MediaSource mediaSource) {
-        mPlayer.prepare(mediaSource, true, true);
-        mPlayer.setPlayWhenReady(true);
-
-        onResume();
-    }
-
     public void stopPlay() {
         if (mPlayerView != null) {
             mPlayerView.onPause();
@@ -220,7 +209,7 @@ public class FuPlayerManager implements StateView {
         }
         if (mPlayer != null && mPlayer.getPlaybackState() == Player.STATE_IDLE
                 && mPlayer.getPlayerError() == null) {
-            mPlayer.retry();
+            mPlayer.prepare();
         }
     }
 
