@@ -18,7 +18,7 @@ import com.google.android.exoplayer2.video.VideoSize;
 public class DJVideoImageView extends BaseStateView {
 
     protected final ComponentListener componentListener;
-    private ImageView image;
+    private final ImageView image;
     private boolean hasFirstFrame;
 
     private boolean showInError;
@@ -112,18 +112,11 @@ public class DJVideoImageView extends BaseStateView {
         switch (player.getPlaybackState()) {
             case Player.STATE_IDLE:
                 if (player.getPlayerError() != null) {
-                    if (showInError || !hasFirstFrame) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return showInError || !hasFirstFrame;
                 }
                 return true;
             case Player.STATE_BUFFERING:
-                if (!hasFirstFrame) {
-                    return true;
-                }
-                return false;
+                return !hasFirstFrame;
             case Player.STATE_ENDED:
                 if (showInEnded) {
                     return true;
@@ -136,7 +129,7 @@ public class DJVideoImageView extends BaseStateView {
     private final class ComponentListener implements Player.Listener {
 
         @Override
-        public void onPlayerError(PlaybackException error) {
+        public void onPlayerError(@NonNull PlaybackException error) {
             updateVisibility();
         }
 
@@ -151,7 +144,7 @@ public class DJVideoImageView extends BaseStateView {
         }
 
         @Override
-        public void onVideoSizeChanged(VideoSize videoSize) {
+        public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
             hasFirstFrame = false;
             updateVisibility();
         }

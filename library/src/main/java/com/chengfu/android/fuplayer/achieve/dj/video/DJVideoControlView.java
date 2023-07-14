@@ -1,5 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.video;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
@@ -538,6 +539,7 @@ public class DJVideoControlView extends DefaultControlView {
         updateBottomProgressView();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (disabledGesture) {

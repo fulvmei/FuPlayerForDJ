@@ -76,13 +76,10 @@ public class DJVideoPlayWithoutWifiView extends BaseStateView {
     }
 
     protected boolean isInShowState() {
-        if (player != null
+        return player != null
                 && !allowPlayInNoWifi
                 && NetworkUtil.getNetWorkType(context) != NetworkUtil.NETWORK_WIFI
-                && player.isLoading()) {
-            return true;
-        }
-        return false;
+                && player.isLoading();
     }
 
     public OnAllowPlayInNoWifiChangeListener getOnAllowPlayInNoWifiChangeListener() {

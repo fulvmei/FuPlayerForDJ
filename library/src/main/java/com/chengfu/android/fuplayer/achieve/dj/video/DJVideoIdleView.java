@@ -129,7 +129,7 @@ public class DJVideoIdleView extends BaseStateView {
         }
 
         @Override
-        public void onTimelineChanged(Timeline timeline, int reason) {
+        public void onTimelineChanged(@NonNull Timeline timeline, int reason) {
             updateVisibility();
         }
     }

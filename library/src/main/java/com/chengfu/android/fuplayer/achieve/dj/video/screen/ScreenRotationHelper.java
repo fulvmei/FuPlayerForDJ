@@ -1,9 +1,12 @@
 package com.chengfu.android.fuplayer.achieve.dj.video.screen;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.provider.Settings;
+
+import androidx.annotation.NonNull;
 
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
 import com.google.android.exoplayer2.PlaybackException;
@@ -16,7 +19,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
 
     private static final float DEFAULT_RATE = 4f / 3f;//开启竖屏全屏模式的阈值
 
-    private Activity activity;
+    private final Activity activity;
     private Player player;
     private final ComponentListener componentListener;
     private final OrientationEventObserver orientationEventObserver;
@@ -124,6 +127,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void manualToggleOrientation() {
         if (isInPortraitFullScreenState()) {
             if (onScreenChangedListener != null) {
@@ -149,6 +153,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         }
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public boolean maybeToggleToPortrait() {
         if (isInPortraitFullScreenState()) {
             if (portraitFullScreen) {
@@ -239,6 +244,7 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         this.orientation = orientation;
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onScreenOrientationChanged(int screenOrientation) {
         int accelerometerRotation = Settings.System.getInt(activity.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
@@ -284,14 +290,14 @@ public final class ScreenRotationHelper implements DJVideoControlView.Rotation, 
         }
 
         @Override
-        public void onPlayerError(PlaybackException error) {
+        public void onPlayerError(@NonNull PlaybackException error) {
             switchOrientationState();
         }
 
         @Override
         public void onVideoSizeChanged(VideoSize videoSize) {
-            int width = videoSize != null ? videoSize.width : 0;
-            int height = videoSize != null ? videoSize.height : 0;
+            int width = videoSize.width;
+            int height = videoSize.height;
             videoRate = width != 0 ? (float) height / width : 0f;
         }
     }

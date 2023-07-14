@@ -1,5 +1,6 @@
 package com.chengfu.android.fuplayer.achieve.dj.video.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -29,11 +30,7 @@ public class NetworkUtil {
      * @param context 上下文
      */
     public static void openWirelessSettings(Context context) {
-        if (android.os.Build.VERSION.SDK_INT > 10) {
-            context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
-        } else {
-            context.startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-        }
+        context.startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS));
     }
 
     /**
@@ -42,6 +39,7 @@ public class NetworkUtil {
      * @param context 上下文
      * @return NetworkInfo
      */
+    @SuppressLint("MissingPermission")
     private static NetworkInfo getActiveNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -91,6 +89,7 @@ public class NetworkUtil {
      * @param context 上下文
      * @return {@code true}: 连接<br>{@code false}: 未连接
      */
+    @SuppressLint("MissingPermission")
     public static boolean isWifiConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
