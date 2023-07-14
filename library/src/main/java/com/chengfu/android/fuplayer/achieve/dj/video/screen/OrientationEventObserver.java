@@ -23,7 +23,6 @@ public final class OrientationEventObserver {
     public static final int SCREEN_ORIENTATION_REVERSE_LANDSCAPE = 2;
 
 
-    private final Context context;
     private final OrientationEventListener orientationEventListener;
     private OnOrientationChangedListener onOrientationChangedListener;
 
@@ -37,7 +36,6 @@ public final class OrientationEventObserver {
     }
 
     public OrientationEventObserver(Context context) {
-        this.context = context;
 
         orientationEventListener = new OrientationEventListener(context, SensorManager.SENSOR_DELAY_NORMAL) {
             @Override

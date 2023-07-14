@@ -33,8 +33,8 @@ public class GestureImpl implements DJVideoControlView.Gesture {
     private Activity activity;
     private float oldBrightness;
 
-    private AudioManager audioManager;
-    private int maxVolume;
+    private final AudioManager audioManager;
+    private final int maxVolume;
     private int oldVolume;
 
 
@@ -191,7 +191,7 @@ public class GestureImpl implements DJVideoControlView.Gesture {
         slideType = SLIDE_TYPE_VOLUME;
         if (!scrolling) {
             oldVolume = audioManager != null ? audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) : 0;
-            oldVolume = oldVolume < 0 ? 0 : oldVolume;
+            oldVolume = Math.max(oldVolume, 0);
             if (onSlideChangedListener != null) {
                 onSlideChangedListener.onStartSlide(SLIDE_TYPE_VOLUME);
             }

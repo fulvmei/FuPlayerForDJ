@@ -27,6 +27,7 @@ public class FuMediaStyle extends NotificationCompat.MediaStyle {
         }
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public RemoteViews makeContentView(NotificationBuilderWithBuilderAccessor builder) {
         return generateContentView();
