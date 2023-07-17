@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply from: '../../constants.gradle'
 
 android {
-    compileSdkVersion project.ext.compileSdkVersion
+    compileSdkVersion 32
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -10,8 +10,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion project.ext.minSdkVersion
-        targetSdkVersion project.ext.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 32
         versionCode releaseVersionCode
         versionName releaseVersion
     }

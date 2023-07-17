@@ -26,10 +26,10 @@ import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayWithoutWifiView;
 import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper;
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
 
-import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
-import com.gyf.barlibrary.BarHide;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
 
 
 public class VideoPlayerActivity extends AppCompatActivity {
@@ -64,7 +64,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
                 .hideBar(BarHide.FLAG_SHOW_BAR)
                 .init();
 
-        player = new FuPlayerManager(this, new FuExoPlayerFactory(this));
+        player = new FuPlayerManager(this, new ExoPlayer.Builder(this).build());
 
         initViews();
 

@@ -5,10 +5,9 @@ import android.database.Observable;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 
-import com.chengfu.android.fuplayer.FuPlayer;
-import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.source.MediaSource;
 
 public class AudioSessionPlayer {
@@ -21,14 +20,14 @@ public class AudioSessionPlayer {
     @NonNull
     private final MediaSessionCompat mMediaSession;
     @NonNull
-    private final FuPlayer mPlayer;
+    private final Player mPlayer;
 
 
     public AudioSessionPlayer(@NonNull Context context, @NonNull MediaSessionCompat mediaSession) {
         mContext = context;
         mMediaSession = mediaSession;
 
-        mPlayer = new FuExoPlayerFactory(context).create();
+        mPlayer = new ExoPlayer.Builder(context).build();
     }
 
     public void setAdapter(Adapter adapter) {

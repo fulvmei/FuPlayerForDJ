@@ -72,27 +72,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         concatenatingMediaSource = new ConcatenatingMediaSource();
-        MediaSource mediaSource1 = new ProgressiveMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
-                .createMediaSource(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1104/581b63392f6cb.mp3"));
-
-        MediaSource mediaSource2 = new ProgressiveMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
-                .createMediaSource(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0703/5778246106dab.mp3"));
-
-        MediaSource mediaSource3 = new ProgressiveMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
-                .createMediaSource(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0517/573b1240d0118.mp3"));
-
-        concatenatingMediaSource.addMediaSource(mediaSource1);
-        concatenatingMediaSource.addMediaSource(mediaSource2);
-        concatenatingMediaSource.addMediaSource(mediaSource3);
+//        MediaSource mediaSource1 = new ProgressiveMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
+//                .createMediaSource(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/1104/581b63392f6cb.mp3"));
+//
+//        MediaSource mediaSource2 = new ProgressiveMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
+//                .createMediaSource(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0703/5778246106dab.mp3"));
+//
+//        MediaSource mediaSource3 = new ProgressiveMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
+//                .createMediaSource(Uri.parse("http://mvoice.spriteapp.cn/voice/2016/0517/573b1240d0118.mp3"));
+//
+//        concatenatingMediaSource.addMediaSource(mediaSource1);
+//        concatenatingMediaSource.addMediaSource(mediaSource2);
+//        concatenatingMediaSource.addMediaSource(mediaSource3);
         player.prepare(concatenatingMediaSource);
         player.setPlayWhenReady(true);
 
         findViewById(R.id.m3u8).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaSource mediaSource =new HlsMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
-                            .createMediaSource(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"));
-                    player.prepare(mediaSource);
+//                MediaSource mediaSource =new HlsMediaSource.Factory(new DefaultDataSourceFactory(MainActivity.this, "qqqq"))
+//                            .createMediaSource(Uri.parse("https://qn-live.gzstv.com/icvkuzqj/yinyue.m3u8"));
+//                    player.prepare(mediaSource);
             }
         });
 

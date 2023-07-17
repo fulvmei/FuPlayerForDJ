@@ -203,21 +203,6 @@ public class PlayerAnalytics implements AnalyticsListener {
     }
 
     @Override
-    public void onTracksChanged(EventTime eventTime, TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-//    @Override
-//    public void onUpstreamDiscarded(EventTime eventTime, MediaSourceEventListener.MediaLoadData mediaLoadData) {
-//
-//    }
-
-    @Override
-    public void onVideoSizeChanged(EventTime eventTime, int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-        Timber.d("onVideoSizeChanged ： eventTime=" + eventTime.realtimeMs+ ",width=" + width + ",height=" + height);
-    }
-
-    @Override
     public void onVolumeChanged(EventTime eventTime, float volume) {
 
     }

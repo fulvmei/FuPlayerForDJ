@@ -10,10 +10,9 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.view.OrientationEventListener;
 
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.video.VideoListener;
+import com.google.android.exoplayer2.video.VideoSize;
 
 public class ScreenRotationHelper {
 
@@ -229,7 +228,7 @@ public class ScreenRotationHelper {
         return false;
     }
 
-    private class PlayerEventListener implements Player.EventListener, VideoListener {
+    private class PlayerEventListener implements Player.Listener {
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -242,9 +241,9 @@ public class ScreenRotationHelper {
         }
 
         @Override
-        public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
-            videoWidth = width;
-            videoHeight = height;
+        public void onVideoSizeChanged(VideoSize videoSize) {
+            videoWidth = videoSize.width;
+            videoHeight = videoSize.height;
             switchOrientationState();
         }
     }

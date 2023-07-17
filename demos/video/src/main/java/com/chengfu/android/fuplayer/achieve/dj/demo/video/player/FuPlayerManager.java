@@ -9,8 +9,6 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
 
-import com.chengfu.android.fuplayer.FuPlayer;
-import com.chengfu.android.fuplayer.PlayerFactory;
 import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoControlView;
 import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper;
 import com.chengfu.android.fuplayer.ui.BaseStateView;
@@ -35,20 +33,17 @@ public class FuPlayerManager implements StateView {
     private Context mContext;
     private final ComponentListener mComponentListener;
     private MediaSessionCompat mMediaSession;
-    PlayerFactory mPlayerFactory;
-    private FuPlayer mPlayer;
+    private Player mPlayer;
     private FuPlayerView mPlayerView;
     private DJVideoControlView mVideoControlView;
     private ScreenRotationHelper mScreenRotation;
     private CopyOnWriteArraySet<BaseStateView> mStateViews = new CopyOnWriteArraySet<>();
 
-    public FuPlayerManager(@NonNull Context context, @NonNull PlayerFactory playerFactory) {
+    public FuPlayerManager(@NonNull Context context, @NonNull Player player) {
 
         this.mContext = context;
-        this.mPlayerFactory = playerFactory;
+        this.mPlayer = player;
         mComponentListener = new ComponentListener();
-
-        mPlayer = mPlayerFactory.create();
 
         mMediaSession = new MediaSessionCompat(mContext, TAG);
         mMediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
@@ -73,12 +68,12 @@ public class FuPlayerManager implements StateView {
     }
 
     @Override
-    public FuPlayer getPlayer() {
+    public Player getPlayer() {
         return mPlayer;
     }
 
     @Override
-    public void setPlayer(FuPlayer player) {
+    public void setPlayer(Player player) {
 
     }
 
@@ -223,7 +218,7 @@ public class FuPlayerManager implements StateView {
         }
         if (mPlayer != null && mPlayer.getPlaybackState() == Player.STATE_IDLE
                 && mPlayer.getPlayerError() == null) {
-            mPlayer.retry();
+            mPlayer.prepare();
         }
     }
 
@@ -259,7 +254,7 @@ public class FuPlayerManager implements StateView {
         mPlayer.release();
     }
 
-    private final class ComponentListener implements VisibilityChangeListener, Player.EventListener, DJVideoControlView.OnScreenClickListener, DJVideoControlView.OnBackClickListener {
+    private final class ComponentListener implements VisibilityChangeListener, Player.Listener, DJVideoControlView.OnScreenClickListener, DJVideoControlView.OnBackClickListener {
 
         @Override
         public void onVisibilityChange(StateView stateView, boolean visibility) {

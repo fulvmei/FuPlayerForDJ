@@ -30,11 +30,11 @@ import com.chengfu.android.fuplayer.achieve.dj.video.DJVideoPlayWithoutWifiView;
 import com.chengfu.android.fuplayer.achieve.dj.video.screen.ScreenRotationHelper;
 import com.chengfu.android.fuplayer.achieve.dj.video.util.NetworkUtil;
 import com.chengfu.android.fuplayer.ui.FuPlayerView;
-import com.chengfu.android.fuplayer.ext.exo.FuExoPlayerFactory;
 
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.gyf.barlibrary.BarHide;
-import com.gyf.barlibrary.ImmersionBar;
+import com.gyf.immersionbar.BarHide;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.List;
 
@@ -134,7 +134,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.View
 
         SimpleExoPlayer simpleExoPlayer =new SimpleExoPlayer.Builder(recyclerView.getContext()).build();
         simpleExoPlayer.addAnalyticsListener(new PlayerAnalytics());
-        player = new FuPlayerManager(activity, new FuExoPlayerFactory(recyclerView.getContext()));
+        player = new FuPlayerManager(activity,new ExoPlayer.Builder(recyclerView.getContext()).build());
 
 
         ScreenRotationHelper screenRotationHelper = new ScreenRotationHelper(activity);

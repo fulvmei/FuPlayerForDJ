@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="n">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,14 +24,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.chengfu1.FuSessionActivity">
+        <activity android:name="com.chengfu1.FuSessionActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="chengfu.intent.action.ACTION_SESSION_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestActivity">
+        <activity android:name=".TestActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="chengfu.intent.action.ACTION_SESSION_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
